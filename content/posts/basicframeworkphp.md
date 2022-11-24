@@ -4,14 +4,14 @@ subtitle: ""
 date: 2022-11-24T12:26:03+07:00
 lastmod: 2022-11-24T12:26:03+07:00
 draft: true
-author: ""
-authorLink: ""
+author: "koleksiprihadi"
+authorLink: "koleksiprihadi.github.io"
 description: ""
 license: ""
 images: []
 
-tags: []
-categories: []
+tags: ["php"]
+categories: ["portofolio"]
 
 featuredImage: ""
 featuredImagePreview: ""
