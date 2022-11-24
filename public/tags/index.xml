@@ -4,5 +4,13 @@
         <link>https://koleksiprihadi.github.io/tags/</link>
         <description>Tags - Tag - koleksiprihadi</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>koleksiprihadi@gmail.com (koleksiprihadi)</managingEditor>
-            <webMaster>koleksiprihadi@gmail.com (koleksiprihadi)</webMaster><atom:link href="https://koleksiprihadi.github.io/tags/" rel="self" type="application/rss+xml" /></channel>
+            <webMaster>koleksiprihadi@gmail.com (koleksiprihadi)</webMaster><lastBuildDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</lastBuildDate><atom:link href="https://koleksiprihadi.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>php</title>
+    <link>https://koleksiprihadi.github.io/tags/php/</link>
+    <pubDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</pubDate>
+    <author>koleksiprihadi</author>
+    <guid>https://koleksiprihadi.github.io/tags/php/</guid>
+    <description><![CDATA[]]></description>
+</item>
+</channel>
 </rss>
