@@ -108,7 +108,7 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
     # LoveIt NEW | 0.2.0 Custom content (HTML format is supported)
     custom = "koleksiprihadi's portofolios page"
     # LoveIt NEW | 0.2.0 whether to show Hugo and theme info
-    hugo = false
+    hugo = true
     # LoveIt NEW | 0.2.0 whether to show copyright info
     copyright = false
     # LoveIt NEW | 0.2.0 whether to show the author
