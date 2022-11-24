@@ -106,11 +106,11 @@ ignoreErrors = ["error-remote-getjson", "error-missing-instagram-accesstoken"]
   [params.footer]
     enable = true
     # LoveIt NEW | 0.2.0 Custom content (HTML format is supported)
-    custom = "koleksiprihadi's portofolios page"
+    custom = '<div class="footer-line"><span class="d-none d-lg-inline">Made with ❤️ using <a href=https://gohugo.io class=hover:text-teal-400 target=_blank rel=noopener>Hugo 0.92.2</a></span></div>'
     # LoveIt NEW | 0.2.0 whether to show Hugo and theme info
-    hugo = true
+    hugo = false
     # LoveIt NEW | 0.2.0 whether to show copyright info
-    copyright = false
+    copyright = true
     # LoveIt NEW | 0.2.0 whether to show the author
     author = true
     # Site creation time
