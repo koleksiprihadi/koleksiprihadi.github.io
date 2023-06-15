@@ -4,7 +4,7 @@ subtitle: ""
 date: 2022-11-24T12:26:03+07:00
 lastmod: 2022-11-24T12:26:03+07:00
 draft: false
-author: "koleksiprihadi"
+author: "Krisna Prihadiyanto"
 authorLink: "koleksiprihadi.github.io"
 description: ""
 license: ""

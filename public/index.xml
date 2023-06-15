@@ -2,7 +2,7 @@
     <channel>
         <title>koleksiprihadi</title>
         <link>https://koleksiprihadi.github.io/</link>
-        <description>koleksiprihadi&#39;s portofolio pages</description>
+        <description>Halo, Saya Krisna Prihadiyanto</description>
         <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>koleksiprihadi@gmail.com (koleksiprihadi)</managingEditor>
             <webMaster>koleksiprihadi@gmail.com (koleksiprihadi)</webMaster><lastBuildDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</lastBuildDate>
             <atom:link href="https://koleksiprihadi.github.io/index.xml" rel="self" type="application/rss+xml" />
@@ -10,10 +10,18 @@
     <title>Basicframeworkphp</title>
     <link>https://koleksiprihadi.github.io/posts/basicframeworkphp/</link>
     <pubDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</pubDate>
-    <author>koleksiprihadi</author>
+    <author>Krisna Prihadiyanto</author>
     <guid>https://koleksiprihadi.github.io/posts/basicframeworkphp/</guid>
-    <description><![CDATA[╭━━╮╱╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╭╮ ┃╭╮┃╱╱╱╱╱╱╱╱╱╱╱┃╭━━╯╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱┃┃ ┃╰╯╰┳━━┳━━┳┳━━╮┃╰━━┳━┳━━┳╮╭┳━━┳╮╭╮╭┳━━┳━┫┃╭╮╭━━┫╰━┳━━╮ ┃╭━╮┃╭╮┃━━╋┫╭━╯┃╭━━┫╭┫╭╮┃╰╯┃┃━┫╰╯╰╯┃╭╮┃╭┫╰╯╯┃╭╮┃╭╮┃╭╮┃ ┃╰━╯┃╭╮┣━━┃┃╰━╮┃┃╱╱┃┃┃╭╮┃┃┃┃┃━╋╮╭╮╭┫╰╯┃┃┃╭╮╮┃╰╯┃┃┃┃╰╯┃ ╰━━━┻╯╰┻━━┻┻━━╯╰╯╱╱╰╯╰╯╰┻┻┻┻━━╯╰╯╰╯╰━━┻╯╰╯╰╯┃╭━┻╯╰┫╭━╯ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱┃┃ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰╯╱╱╱╱╰╯ Fitur  Route Koneksi Mysql Fungsi Login dan Session API JWT CKEditor 5 Input Captcha  Saran &amp; Pertanyaan
-Penggunaan  silahkan clone project ini ke folder htdocs buat file .htaccess dan pastekan kode dibawah ini  RewriteEngine On #website location RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L] happy coding  struktur direktori  📂basicframeworkphp ┣ 📂API ┃ ┣ 📂mid ┃ ┃ ┣ 📜getData.]]></description>
+    <description><![CDATA[╭━━╮╱╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╭╮ ┃╭╮┃╱╱╱╱╱╱╱╱╱╱╱┃╭━━╯╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱┃┃ ┃╰╯╰┳━━┳━━┳┳━━╮┃╰━━┳━┳━━┳╮╭┳━━┳╮╭╮╭┳━━┳━┫┃╭╮╭━━┫╰━┳━━╮ ┃╭━╮┃╭╮┃━━╋┫╭━╯┃╭━━┫╭┫╭╮┃╰╯┃┃━┫╰╯╰╯┃╭╮┃╭┫╰╯╯┃╭╮┃╭╮┃╭╮┃ ┃╰━╯┃╭╮┣━━┃┃╰━╮┃┃╱╱┃┃┃╭╮┃┃┃┃┃━╋╮╭╮╭┫╰╯┃┃┃╭╮╮┃╰╯┃┃┃┃╰╯┃ ╰━━━┻╯╰┻━━┻┻━━╯╰╯╱╱╰╯╰╯╰┻┻┻┻━━╯╰╯╰╯╰━━┻╯╰╯╰╯┃╭━┻╯╰┫╭━╯ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱┃┃ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰╯╱╱╱╱╰╯ Fitur Route Koneksi Mysql Fungsi Login dan Session API JWT CKEditor 5 Input Captcha Saran &amp; Pertanyaan
+Penggunaan silahkan clone project ini ke folder htdocs buat file .htaccess dan pastekan kode dibawah ini RewriteEngine On #website location RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L] happy coding struktur direktori 📂basicframeworkphp ┣ 📂API ┃ ┣ 📂mid ┃ ┃ ┣ 📜getData.]]></description>
+</item>
+<item>
+    <title>Soal Ka Ba Ta Ku Generator</title>
+    <link>https://koleksiprihadi.github.io/posts/soal-ka-ba-ta-ku-generator/</link>
+    <pubDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</pubDate>
+    <author>Krisna Prihadiyanto</author>
+    <guid>https://koleksiprihadi.github.io/posts/soal-ka-ba-ta-ku-generator/</guid>
+    <description><![CDATA[____ __. __________ ___________ ____ __. | |/ _|____ \______ \_____\__ ___/____ | |/ _|__ __ | &lt; \__ \ | | _/\__ \ | | \__ \ | &lt; | | \ | | \ / __ \| | \ / __ \| | / __ \| | \| | / |____|__ (____ /______ /(____ /____| (____ /____|__ \____/ \/ \/ \/ \/ \/ \/ ________ __ / _____/ ____ ____ ________________ _/ |_ ___________ / \ ____/ __ \ / \_/ __ \_ __ \__ \\ __\/ _ \_ __ \ \ \_\ \ ___/| | \ ___/| | \// __ \| | ( &lt;_&gt; ) | \/ \______ /\___ &gt;___| /\___ &gt;__| (____ /__| \____/|__| \/ \/ \/ \/ \/ Apa itu Soal KaBaTaKu Generator?]]></description>
 </item>
 </channel>
 </rss>

@@ -8,10 +8,10 @@
     <title>Basicframeworkphp</title>
     <link>https://koleksiprihadi.github.io/posts/basicframeworkphp/</link>
     <pubDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</pubDate>
-    <author>koleksiprihadi</author>
+    <author>Krisna Prihadiyanto</author>
     <guid>https://koleksiprihadi.github.io/posts/basicframeworkphp/</guid>
-    <description><![CDATA[╭━━╮╱╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╭╮ ┃╭╮┃╱╱╱╱╱╱╱╱╱╱╱┃╭━━╯╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱┃┃ ┃╰╯╰┳━━┳━━┳┳━━╮┃╰━━┳━┳━━┳╮╭┳━━┳╮╭╮╭┳━━┳━┫┃╭╮╭━━┫╰━┳━━╮ ┃╭━╮┃╭╮┃━━╋┫╭━╯┃╭━━┫╭┫╭╮┃╰╯┃┃━┫╰╯╰╯┃╭╮┃╭┫╰╯╯┃╭╮┃╭╮┃╭╮┃ ┃╰━╯┃╭╮┣━━┃┃╰━╮┃┃╱╱┃┃┃╭╮┃┃┃┃┃━╋╮╭╮╭┫╰╯┃┃┃╭╮╮┃╰╯┃┃┃┃╰╯┃ ╰━━━┻╯╰┻━━┻┻━━╯╰╯╱╱╰╯╰╯╰┻┻┻┻━━╯╰╯╰╯╰━━┻╯╰╯╰╯┃╭━┻╯╰┫╭━╯ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱┃┃ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰╯╱╱╱╱╰╯ Fitur  Route Koneksi Mysql Fungsi Login dan Session API JWT CKEditor 5 Input Captcha  Saran &amp; Pertanyaan
-Penggunaan  silahkan clone project ini ke folder htdocs buat file .htaccess dan pastekan kode dibawah ini  RewriteEngine On #website location RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L] happy coding  struktur direktori  📂basicframeworkphp ┣ 📂API ┃ ┣ 📂mid ┃ ┃ ┣ 📜getData.]]></description>
+    <description><![CDATA[╭━━╮╱╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╭╮ ┃╭╮┃╱╱╱╱╱╱╱╱╱╱╱┃╭━━╯╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱┃┃ ┃╰╯╰┳━━┳━━┳┳━━╮┃╰━━┳━┳━━┳╮╭┳━━┳╮╭╮╭┳━━┳━┫┃╭╮╭━━┫╰━┳━━╮ ┃╭━╮┃╭╮┃━━╋┫╭━╯┃╭━━┫╭┫╭╮┃╰╯┃┃━┫╰╯╰╯┃╭╮┃╭┫╰╯╯┃╭╮┃╭╮┃╭╮┃ ┃╰━╯┃╭╮┣━━┃┃╰━╮┃┃╱╱┃┃┃╭╮┃┃┃┃┃━╋╮╭╮╭┫╰╯┃┃┃╭╮╮┃╰╯┃┃┃┃╰╯┃ ╰━━━┻╯╰┻━━┻┻━━╯╰╯╱╱╰╯╰╯╰┻┻┻┻━━╯╰╯╰╯╰━━┻╯╰╯╰╯┃╭━┻╯╰┫╭━╯ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱┃┃ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰╯╱╱╱╱╰╯ Fitur Route Koneksi Mysql Fungsi Login dan Session API JWT CKEditor 5 Input Captcha Saran &amp; Pertanyaan
+Penggunaan silahkan clone project ini ke folder htdocs buat file .htaccess dan pastekan kode dibawah ini RewriteEngine On #website location RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L] happy coding struktur direktori 📂basicframeworkphp ┣ 📂API ┃ ┣ 📂mid ┃ ┃ ┣ 📜getData.]]></description>
 </item>
 </channel>
 </rss>
