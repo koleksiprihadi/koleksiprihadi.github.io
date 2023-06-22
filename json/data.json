@@ -1,0 +1,42 @@
+{
+  "kerjaan": [
+    {
+      "posisi": "Admin",
+      "tipe": "On-Site",
+      "waktu": "Agustus 2022 - Sekarang",
+      "tipewaktu": "Full Time",
+      "perusahaan": "CV SAMUDERA SUKSES SENTOSA",
+      "deskripsi": "Adalah perusahaan yang bergerak dibidang pelayanan Top Up digital dan PPOB dalam bentuk aplikasi"
+    },
+    {
+      "posisi": "Author",
+      "tipe": "Remote",
+      "waktu": "Mei 2022 - Sekarang",
+      "tipewaktu": "Part Time",
+      "perusahaan": "PANDUANKODING.COM",
+      "deskripsi": "Adalah sebuah website tentang pembelajaran bahasa pemrograman atau koding"
+    },
+    {
+      "posisi": "Webmaster",
+      "tipe": "Remote",
+      "waktu": "Februari 2019 - Sekarang",
+      "tipewaktu": "Part Time",
+      "perusahaan": "SANDARSCOUT.COM",
+      "deskripsi": "Adalah sebuah website organisasi kepramukaan tingkat penegak pada gugus depan 01.045 - 01.046 Sultan Agung dan Dara Juanti yang berpangkalan pada SMA Negeri 1 Ketapang"
+    }
+  ],
+  "pendidikan":[
+    {
+      "sekolah":"Hacktrace.id",
+      "keterangan":"Hacking Playground (Online Course)"
+    },
+    {
+      "sekolah":"Universitas Amikom Yogyakarta",
+      "keterangan":"S1-Informatika (2018 - 2022)<br>IPK 3.81"
+    },
+    {
+      "sekolah":"SMA Negeri 1 Ketapang",
+      "keterangan":"Jurusan IPA (2015 - 2018)"
+    }
+  ]
+}
