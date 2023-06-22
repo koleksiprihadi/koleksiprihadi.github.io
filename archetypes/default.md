@@ -1,61 +1,57 @@
 ---
-title: "{{ replace .TranslationBaseName "-" " " | title }}"
-subtitle: ""
-date: {{ .Date }}
-lastmod: {{ .Date }}
 draft: true
-author: ""
-authorLink: ""
-description: ""
-license: ""
-images: []
+date: {{ .Date }}
+title: "{{ replace .TranslationBaseName "-" " " | title }}"
+slug: {{ .BaseFileName }}
 
-tags: []
-categories: []
+tags:
+    - Python
 
-featuredImage: ""
-featuredImagePreview: ""
+categories:
+    - Portofolio
 
-hiddenFromHomePage: false
-hiddenFromSearch: false
-twemoji: false
-lightgallery: true
-ruby: true
-fraction: true
-fontawesome: true
-linkToMarkdown: true
-rssFullText: false
+authorname: "krisna prihadiyanto"
+authorlink: "https://koleksiprihadi.github.io/"
 
-toc:
-  enable: true
-  auto: true
-code:
-  copy: true
-  maxShownLines: 50
-math:
-  enable: false
-  # ...
-mapbox:
-  # ...
-share:
-  enable: true
-  # ...
-comment:
-  enable: true
-  # ...
-library:
-  css:
-    # someCSS = "some.css"
-    # located in "assets/"
-    # Or
-    # someCSS = "https://cdn.example.com/some.css"
-  js:
-    # someJS = "some.js"
-    # located in "assets/"
-    # Or
-    # someJS = "https://cdn.example.com/some.js"
-seo:
-  images: []
-  # ...
+authorname: "krisna prihadiyanto"
+authorlink: "https://koleksiprihadi.github.io/"
+authorphoto: "/images/koleksiprihadi.jpeg"
+
+image: /images/koleksiprihadi.jpeg
+thumbnail: /images/koleksiprihadi.jpeg
+width: 1024
+height: 576
+description: "test"
+repos: "koleksiprihadi/"
+
 ---
+{{< js >}}
+<script>
+// foto
+var foto =[
+  "",
+  "",
+  ""
+]
+// Persen
+var githubAkun = "koleksiprihadi"
+var repo = ""
+
+// Demo
+var file = [
+      {
+        type: 'html',
+        url: 'index.html',
+      },
+      {
+        type: 'css',
+        url: 'style.css'
+      },
+      {
+        type: 'js',
+        url: 'script.js'
+      }
+    ]
+  </script>
+{{< /js >}}
 

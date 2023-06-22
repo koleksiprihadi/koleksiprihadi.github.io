@@ -1,17 +1,25 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>php - Tag - koleksiprihadi</title>
-        <link>https://koleksiprihadi.github.io/tags/php/</link>
-        <description>php - Tag - koleksiprihadi</description>
-        <generator>Hugo -- gohugo.io</generator><language>en</language><managingEditor>koleksiprihadi@gmail.com (koleksiprihadi)</managingEditor>
-            <webMaster>koleksiprihadi@gmail.com (koleksiprihadi)</webMaster><lastBuildDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</lastBuildDate><atom:link href="https://koleksiprihadi.github.io/tags/php/" rel="self" type="application/rss+xml" /><item>
-    <title>Basicframeworkphp</title>
-    <link>https://koleksiprihadi.github.io/posts/basicframeworkphp/</link>
-    <pubDate>Thu, 24 Nov 2022 12:26:03 &#43;0700</pubDate>
-    <author>Krisna Prihadiyanto</author>
-    <guid>https://koleksiprihadi.github.io/posts/basicframeworkphp/</guid>
-    <description><![CDATA[╭━━╮╱╱╱╱╱╱╱╱╱╱╱╭━━━╮╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╭╮╱╱╱╱╱╭╮ ┃╭╮┃╱╱╱╱╱╱╱╱╱╱╱┃╭━━╯╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱╱┃┃ ┃╰╯╰┳━━┳━━┳┳━━╮┃╰━━┳━┳━━┳╮╭┳━━┳╮╭╮╭┳━━┳━┫┃╭╮╭━━┫╰━┳━━╮ ┃╭━╮┃╭╮┃━━╋┫╭━╯┃╭━━┫╭┫╭╮┃╰╯┃┃━┫╰╯╰╯┃╭╮┃╭┫╰╯╯┃╭╮┃╭╮┃╭╮┃ ┃╰━╯┃╭╮┣━━┃┃╰━╮┃┃╱╱┃┃┃╭╮┃┃┃┃┃━╋╮╭╮╭┫╰╯┃┃┃╭╮╮┃╰╯┃┃┃┃╰╯┃ ╰━━━┻╯╰┻━━┻┻━━╯╰╯╱╱╰╯╰╯╰┻┻┻┻━━╯╰╯╰╯╰━━┻╯╰╯╰╯┃╭━┻╯╰┫╭━╯ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱┃┃╱╱╱╱┃┃ ╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╱╰╯╱╱╱╱╰╯ Fitur Route Koneksi Mysql Fungsi Login dan Session API JWT CKEditor 5 Input Captcha Saran &amp; Pertanyaan
-Penggunaan silahkan clone project ini ke folder htdocs buat file .htaccess dan pastekan kode dibawah ini RewriteEngine On #website location RewriteBase / RewriteCond %{REQUEST_FILENAME} !-f RewriteCond %{REQUEST_FILENAME} !-d RewriteRule ^(.+)$ index.php?uri=$1 [QSA,L] happy coding struktur direktori 📂basicframeworkphp ┣ 📂API ┃ ┣ 📂mid ┃ ┃ ┣ 📜getData.]]></description>
-</item>
-</channel>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Php on Krisna Prihadiyanto, S.Kom</title>
+    <link>/tags/php/</link>
+    <description>Recent content in Php on Krisna Prihadiyanto, S.Kom</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 22 Jun 2023 05:32:38 +0000</lastBuildDate>
+    
+	<atom:link href="/tags/php/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Aplikasi Bantu Sandi Morse</title>
+      <link>/portofolio/aplikasi-bantu-sandi-morse/</link>
+      <pubDate>Thu, 22 Jun 2023 05:32:38 +0000</pubDate>
+      
+      <guid>/portofolio/aplikasi-bantu-sandi-morse/</guid>
+      <description>hallo teman-teman pada artikel ini saya akan memberikan sebuah tutorial implementasi bahasa pemrograman python untuk membuat sebuah telegram bot dimana bot yang akan kita buat disini adalah bot yang akan mengirim kembali pesan dari user bot kita. Tujuan dari artikel ini adalah untuk memberikan gambaran untuk teman-teman bagaimana cara membuat sebuah bot telegram menggunakan python, pada tutorial ini author menggunakan python 3 ya teman-teman. yuk langsung aja.</description>
+      <image>https://panduankoding.com/images/Membuat-whatsapp-bot-sederhana-dengan-nodejs.png</image>
+    </item>
+    
+  </channel>
 </rss>
