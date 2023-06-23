@@ -14,6 +14,15 @@ $.ajax({
   success: xmlParser,
 });
 
+function cekImage(url) {
+  var pettern = /blogger.googleusercontent.com/i
+  if (url.match(pettern) === "blogger.googleusercontent.com") {
+    return url;
+  } else {
+    return "https://panduankoding" + url;
+  }
+}
+
 async function xmlParser(xml) {
   $("#load").fadeOut(3000);
 
@@ -23,7 +32,7 @@ async function xmlParser(xml) {
       $("#artikelauto").append(
         `<div id="loadartikel" class="col-md-4 mx-auto p-2">
             <div class="card bg-light text-dark artikel">
-              <img src="${$(this).find("image").text()}" class="placeholder figure-img img-fluid m-2"
+              <img src="${cekImage($(this).find("image").text())}" class="placeholder figure-img img-fluid m-2"
                 alt="${$(this).find("title").text()}">
               <div class="card-body">
                 <div class="row g-0">
