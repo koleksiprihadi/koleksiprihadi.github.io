@@ -14,16 +14,24 @@ $.ajax({
   success: xmlParser,
 });
 
+function cekImage(url) {
+  if ((/https*/).test(url)) {
+    return url;
+  } else {
+    return "https://panduankoding.com" + url;
+  }
+}
+
 async function xmlParser(xml) {
   $("#load").fadeOut(3000);
 
   $(xml)
     .find("item")
-    .each(function () {
+    .each(function() {
       $("#artikelauto").append(
         `<div id="loadartikel" class="col-md-4 mx-auto p-2">
             <div class="card bg-light text-dark artikel">
-              <img src="https://fakeimg.pl/1024x576/cccccc/cccccc" class="placeholder figure-img img-fluid m-2"
+              <img src="${cekImage($(this).find("image").text())}" class="placeholder figure-img img-fluid m-2"
                 alt="${$(this).find("title").text()}">
               <div class="card-body">
                 <div class="row g-0">
@@ -35,8 +43,8 @@ async function xmlParser(xml) {
                   </div>
                   <div class="col-2 mx-auto p-2">
                     <a href="${$(this)
-                      .find("link")
-                      .text()}" class="btn btn-primary rounded-pill" target="_blank">
+          .find("link")
+          .text()}" class="btn btn-primary rounded-pill" target="_blank">
                       <i class="bi bi-box-arrow-up-right"></i></a>
                   </div>
                 </div>
@@ -53,7 +61,7 @@ $.ajax({
   url: jsonurl,
   data: { get_param: "value" },
   dataType: "json",
-  success: function (data) {
+  success: function(data) {
     for (let i = 0; i < data.kerjaan.length; i++) {
       $("div#cardkerja").append(
         `<!-- Start Card Kerja -->
@@ -84,7 +92,7 @@ $.ajax({
   },
 });
 
-$(".carousel .carousel-item").each(function () {
+$(".carousel .carousel-item").each(function() {
   var minPerSlide = 4;
   var next = $(this).next();
   if (!next.length) {
@@ -108,12 +116,12 @@ function validateEmail($email) {
   return emailReg.test($email);
 }
 
-$("#kirim").click(function () {
+$("#kirim").click(function() {
 
   var nama, email, subjek, pesan;
   var tel = {
-    token:"6239551251:AAE0_fU2xgsBaWzR4z9t6LYixAl_8saWN5M",
-    chat_id:"6251657917"
+    token: "6239551251:AAE0_fU2xgsBaWzR4z9t6LYixAl_8saWN5M",
+    chat_id: "6251657917"
   }
 
   if ($("input#nama").val() === "") {
@@ -139,8 +147,8 @@ $("#kirim").click(function () {
   } else {
     pesan = $("textarea#pesan").val();
   }
-  if (typeof nama !== 'undefined' && typeof email !== 'undefined' && typeof subjek !== 'undefined' && typeof pesan !== 'undefined'){
-    var kirimpesan =`dari ${nama}, ${email}
+  if (typeof nama !== 'undefined' && typeof email !== 'undefined' && typeof subjek !== 'undefined' && typeof pesan !== 'undefined') {
+    var kirimpesan = `dari ${nama}, ${email}
     subjek : ${subjek}
     pesan : ${pesan}`
     const url = `https://api.telegram.org/bot${tel.token}/sendMessage?chat_id=${tel.chat_id}&text=${encodeURI(kirimpesan)}`; // The url to request
