@@ -19,7 +19,7 @@ function cekImage(url) {
   if (url.match(pettern) === "blogger.googleusercontent.com") {
     return url;
   } else {
-    return "https://panduankoding" + url;
+    return "https://panduankoding.com" + url;
   }
 }
 
