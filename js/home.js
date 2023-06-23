@@ -15,8 +15,7 @@ $.ajax({
 });
 
 function cekImage(url) {
-  var pettern = /blogger.googleusercontent.com/i
-  if (url.match(pettern) === "blogger.googleusercontent.com") {
+  if ((/https*/).test(url)) {
     return url;
   } else {
     return "https://panduankoding.com" + url;
