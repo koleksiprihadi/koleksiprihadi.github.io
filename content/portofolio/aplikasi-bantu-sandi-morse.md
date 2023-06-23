@@ -40,12 +40,7 @@ var githubAkun = "koleksiprihadi"
 var repo = "basicframeworkphp"
 
 // Demo
-var file = [
-      {
-        type: 'html',
-        url: 'https://raw.githubusercontent.com/koleksiprihadi/serverstatis/master/index.html',
-      }
-    ]
+
   </script>
 {{< /js >}}
 
