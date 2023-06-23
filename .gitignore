@@ -1,1 +1,3 @@
 *.py
+.replit
+replit.nix

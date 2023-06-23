@@ -203,15 +203,15 @@
         <span class="text-primary">Saya</span>
       </h1>
       <div class="container" id="hide">
-            <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                {{ range .Paginator.Pages }}
-                    {{ .Render "post" }}
-                {{ end }}
-                {{ template "_internal/pagination.html" . }}
-            </div>
-            </div>
+        <div class="row">
+          <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+            {{ range .Paginator.Pages }}
+            {{ .Render "post" }}
+            {{ end }}
+            {{ template "_internal/pagination.html" . }}
+          </div>
         </div>
+      </div>
       <div class="row">
         {{ $paginatora := .Paginate (where .Site.Pages "Type" "post") 6 }}
         {{ range $paginatora.Pages }}
@@ -229,7 +229,7 @@
                   <p class="card-text">
                     <i class="bi bi-tags-fill"></i>
                     {{ range .Params.tags }}
-                      {{ . }}
+                    {{ . }}
                     {{ end }}
                   </p>
                 </div>
@@ -246,9 +246,9 @@
       </div>
       <div>
         {{ range .Paginator.Pages }}
-                    {{ .Render "post" }}
-                {{ end }}
-                {{ template "_internal/pagination.html" . }}
+        {{ .Render "post" }}
+        {{ end }}
+        {{ template "_internal/pagination.html" . }}
       </div>
     </div>
     <!-- End Portofolio -->
@@ -394,7 +394,7 @@
   <script src="https://unpkg.com/typeit@8.7.1/dist/index.umd.js"></script>
   <script src="/js/bs/bootstrap.min.js"></script>
   <script src="/js/script.js"></script>
-  <script src="/js/home.js?1"></script>
+  <script src="/js/home.js"></script>
 </body>
 
 </html>
