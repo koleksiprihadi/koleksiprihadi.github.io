@@ -31,6 +31,7 @@ repos: "koleksiprihadi/"
 ---
 {{< js >}}
 <script>
+$('table').addClass("table table-striped");
 // foto
 var foto =[
   "/kabataku/kabataku.png",
