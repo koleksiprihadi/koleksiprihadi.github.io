@@ -151,9 +151,18 @@ $("#kirim").click(function() {
     var kirimpesan = `dari ${nama}, ${email}
     subjek : ${subjek}
     pesan : ${pesan}`
-    const url = `https://api.telegram.org/bot${tel.token}/sendMessage?chat_id=${tel.chat_id}&text=${encodeURI(kirimpesan)}`; // The url to request
-    const xht = new XMLHttpRequest();
-    xht.open("GET", url);
-    xht.send();
+    $.get(
+    `https://api.telegram.org/bot${tel.token}/sendMessage?chat_id=${tel.chat_id}&text=${encodeURI(kirimpesan)}`,
+    function (responseText) {
+      if(responseText.ok){
+        swal("Pesan Terkirim", "Terima kasih telah menghubungi saya, saya akan merespon secepat yang saya bisa", "success");
+        $("input#nama").val() = "";
+        $("input#email").val() = "";
+        $("input#subject").val() = "";
+        $("textarea#pesan").val() = "";
+      }else{
+        swal("Pesan Gagal Terkirim", "Mohon maaf silahkan hubungi melalui sosial media ya", "error");
+      }
+    });
   }
 });
