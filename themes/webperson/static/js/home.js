@@ -156,10 +156,10 @@ $("#kirim").click(function() {
     function (responseText) {
       if(responseText.ok){
         swal("Pesan Terkirim", "Terima kasih telah menghubungi saya, saya akan merespon secepat yang saya bisa", "success");
-        $("input#nama").val() = "";
-        $("input#email").val() = "";
-        $("input#subject").val() = "";
-        $("textarea#pesan").val() = "";
+        $("input#nama").attr('value', '');
+        $("input#email").attr('value', '');
+        $("input#subject").attr('value', '');
+        $("textarea#pesan").attr('value', '');
       }else{
         swal("Pesan Gagal Terkirim", "Mohon maaf silahkan hubungi melalui sosial media ya", "error");
       }
