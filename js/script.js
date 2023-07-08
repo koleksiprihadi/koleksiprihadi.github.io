@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  alertvisitor();  
   $('nav').removeClass('navbar-down').addClass('navbar-up');
 });
 $(window).scroll(function() {
@@ -8,3 +9,31 @@ $(window).scroll(function() {
     $('nav').removeClass('navbar-up').addClass('navbar-down');
   }
 });
+
+function getCurrentURL () {
+  return window.location.href
+}
+
+function alertvisitor(){
+    var parser = new UAParser();
+    let parserResults = parser.getResult();
+    var data = {
+      "url": window.location.href,
+      "browser": parserResults.ua,
+      "dVendor": parserResults.device.vendor,
+      "dModel": parserResults.device.model,
+      "dTipe": parserResults.device.type,
+      "dOs": parserResults.os.name + parserResults.os.version
+    }
+    $.ajax({
+      type: "GET",
+      url: `https://script.google.com/macros/s/AKfycbyQWIxw7NDgEO6OiCGkaIUQrMpBuQVzHwjAUtJThiE-KVSNxFofWvYzP4jywcKK0yaHvQ/exec?data={
+      "url": "${window.location.href}",
+      "browser": "${parserResults.ua}",
+      "dVendor": "${parserResults.device.vendor}",
+      "dModel": "${parserResults.device.model}",
+      "dTipe": "${parserResults.device.type}",
+      "dOs": "${parserResults.os.name + parserResults.os.version}"
+    }`,
+    });
+}
