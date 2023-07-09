@@ -119,10 +119,6 @@ function validateEmail($email) {
 $("#kirim").click(function() {
 
   var nama, email, subjek, pesan;
-  var tel = {
-    token: "6239551251:AAE0_fU2xgsBaWzR4z9t6LYixAl_8saWN5M",
-    chat_id: "6251657917"
-  }
 
   if ($("input#nama").val() === "") {
     $("input#nama").addClass("is-invalid");
@@ -148,21 +144,22 @@ $("#kirim").click(function() {
     pesan = $("textarea#pesan").val();
   }
   if (typeof nama !== 'undefined' && typeof email !== 'undefined' && typeof subjek !== 'undefined' && typeof pesan !== 'undefined') {
-    var kirimpesan = `dari ${nama}, ${email}
-    subjek : ${subjek}
-    pesan : ${pesan}`
-    $.get(
-    `https://api.telegram.org/bot${tel.token}/sendMessage?chat_id=${tel.chat_id}&text=${encodeURI(kirimpesan)}`,
-    function (responseText) {
-      if(responseText.ok){
-        swal("Pesan Terkirim", "Terima kasih telah menghubungi saya, saya akan merespon secepat yang saya bisa", "success");
-        $("input#nama").attr('value', '');
-        $("input#email").attr('value', '');
-        $("input#subject").attr('value', '');
-        $("textarea#pesan").attr('value', '');
-      }else{
-        swal("Pesan Gagal Terkirim", "Mohon maaf silahkan hubungi melalui sosial media ya", "error");
+    var emailkirim = email + " (" + nama + ")"
+    $.ajax({
+      type: 'GET',
+      url: `https://script.google.com/macros/s/AKfycbyjyFGlN0v6ZtIraa58TUkQkA4AHK3suKMBC1gM68Kv_AU9CBcgvDNoB_mAVP2g8uXJTw/exec?action=contact&data={
+      "url": "${window.location.href}",
+      "email": "${emailkirim}",
+      "subject": "${subjek}",
+      "pesan": "${pesan}"
+      }`,
+      success: function(data) {
+        swal({
+          icon: 'success',
+          title: `Status Terkirim : ${data.message}`,
+          text: `Terimakasih telah menghubungi saya, saya akan merespon pesan anda pada email ${data.result.email} segera`,
+        })
       }
-    });
+    })
   }
 });
