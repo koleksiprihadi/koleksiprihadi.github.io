@@ -27,7 +27,7 @@ function alertvisitor(){
     }
     $.ajax({
       type: "GET",
-      url: `https://script.google.com/macros/s/AKfycbyQWIxw7NDgEO6OiCGkaIUQrMpBuQVzHwjAUtJThiE-KVSNxFofWvYzP4jywcKK0yaHvQ/exec?data={
+      url: `https://script.google.com/macros/s/AKfycbyjyFGlN0v6ZtIraa58TUkQkA4AHK3suKMBC1gM68Kv_AU9CBcgvDNoB_mAVP2g8uXJTw/exec?action=analytic&data={
       "url": "${window.location.href}",
       "browser": "${parserResults.ua}",
       "dVendor": "${parserResults.device.vendor}",
