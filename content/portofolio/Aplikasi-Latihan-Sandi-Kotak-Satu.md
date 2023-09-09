@@ -19,8 +19,8 @@ authorname: "krisna prihadiyanto"
 authorlink: "https://koleksiprihadi.github.io/"
 authorphoto: "/images/koleksiprihadi.jpeg"
 
-image: /images/koleksiprihadi.jpeg
-thumbnail: /images/koleksiprihadi.jpeg
+image: /sandikotaksatu/Thumb.png
+thumbnail: /sandikotaksatu/Thumb.png
 width: 1024
 height: 576
 description: "Aplikasi Sandi Kotak Satu"
