@@ -6,10 +6,20 @@
     <description>Recent content in Portofolios on Krisna Prihadiyanto, S.Kom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Sep 2023 13:02:06 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 Sep 2023 14:02:52 +0000</lastBuildDate>
     
 	<atom:link href="/portofolio/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Aplikasi Sandikotak Dua</title>
+      <link>/portofolio/aplikasi-sandikotak-dua/</link>
+      <pubDate>Sat, 09 Sep 2023 14:02:52 +0000</pubDate>
+      
+      <guid>/portofolio/aplikasi-sandikotak-dua/</guid>
+      <description>Merupakan sebuah aplikasi untuk latihan soal dari sandi kotak 2 aplikasi ini saya buat untuk keperluan latihan anggota gudep Sultan Agung dan Dara Juanti yang berpangkalan pada SMA Negeri 1 Ketapang</description>
+      <image>/sandikotakdua/thumb.png</image>
+    </item>
     
     <item>
       <title>Aplikasi Latihan Sandi Kotak Satu</title>
