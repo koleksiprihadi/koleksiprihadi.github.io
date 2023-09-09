@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Css on Krisna Prihadiyanto, S.Kom</title>
+    <title>CSS on Krisna Prihadiyanto, S.Kom</title>
     <link>/tags/css/</link>
-    <description>Recent content in Css on Krisna Prihadiyanto, S.Kom</description>
+    <description>Recent content in CSS on Krisna Prihadiyanto, S.Kom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 30 Jun 2023 12:57:46 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 Sep 2023 13:02:06 +0000</lastBuildDate>
     
 	<atom:link href="/tags/css/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Aplikasi Latihan Sandi Kotak Satu</title>
+      <link>/portofolio/aplikasi-latihan-sandi-kotak-satu/</link>
+      <pubDate>Sat, 09 Sep 2023 13:02:06 +0000</pubDate>
+      
+      <guid>/portofolio/aplikasi-latihan-sandi-kotak-satu/</guid>
+      <description>Merupakan sebuah aplikasi untuk latihan soal dari sandi kotak 1 aplikasi ini saya buat untuk keperluan latihan anggota gudep Sultan Agung dan Dara Juanti yang berpangkalan pada SMA Negeri 1 Ketapang</description>
+      <image>/images/koleksiprihadi.jpeg</image>
+    </item>
     
     <item>
       <title>Sistem Manajemen Dokumen Dan Tanda Tangan Digital</title>

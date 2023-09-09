@@ -6,10 +6,40 @@
     <description>Recent content in Tags on Krisna Prihadiyanto, S.Kom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 30 Jun 2023 12:57:46 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 09 Sep 2023 13:02:06 +0000</lastBuildDate>
     
 	<atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>CSS</title>
+      <link>/tags/css/</link>
+      <pubDate>Sat, 09 Sep 2023 13:02:06 +0000</pubDate>
+      
+      <guid>/tags/css/</guid>
+      <description></description>
+      <image></image>
+    </item>
+    
+    <item>
+      <title>Html</title>
+      <link>/tags/html/</link>
+      <pubDate>Sat, 09 Sep 2023 13:02:06 +0000</pubDate>
+      
+      <guid>/tags/html/</guid>
+      <description></description>
+      <image></image>
+    </item>
+    
+    <item>
+      <title>PHP</title>
+      <link>/tags/php/</link>
+      <pubDate>Sat, 09 Sep 2023 13:02:06 +0000</pubDate>
+      
+      <guid>/tags/php/</guid>
+      <description></description>
+      <image></image>
+    </item>
     
     <item>
       <title>Bootstrap</title>
@@ -22,41 +52,11 @@
     </item>
     
     <item>
-      <title>Css</title>
-      <link>/tags/css/</link>
-      <pubDate>Fri, 30 Jun 2023 12:57:46 +0000</pubDate>
-      
-      <guid>/tags/css/</guid>
-      <description></description>
-      <image></image>
-    </item>
-    
-    <item>
-      <title>Html</title>
-      <link>/tags/html/</link>
-      <pubDate>Fri, 30 Jun 2023 12:57:46 +0000</pubDate>
-      
-      <guid>/tags/html/</guid>
-      <description></description>
-      <image></image>
-    </item>
-    
-    <item>
       <title>Javascript (Jquery)</title>
       <link>/tags/javascript-jquery/</link>
       <pubDate>Fri, 30 Jun 2023 12:57:46 +0000</pubDate>
       
       <guid>/tags/javascript-jquery/</guid>
-      <description></description>
-      <image></image>
-    </item>
-    
-    <item>
-      <title>PHP</title>
-      <link>/tags/php/</link>
-      <pubDate>Fri, 30 Jun 2023 12:57:46 +0000</pubDate>
-      
-      <guid>/tags/php/</guid>
       <description></description>
       <image></image>
     </item>
