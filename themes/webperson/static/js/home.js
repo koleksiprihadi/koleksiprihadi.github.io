@@ -1,4 +1,4 @@
-let intro = ["Programmer"];
+let intro = ["Programmer", "Data Analyst"];
 let jsonurl = "/json/data.json";
 new TypeIt("#ngetik", {
   speed: 200,
