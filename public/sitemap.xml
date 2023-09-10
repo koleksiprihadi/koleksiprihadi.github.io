@@ -35,9 +35,6 @@
     <loc>/tags/php/</loc>
     <lastmod>2023-09-09T14:02:52+00:00</lastmod>
   </url><url>
-    <loc>/portofolio/aplikasi-latihan-sandi-kotak-satu/</loc>
-    <lastmod>2023-09-09T13:02:06+00:00</lastmod>
-  </url><url>
     <loc>/tags/bootstrap/</loc>
     <lastmod>2023-06-30T12:57:46+00:00</lastmod>
   </url><url>
@@ -58,5 +55,7 @@
   </url><url>
     <loc>/portofolio/soal-kabataku-generator/</loc>
     <lastmod>2023-06-24T03:08:48+00:00</lastmod>
+  </url><url>
+    <loc>/portofolio/aplikasi-latihan-sandi-kotak-satu/</loc>
   </url>
 </urlset>

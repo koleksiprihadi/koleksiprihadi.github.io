@@ -32,16 +32,6 @@
     </item>
     
     <item>
-      <title>Aplikasi Latihan Sandi Kotak Satu</title>
-      <link>/portofolio/aplikasi-latihan-sandi-kotak-satu/</link>
-      <pubDate>Sat, 09 Sep 2023 13:02:06 +0000</pubDate>
-      
-      <guid>/portofolio/aplikasi-latihan-sandi-kotak-satu/</guid>
-      <description>Merupakan sebuah aplikasi untuk latihan soal dari sandi kotak 1 aplikasi ini saya buat untuk keperluan latihan anggota gudep Sultan Agung dan Dara Juanti yang berpangkalan pada SMA Negeri 1 Ketapang</description>
-      <image>/sandikotaksatu/Thumb.png</image>
-    </item>
-    
-    <item>
       <title>Sistem Manajemen Dokumen Dan Tanda Tangan Digital</title>
       <link>/portofolio/sistem-manajemen-dokumen-dan-tanda-tangan-digital/</link>
       <pubDate>Fri, 30 Jun 2023 12:57:46 +0000</pubDate>
@@ -62,6 +52,16 @@ Soal yang dibuat oleh aplikasi ini tidak hanya mencari hasil dari operasi kali, 
 Untuk lambang operator yang digunakan adalah sebagai berikut
 Operator Lambang Perkalian * Pembagian / Penjumlahan + pengurangan - </description>
       <image>/kabataku/kabataku.png</image>
+    </item>
+    
+    <item>
+      <title>Aplikasi Latihan Sandi Kotak Satu</title>
+      <link>/portofolio/aplikasi-latihan-sandi-kotak-satu/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/portofolio/aplikasi-latihan-sandi-kotak-satu/</guid>
+      <description>Merupakan sebuah aplikasi untuk latihan soal dari sandi kotak 1 aplikasi ini saya buat untuk keperluan latihan anggota gudep Sultan Agung dan Dara Juanti yang berpangkalan pada SMA Negeri 1 Ketapang</description>
+      <image>/sandikotaksatu/Thumb.png</image>
     </item>
     
   </channel>
