@@ -17,7 +17,7 @@ authorlink: "https://koleksiprihadi.github.io/"
 
 authorname: "krisna prihadiyanto"
 authorlink: "https://koleksiprihadi.github.io/"
-authorphoto: "/images/koleksiprihadi.jpeg"
+authorphoto: "https://koleksiprihadi.github.io/images/koleksiprihadi.jpeg"
 
 image: /sandikotakdua/thumb.png
 thumbnail: /sandikotakdua/thumb.png
