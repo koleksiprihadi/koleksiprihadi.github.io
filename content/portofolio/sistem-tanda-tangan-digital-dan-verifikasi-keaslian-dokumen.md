@@ -70,4 +70,4 @@ Sistem tanda tangan digital dan verifikasi dokumen ini merupakan sebuah sistem a
 Dan sistem aplikasi ini juga bisa digunakan untuk memeriksa keaslian dari sebuah file yang sudah di daftarkan pada saat membuat tanda tangan digital, dimana sistem aplikasi ini akan mampu mendeteksi apakah file sudah diedit atau belum.
 Untuk cara penggunaan dari aplikasi ini, hanya cukup mengisi form yang telah di sediakan dan selanjutnya silahkan untuk menekan tombol save, maka akan muncul sebuah signature pad beserta qrcode yang sudah di generate, jika sudah selesai menggambar tanda tangan silahkan untuk mendownload tanda tangan daninsertkan kedalam dokumen, selanjutnya setelah dokumen telah di insertkan tanda tangan tadi silahkan untuk mengupload pada form pada halaman aplikasi yang akan muncul setelah menekan tombol download tanda tangan
 penguploadan ini dilakukan untuk mendaftarkan file yang sudah di berikan tanda tangan.
-![Digisign](https://koleksiprihadi.github.io/digital-signature/DigiSign3.png)
+![Digisign](https://koleksiprihadi.github.io/digital-signature/DigiSign3.jpeg)
