@@ -6,19 +6,19 @@
     <description>Recent content in Python on Krisna Prihadiyanto, S.Kom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 22 Jun 2023 05:32:38 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Oct 2023 18:44:21 +0000</lastBuildDate>
     
 	<atom:link href="/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Aplikasi Bantu Sandi Morse</title>
-      <link>/portofolio/aplikasi-bantu-sandi-morse/</link>
-      <pubDate>Thu, 22 Jun 2023 05:32:38 +0000</pubDate>
+      <title>Sistem Tanda Tangan Digital Dan Verifikasi Keaslian Dokumen</title>
+      <link>/portofolio/sistem-tanda-tangan-digital-dan-verifikasi-keaslian-dokumen/</link>
+      <pubDate>Sat, 14 Oct 2023 18:44:21 +0000</pubDate>
       
-      <guid>/portofolio/aplikasi-bantu-sandi-morse/</guid>
-      <description>hallo teman-teman pada artikel ini saya akan memberikan sebuah tutorial implementasi bahasa pemrograman python untuk membuat sebuah telegram bot dimana bot yang akan kita buat disini adalah bot yang akan mengirim kembali pesan dari user bot kita. Tujuan dari artikel ini adalah untuk memberikan gambaran untuk teman-teman bagaimana cara membuat sebuah bot telegram menggunakan python, pada tutorial ini author menggunakan python 3 ya teman-teman. yuk langsung aja.</description>
-      <image>https://panduankoding.com/images/Membuat-whatsapp-bot-sederhana-dengan-nodejs.png</image>
+      <guid>/portofolio/sistem-tanda-tangan-digital-dan-verifikasi-keaslian-dokumen/</guid>
+      <description>Sistem tanda tangan digital dan verifikasi dokumen ini merupakan sebuah sistem aplikasi berbasis web untuk membuat sebuah tanda tangan digital seperti pada gambar dibawah ini dimana tidak hanya dalam bentuk Qr Code tapi juga pada sebelah kanannya terdapat tanda tangan dalam bentuk coretan. Dan sistem aplikasi ini juga bisa digunakan untuk memeriksa keaslian dari sebuah file yang sudah di daftarkan pada saat membuat tanda tangan digital, dimana sistem aplikasi ini akan mampu mendeteksi apakah file sudah diedit atau belum.</description>
+      <image>/digisign/DigiSign.png</image>
     </item>
     
   </channel>
