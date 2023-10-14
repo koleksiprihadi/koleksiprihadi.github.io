@@ -6,10 +6,20 @@
     <description>Recent content in Javascript on Krisna Prihadiyanto, S.Kom</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 09 Sep 2023 15:43:30 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 14 Oct 2023 18:44:21 +0000</lastBuildDate>
     
 	<atom:link href="/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Sistem Tanda Tangan Digital Dan Verifikasi Keaslian Dokumen</title>
+      <link>/portofolio/sistem-tanda-tangan-digital-dan-verifikasi-keaslian-dokumen/</link>
+      <pubDate>Sat, 14 Oct 2023 18:44:21 +0000</pubDate>
+      
+      <guid>/portofolio/sistem-tanda-tangan-digital-dan-verifikasi-keaslian-dokumen/</guid>
+      <description>Sistem tanda tangan digital dan verifikasi dokumen ini merupakan sebuah sistem aplikasi berbasis web untuk membuat sebuah tanda tangan digital seperti pada gambar dibawah ini dimana tidak hanya dalam bentuk Qr Code tapi juga pada sebelah kanannya terdapat tanda tangan dalam bentuk coretan. Dan sistem aplikasi ini juga bisa digunakan untuk memeriksa keaslian dari sebuah file yang sudah di daftarkan pada saat membuat tanda tangan digital, dimana sistem aplikasi ini akan mampu mendeteksi apakah file sudah diedit atau belum.</description>
+      <image>/digisign/DigiSign.png</image>
+    </item>
     
     <item>
       <title>Aplikasi Morse Telegraf</title>

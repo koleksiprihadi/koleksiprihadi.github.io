@@ -5,7 +5,9 @@ title: "Sistem Tanda Tangan Digital Dan Verifikasi Keaslian Dokumen"
 slug: sistem-tanda-tangan-digital-dan-verifikasi-keaslian-dokumen
 
 tags:
-    - Python
+    - JavaScript
+    - Html
+    - Css
 
 categories:
     - Portofolio
