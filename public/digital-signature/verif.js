@@ -36,7 +36,7 @@ function openScanner() {
             )
             $("div#dttd").removeClass("hide");
             $("input#dokumen").val(data[0].Dokumen);
-            $("input#signby").val(data[0].SignBy);
+            $("input#signby").val(data[0].SgnBy);
             $("input#untuk").val(data[0].Untuk);
           }else{
             Swal.fire(
