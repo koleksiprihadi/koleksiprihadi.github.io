@@ -1,34 +1,1437 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Redirecting...</title>
-    <script>
-        // Extract the 't' parameter from the URL
-        function getParamByName(name, url) {
-            if (!url) url = window.location.href;
-            name = name.replace(/[\[\]]/g, '\\$&');
-            const regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)');
-            const results = regex.exec(url);
-            if (!results) return null;
-            if (!results[2]) return '';
-            return decodeURIComponent(results[2].replace(/\+/g, ' '));
+    <title>Font Creator - Pembuat Font</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        // Redirect to the new URL
-        window.onload = function() {
-            const paramValue = getParamByName('t');
-            if (paramValue) {
-                const redirectUrl = `https://a.com/${paramValue}`;
-                window.location.href = redirectUrl;
-            } else {
-                document.body.innerHTML = "<h1>Qr Code Tidak Valid</h1>";
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            gap: 20px;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .sidebar {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            color: #495057;
+            font-size: 1.1rem;
+        }
+
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .char-btn {
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .char-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-1px);
+        }
+
+        .char-btn.active {
+            background: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+
+        .tools {
+            margin-bottom: 20px;
+        }
+
+        .tool-group {
+            margin-bottom: 15px;
+        }
+
+        .tool-btn {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .tool-btn:hover {
+            background: #e9ecef;
+        }
+
+        .tool-btn.active {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        .slider-group {
+            margin-bottom: 15px;
+        }
+
+        .slider-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .slider {
+            width: 100%;
+            margin-bottom: 5px;
+        }
+
+        .canvas-container {
+            text-align: center;
+        }
+
+        .canvas-wrapper {
+            display: inline-block;
+            border: 3px solid #007bff;
+            border-radius: 10px;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        #drawingCanvas {
+            cursor: crosshair;
+            display: block;
+        }
+
+        .canvas-info {
+            margin-top: 15px;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .preview-section {
+            margin-bottom: 20px;
+        }
+
+        .preview-text {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .preview-display {
+            background: white;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            min-height: 150px;
+            font-size: 2rem;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .export-section {
+            margin-top: 20px;
+        }
+
+        .export-options {
+            margin-bottom: 15px;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-btn:hover {
+            background: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .font-controls {
+            margin-bottom: 20px;
+        }
+
+        .color-picker {
+            width: 100%;
+            height: 40px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .mode-btn {
+            padding: 10px 5px;
+            border: 2px solid #dee2e6;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover {
+            background: #e9ecef;
+        }
+
+        .mode-btn.active {
+            background: #6f42c1;
+            color: white;
+            border-color: #6f42c1;
+        }
+
+        .mode-panel {
+            margin-bottom: 20px;
+        }
+
+        .text-input-section {
+            margin-bottom: 15px;
+        }
+
+        .font-selector {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+        }
+
+        .cipher-section {
+            font-size: 0.9rem;
+        }
+
+        .cipher-preset {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .cipher-mapping {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px;
+            margin-bottom: 10px;
+            background: white;
+        }
+
+        .cipher-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 0.8rem;
+        }
+
+        .cipher-input {
+            width: 30px;
+            padding: 3px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            text-align: center;
+            margin-left: 10px;
+        }
+
+        .preview-original {
+            background: #e3f2fd;
+            border: 2px solid #2196f3;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            color: #1976d2;
+        }
+
+        .preview-cipher {
+            background: #fff3e0;
+            border: 2px solid #ff9800;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            color: #f57c00;
+        }
+
+        .grid-toggle {
+            margin-bottom: 10px;
+        }
+
+        .status-bar {
+            background: #343a40;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 0 0 20px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
             }
-        };
-    </script>
+            
+            .sidebar {
+                order: 2;
+            }
+            
+            .canvas-container {
+                order: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-    <p>Redirecting...</p>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Font Creator</h1>
+            <p>Buat font kustom Anda sendiri dengan mudah</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Left Sidebar -->
+            <div class="sidebar">
+                <h3>📝 Karakter</h3>
+                <div class="character-grid" id="characterGrid"></div>
+
+                <h3>🛠️ Mode</h3>
+                <div class="mode-selector">
+                    <button class="mode-btn active" data-mode="draw">✏️ Gambar</button>
+                    <button class="mode-btn" data-mode="text">⌨️ Text</button>
+                    <button class="mode-btn" data-mode="cipher">🔐 Cipher</button>
+                </div>
+
+                <div id="drawMode" class="mode-panel">
+                    <h3>🛠️ Tools</h3>
+                    <div class="tools">
+                        <div class="tool-group">
+                            <button class="tool-btn active" data-tool="draw">✏️ Gambar</button>
+                            <button class="tool-btn" data-tool="erase">🧹 Hapus</button>
+                            <button class="tool-btn" data-tool="line">📏 Garis</button>
+                            <button class="tool-btn" data-tool="rectangle">⬛ Kotak</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="textMode" class="mode-panel" style="display: none;">
+                    <h3>📝 Text Input</h3>
+                    <div class="text-input-section">
+                        <label for="baseFont">Base Font:</label>
+                        <select id="baseFont" class="font-selector">
+                            <option value="Arial">Arial</option>
+                            <option value="Times New Roman">Times New Roman</option>
+                            <option value="Helvetica">Helvetica</option>
+                            <option value="Georgia">Georgia</option>
+                            <option value="Verdana">Verdana</option>
+                            <option value="Courier New">Courier New</option>
+                            <option value="Impact">Impact</option>
+                            <option value="Comic Sans MS">Comic Sans MS</option>
+                        </select>
+                        
+                        <div class="slider-group">
+                            <label for="textSize">Ukuran Text: <span id="textSizeValue">200</span>px</label>
+                            <input type="range" id="textSize" class="slider" min="100" max="350" value="200">
+                        </div>
+                        
+                        <textarea id="textInput" placeholder="Ketik karakter untuk font..." maxlength="1" 
+                                 style="width: 100%; height: 60px; font-size: 1.2rem; text-align: center; resize: none;"></textarea>
+                        
+                        <button class="tool-btn" onclick="generateFromText()">✨ Generate ke Canvas</button>
+                    </div>
+                </div>
+
+                <div id="cipherMode" class="mode-panel" style="display: none;">
+                    <h3>🔐 Cipher Mapping</h3>
+                    <div class="cipher-section">
+                        <div class="cipher-preset">
+                            <label>Quick Preset:</label>
+                            <select id="cipherPreset" class="font-selector">
+                                <option value="">-- Pilih Preset --</option>
+                                <option value="caesar1">Caesar +1 (a→b)</option>
+                                <option value="caesar3">Caesar +3 (a→d)</option>
+                                <option value="reverse">Reverse (a→z)</option>
+                                <option value="random">Random</option>
+                            </select>
+                            <button class="tool-btn" onclick="applyCipherPreset()" style="margin-top: 5px;">Apply Preset</button>
+                        </div>
+                        
+                        <div class="cipher-mapping" id="cipherMapping">
+                            <!-- Mapping akan di-generate oleh JS -->
+                        </div>
+                        
+                        <button class="tool-btn" onclick="generateCipherFont()">🔐 Generate Cipher Font</button>
+                    </div>
+                </div>
+
+                <div class="slider-group">
+                    <label for="brushSize">Ukuran Kuas: <span id="brushSizeValue">5</span>px</label>
+                    <input type="range" id="brushSize" class="slider" min="1" max="20" value="5">
+                </div>
+
+                <div class="slider-group">
+                    <label for="colorPicker">Warna:</label>
+                    <input type="color" id="colorPicker" class="color-picker" value="#000000">
+                </div>
+
+                <div class="grid-toggle">
+                    <label>
+                        <input type="checkbox" id="showGrid" checked> Tampilkan Grid
+                    </label>
+                </div>
+
+                <button class="tool-btn" onclick="clearCanvas()">🗑️ Hapus Semua</button>
+            </div>
+
+            <!-- Main Canvas Area -->
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <canvas id="drawingCanvas" width="400" height="400"></canvas>
+                </div>
+                <div class="canvas-info">
+                    <p>Karakter aktif: <strong id="currentChar">A</strong></p>
+                    <p>Klik dan drag untuk menggambar karakter</p>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="sidebar">
+                <h3>👁️ Preview</h3>
+                <div class="preview-section">
+                    <textarea class="preview-text" id="previewText" placeholder="Ketik teks untuk preview...">ABCDEFGHIJKLMNOPQRSTUVWXYZ
+1234567890
+Hello World!</textarea>
+                    
+                    <div class="preview-original" id="previewOriginal">
+                        <strong>Original:</strong><br>
+                        <div id="originalDisplay"></div>
+                    </div>
+                    
+                    <div class="preview-cipher" id="previewCipher">
+                        <strong>Cipher:</strong><br>
+                        <div id="cipherDisplay"></div>
+                    </div>
+                    
+                    <div class="preview-display" id="previewDisplay"></div>
+                </div>
+
+                <h3>⚙️ Pengaturan Font</h3>
+                <div class="font-controls">
+                    <div class="slider-group">
+                        <label for="fontSize">Ukuran Font: <span id="fontSizeValue">24</span>px</label>
+                        <input type="range" id="fontSize" class="slider" min="12" max="72" value="24">
+                    </div>
+                    
+                    <div class="slider-group">
+                        <label for="letterSpacing">Spasi Huruf: <span id="letterSpacingValue">0</span>px</label>
+                        <input type="range" id="letterSpacing" class="slider" min="-5" max="20" value="0">
+                    </div>
+                </div>
+
+                <div class="export-section">
+                    <h3>💾 Export</h3>
+                    <div class="export-options">
+                        <input type="text" id="fontName" placeholder="Nama Font" value="MyCustomFont" 
+                               style="width: 100%; padding: 8px; margin-bottom: 10px; border: 2px solid #dee2e6; border-radius: 8px;">
+                        
+                        <button class="export-btn" onclick="exportTTF()" style="margin-bottom: 8px; background: #28a745;">
+                            📁 Download TTF Font
+                        </button>
+                        
+                        <button class="export-btn" onclick="exportWOFF()" style="margin-bottom: 8px; background: #17a2b8;">
+                            🌐 Download WOFF Font
+                        </button>
+                        
+                        <button class="export-btn" onclick="exportFont()" style="background: #6c757d;">
+                            📋 Download JSON Data
+                        </button>
+                        
+                        <button class="export-btn" onclick="importFont()" style="background: #fd7e14;">
+                            📥 Import JSON Font
+                        </button>
+                        
+                        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; font-size: 0.8rem;">
+                            💡 <strong>Tips:</strong><br>
+                            • TTF/WOFF untuk install di sistem<br>
+                            • JSON untuk backup/restore project
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-bar">
+            <span>Status: <span id="status">Siap</span></span>
+            <span>Karakter tersimpan: <span id="savedChars">0</span></span>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
+    <script>
+        class FontCreator {
+            constructor() {
+                this.canvas = document.getElementById('drawingCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.isDrawing = false;
+                this.currentTool = 'draw';
+                this.currentChar = 'A';
+                this.brushSize = 5;
+                this.color = '#000000';
+                this.showGrid = true;
+                this.characters = {};
+                this.startX = 0;
+                this.startY = 0;
+                this.currentMode = 'draw';
+                this.cipherMapping = {};
+                
+                this.init();
+            }
+
+            init() {
+                this.setupCanvas();
+                this.createCharacterGrid();
+                this.bindEvents();
+                this.drawGrid();
+                this.updatePreview();
+            }
+
+            setupCanvas() {
+                this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
+                this.canvas.addEventListener('mousemove', (e) => this.draw(e));
+                this.canvas.addEventListener('mouseup', () => this.stopDrawing());
+                this.canvas.addEventListener('mouseout', () => this.stopDrawing());
+                
+                // Touch events untuk mobile
+                this.canvas.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.startDrawing({
+                        offsetX: touch.clientX - rect.left,
+                        offsetY: touch.clientY - rect.top
+                    });
+                });
+                
+                this.canvas.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const rect = this.canvas.getBoundingClientRect();
+                    this.draw({
+                        offsetX: touch.clientX - rect.left,
+                        offsetY: touch.clientY - rect.top
+                    });
+                });
+                
+                this.canvas.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    this.stopDrawing();
+                });
+            }
+
+            createCharacterGrid() {
+                const grid = document.getElementById('characterGrid');
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
+                
+                chars.split('').forEach(char => {
+                    const btn = document.createElement('button');
+                    btn.className = 'char-btn';
+                    btn.textContent = char;
+                    btn.onclick = () => this.selectCharacter(char);
+                    grid.appendChild(btn);
+                });
+                
+                // Set karakter pertama sebagai aktif
+                grid.firstChild.classList.add('active');
+            }
+
+            bindEvents() {
+                // Mode selection
+                document.querySelectorAll('.mode-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.switchMode(btn.dataset.mode);
+                    });
+                });
+
+                // Tool selection
+                document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        this.currentTool = btn.dataset.tool;
+                    });
+                });
+
+                // Brush size
+                const brushSize = document.getElementById('brushSize');
+                brushSize.addEventListener('input', (e) => {
+                    this.brushSize = parseInt(e.target.value);
+                    document.getElementById('brushSizeValue').textContent = this.brushSize;
+                });
+
+                // Color picker
+                document.getElementById('colorPicker').addEventListener('change', (e) => {
+                    this.color = e.target.value;
+                });
+
+                // Grid toggle
+                document.getElementById('showGrid').addEventListener('change', (e) => {
+                    this.showGrid = e.target.checked;
+                    this.redrawCanvas();
+                });
+
+                // Preview text
+                document.getElementById('previewText').addEventListener('input', () => {
+                    this.updatePreview();
+                });
+
+                // Font size
+                const fontSize = document.getElementById('fontSize');
+                fontSize.addEventListener('input', (e) => {
+                    document.getElementById('fontSizeValue').textContent = e.target.value;
+                    this.updatePreview();
+                });
+
+                // Letter spacing
+                const letterSpacing = document.getElementById('letterSpacing');
+                letterSpacing.addEventListener('input', (e) => {
+                    document.getElementById('letterSpacingValue').textContent = e.target.value;
+                    this.updatePreview();
+                });
+
+                // Text input mode
+                const textInput = document.getElementById('textInput');
+                textInput.addEventListener('input', (e) => {
+                    const char = e.target.value.toUpperCase();
+                    if (char.length === 1) {
+                        this.selectCharacter(char);
+                    }
+                });
+
+                // Text size slider
+                const textSize = document.getElementById('textSize');
+                textSize.addEventListener('input', (e) => {
+                    document.getElementById('textSizeValue').textContent = e.target.value;
+                });
+
+                // Base font selector
+                document.getElementById('baseFont').addEventListener('change', () => {
+                    this.updateTextPreview();
+                });
+
+                // Cipher preset
+                document.getElementById('cipherPreset').addEventListener('change', () => {
+                    // Auto apply when preset changes
+                    if (document.getElementById('cipherPreset').value) {
+                        this.applyCipherPreset();
+                    }
+                });
+
+                // Initialize cipher mapping
+                this.createCipherMapping();
+            }
+
+            selectCharacter(char) {
+                // Save current character
+                this.saveCurrentCharacter();
+                
+                // Switch to new character
+                this.currentChar = char;
+                document.getElementById('currentChar').textContent = char;
+                
+                // Update UI
+                document.querySelectorAll('.char-btn').forEach(btn => {
+                    btn.classList.toggle('active', btn.textContent === char);
+                });
+                
+                // Load character if exists
+                this.loadCharacter(char);
+                this.updateStatus(`Karakter ${char} dipilih`);
+                
+                // Update preview
+                this.updatePreview();
+            }
+
+            saveCurrentCharacter() {
+                const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                this.characters[this.currentChar] = imageData;
+                this.updateSavedCount();
+            }
+
+            loadCharacter(char) {
+                this.clearCanvas();
+                if (this.characters[char]) {
+                    this.ctx.putImageData(this.characters[char], 0, 0);
+                }
+                if (this.showGrid) {
+                    this.drawGrid();
+                }
+            }
+
+            startDrawing(e) {
+                this.isDrawing = true;
+                this.startX = e.offsetX;
+                this.startY = e.offsetY;
+                
+                if (this.currentTool === 'draw' || this.currentTool === 'erase') {
+                    this.draw(e);
+                }
+            }
+
+            draw(e) {
+                if (!this.isDrawing) return;
+
+                this.ctx.lineWidth = this.brushSize;
+                this.ctx.lineCap = 'round';
+
+                switch (this.currentTool) {
+                    case 'draw':
+                        this.ctx.globalCompositeOperation = 'source-over';
+                        this.ctx.strokeStyle = this.color;
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(this.startX, this.startY);
+                        this.ctx.lineTo(e.offsetX, e.offsetY);
+                        this.ctx.stroke();
+                        this.startX = e.offsetX;
+                        this.startY = e.offsetY;
+                        break;
+                        
+                    case 'erase':
+                        this.ctx.globalCompositeOperation = 'destination-out';
+                        this.ctx.beginPath();
+                        this.ctx.arc(e.offsetX, e.offsetY, this.brushSize, 0, 2 * Math.PI);
+                        this.ctx.fill();
+                        break;
+                }
+
+                // Update preview in real-time
+                this.updatePreviewRealTime();
+            }
+
+            stopDrawing() {
+                if (!this.isDrawing) return;
+                this.isDrawing = false;
+                
+                if (this.currentTool === 'line' || this.currentTool === 'rectangle') {
+                    this.drawShape();
+                }
+                
+                if (this.showGrid) {
+                    this.drawGrid();
+                }
+
+                // Update preview after finishing drawing
+                this.updatePreviewRealTime();
+            }
+
+            drawShape() {
+                const currentX = event.offsetX || this.canvas.width / 2;
+                const currentY = event.offsetY || this.canvas.height / 2;
+                
+                this.ctx.globalCompositeOperation = 'source-over';
+                this.ctx.strokeStyle = this.color;
+                this.ctx.lineWidth = this.brushSize;
+                
+                switch (this.currentTool) {
+                    case 'line':
+                        this.ctx.beginPath();
+                        this.ctx.moveTo(this.startX, this.startY);
+                        this.ctx.lineTo(currentX, currentY);
+                        this.ctx.stroke();
+                        break;
+                        
+                    case 'rectangle':
+                        const width = currentX - this.startX;
+                        const height = currentY - this.startY;
+                        this.ctx.strokeRect(this.startX, this.startY, width, height);
+                        break;
+                }
+                
+                // Update preview after drawing shape
+                this.updatePreviewRealTime();
+            }
+
+            drawGrid() {
+                if (!this.showGrid) return;
+                
+                this.ctx.save();
+                this.ctx.strokeStyle = '#e0e0e0';
+                this.ctx.lineWidth = 1;
+                this.ctx.globalCompositeOperation = 'source-over';
+                
+                const gridSize = 20;
+                
+                // Vertical lines
+                for (let x = 0; x <= this.canvas.width; x += gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(x, 0);
+                    this.ctx.lineTo(x, this.canvas.height);
+                    this.ctx.stroke();
+                }
+                
+                // Horizontal lines
+                for (let y = 0; y <= this.canvas.height; y += gridSize) {
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(0, y);
+                    this.ctx.lineTo(this.canvas.width, y);
+                    this.ctx.stroke();
+                }
+                
+                // Center lines
+                this.ctx.strokeStyle = '#ff6b6b';
+                this.ctx.lineWidth = 2;
+                
+                // Vertical center
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.canvas.width / 2, 0);
+                this.ctx.lineTo(this.canvas.width / 2, this.canvas.height);
+                this.ctx.stroke();
+                
+                // Horizontal center
+                this.ctx.beginPath();
+                this.ctx.moveTo(0, this.canvas.height / 2);
+                this.ctx.lineTo(this.canvas.width, this.canvas.height / 2);
+                this.ctx.stroke();
+                
+                this.ctx.restore();
+            }
+
+            redrawCanvas() {
+                const tempData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.ctx.putImageData(tempData, 0, 0);
+                
+                if (this.showGrid) {
+                    this.drawGrid();
+                }
+            }
+
+            updatePreview() {
+                const previewText = document.getElementById('previewText').value;
+                const previewDisplay = document.getElementById('previewDisplay');
+                const originalDisplay = document.getElementById('originalDisplay');
+                const cipherDisplay = document.getElementById('cipherDisplay');
+                const fontSize = document.getElementById('fontSize').value;
+                const letterSpacing = document.getElementById('letterSpacing').value;
+                
+                // Update original text display
+                originalDisplay.textContent = previewText;
+                
+                // Update cipher text display
+                const cipherText = this.getCipherText(previewText);
+                cipherDisplay.textContent = cipherText;
+                
+                // Update main preview with custom characters
+                previewDisplay.innerHTML = '';
+                
+                for (let char of previewText) {
+                    const charSpan = document.createElement('span');
+                    charSpan.style.fontSize = fontSize + 'px';
+                    charSpan.style.letterSpacing = letterSpacing + 'px';
+                    charSpan.style.display = 'inline-block';
+                    
+                    const upperChar = char.toUpperCase();
+                    
+                    if (this.characters[upperChar] || upperChar === this.currentChar) {
+                        // Create mini canvas for character
+                        const miniCanvas = document.createElement('canvas');
+                        miniCanvas.width = Math.max(20, parseInt(fontSize) * 0.8);
+                        miniCanvas.height = Math.max(20, parseInt(fontSize) * 0.8);
+                        const miniCtx = miniCanvas.getContext('2d');
+                        
+                        // Scale down the character
+                        if (upperChar === this.currentChar) {
+                            // Use current canvas for active character
+                            miniCtx.drawImage(this.canvas, 0, 0, miniCanvas.width, miniCanvas.height);
+                        } else {
+                            // Use saved character
+                            miniCtx.drawImage(this.getCharacterCanvas(upperChar), 0, 0, miniCanvas.width, miniCanvas.height);
+                        }
+                        charSpan.appendChild(miniCanvas);
+                    } else {
+                        charSpan.textContent = char;
+                    }
+                    
+                    previewDisplay.appendChild(charSpan);
+                }
+            }
+
+            updatePreviewRealTime() {
+                // Update preview dengan karakter yang sedang digambar
+                this.updatePreview();
+            }
+
+            getCharacterCanvas(char) {
+                const tempCanvas = document.createElement('canvas');
+                tempCanvas.width = this.canvas.width;
+                tempCanvas.height = this.canvas.height;
+                const tempCtx = tempCanvas.getContext('2d');
+                
+                if (this.characters[char]) {
+                    tempCtx.putImageData(this.characters[char], 0, 0);
+                }
+                
+                return tempCanvas;
+            }
+
+            updateStatus(message) {
+                document.getElementById('status').textContent = message;
+                setTimeout(() => {
+                    document.getElementById('status').textContent = 'Siap';
+                }, 2000);
+            }
+
+            updateSavedCount() {
+                const count = Object.keys(this.characters).length;
+                document.getElementById('savedChars').textContent = count;
+            }
+
+            clearCanvas() {
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                if (this.showGrid) {
+                    this.drawGrid();
+                }
+                this.updateStatus('Canvas dibersihkan');
+                this.updatePreviewRealTime();
+            }
+
+            switchMode(mode) {
+                this.currentMode = mode;
+                
+                // Hide all mode panels
+                document.querySelectorAll('.mode-panel').forEach(panel => {
+                    panel.style.display = 'none';
+                });
+                
+                // Show selected mode panel
+                const selectedPanel = document.getElementById(mode + 'Mode');
+                if (selectedPanel) {
+                    selectedPanel.style.display = 'block';
+                }
+                
+                this.updateStatus(`Mode ${mode} aktif`);
+                this.updatePreview();
+            }
+
+            createCipherMapping() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                const mappingDiv = document.getElementById('cipherMapping');
+                mappingDiv.innerHTML = '';
+                
+                chars.split('').forEach(char => {
+                    const row = document.createElement('div');
+                    row.className = 'cipher-row';
+                    row.innerHTML = `
+                        <span>${char} →</span>
+                        <input type="text" class="cipher-input" maxlength="1" 
+                               data-from="${char}" value="${char}"
+                               onchange="window.fontCreator.updateCipherMapping('${char}', this.value)">
+                    `;
+                    mappingDiv.appendChild(row);
+                    this.cipherMapping[char] = char;
+                });
+            }
+
+            updateCipherMapping(from, to) {
+                this.cipherMapping[from] = to.toUpperCase();
+                this.updatePreview();
+            }
+
+            applyCipherPreset() {
+                const preset = document.getElementById('cipherPreset').value;
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                switch (preset) {
+                    case 'caesar1':
+                        chars.split('').forEach((char, i) => {
+                            const newChar = chars[(i + 1) % chars.length];
+                            this.cipherMapping[char] = newChar;
+                        });
+                        break;
+                        
+                    case 'caesar3':
+                        chars.split('').forEach((char, i) => {
+                            const newChar = chars[(i + 3) % chars.length];
+                            this.cipherMapping[char] = newChar;
+                        });
+                        break;
+                        
+                    case 'reverse':
+                        chars.split('').forEach((char, i) => {
+                            const newChar = chars[chars.length - 1 - i];
+                            this.cipherMapping[char] = newChar;
+                        });
+                        break;
+                        
+                    case 'random':
+                        const shuffled = chars.split('').sort(() => Math.random() - 0.5);
+                        chars.split('').forEach((char, i) => {
+                            this.cipherMapping[char] = shuffled[i];
+                        });
+                        break;
+                }
+                
+                // Update UI inputs
+                document.querySelectorAll('.cipher-input').forEach(input => {
+                    const from = input.dataset.from;
+                    input.value = this.cipherMapping[from] || from;
+                });
+                
+                this.updatePreview();
+                this.updateStatus(`Cipher preset ${preset} diterapkan`);
+            }
+
+            generateFromText() {
+                const textInput = document.getElementById('textInput');
+                const char = textInput.value.toUpperCase().trim();
+                
+                if (!char || char.length !== 1) {
+                    this.updateStatus('Masukkan satu karakter saja');
+                    return;
+                }
+                
+                const baseFont = document.getElementById('baseFont').value;
+                const textSize = document.getElementById('textSize').value;
+                
+                // Clear canvas
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                
+                // Set font and draw text
+                this.ctx.font = `${textSize}px ${baseFont}`;
+                this.ctx.fillStyle = this.color;
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                
+                const x = this.canvas.width / 2;
+                const y = this.canvas.height / 2;
+                
+                this.ctx.fillText(char, x, y);
+                
+                // Draw grid if enabled
+                if (this.showGrid) {
+                    this.drawGrid();
+                }
+                
+                // Update preview
+                this.updatePreviewRealTime();
+                this.updateStatus(`Karakter ${char} digenerate dari ${baseFont}`);
+                
+                // Clear text input
+                textInput.value = '';
+            }
+
+            generateCipherFont() {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                const baseFont = document.getElementById('baseFont').value;
+                const textSize = 200;
+                let generated = 0;
+                
+                chars.split('').forEach(originalChar => {
+                    const mappedChar = this.cipherMapping[originalChar];
+                    if (mappedChar && mappedChar !== originalChar) {
+                        // Create temporary canvas
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = this.canvas.width;
+                        tempCanvas.height = this.canvas.height;
+                        const tempCtx = tempCanvas.getContext('2d');
+                        
+                        // Generate character
+                        tempCtx.font = `${textSize}px ${baseFont}`;
+                        tempCtx.fillStyle = this.color;
+                        tempCtx.textAlign = 'center';
+                        tempCtx.textBaseline = 'middle';
+                        tempCtx.fillText(mappedChar, tempCanvas.width / 2, tempCanvas.height / 2);
+                        
+                        // Save to characters
+                        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+                        this.characters[originalChar] = imageData;
+                        generated++;
+                    }
+                });
+                
+                this.updateSavedCount();
+                this.updatePreview();
+                this.updateStatus(`${generated} karakter cipher digenerate dari ${baseFont}`);
+            }
+
+            getCipherText(text) {
+                return text.toUpperCase().split('').map(char => {
+                    return this.cipherMapping[char] || char;
+                }).join('');
+            }
+
+            // Convert canvas to vector path for font generation
+            convertCanvasToPath(canvas) {
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const data = imageData.data;
+                
+                // Simple edge detection to create paths
+                let path = new opentype.Path();
+                const scale = 0.25; // Scale down for font units
+                
+                // Scan for pixels and create simple rectangles
+                for (let y = 0; y < canvas.height; y += 4) {
+                    for (let x = 0; x < canvas.width; x += 4) {
+                        const idx = (y * canvas.width + x) * 4;
+                        const alpha = data[idx + 3];
+                        
+                        if (alpha > 128) { // If pixel is visible
+                            const rectX = x * scale;
+                            const rectY = (canvas.height - y) * scale; // Flip Y coordinate
+                            const size = 4 * scale;
+                            
+                            path.moveTo(rectX, rectY);
+                            path.lineTo(rectX + size, rectY);
+                            path.lineTo(rectX + size, rectY - size);
+                            path.lineTo(rectX, rectY - size);
+                            path.closePath();
+                        }
+                    }
+                }
+                
+                return path;
+            }
+
+            // Create font glyphs from characters
+            createFontGlyphs() {
+                const glyphs = [];
+                const fontScale = 1000; // Standard font units
+                
+                // Add .notdef glyph (required)
+                glyphs.push(new opentype.Glyph({
+                    name: '.notdef',
+                    unicode: 0,
+                    advanceWidth: fontScale * 0.5,
+                    path: new opentype.Path()
+                }));
+                
+                // Add space character
+                glyphs.push(new opentype.Glyph({
+                    name: 'space',
+                    unicode: 32,
+                    advanceWidth: fontScale * 0.3,
+                    path: new opentype.Path()
+                }));
+                
+                // Add custom characters
+                for (let char in this.characters) {
+                    const charCode = char.charCodeAt(0);
+                    const canvas = this.getCharacterCanvas(char);
+                    const path = this.convertCanvasToPath(canvas);
+                    
+                    glyphs.push(new opentype.Glyph({
+                        name: char.toLowerCase(),
+                        unicode: charCode,
+                        advanceWidth: fontScale * 0.6,
+                        path: path
+                    }));
+                }
+                
+                return glyphs;
+            }
+
+            // Create font with metadata
+            createFont() {
+                this.saveCurrentCharacter(); // Save current work
+                
+                const fontName = document.getElementById('fontName').value || 'CustomFont';
+                const glyphs = this.createFontGlyphs();
+                
+                const font = new opentype.Font({
+                    familyName: fontName,
+                    styleName: 'Regular',
+                    unitsPerEm: 1000,
+                    ascender: 800,
+                    descender: -200,
+                    glyphs: glyphs
+                });
+                
+                return font;
+            }
+        }
+
+        // Global functions
+        function clearCanvas() {
+            const fontCreator = window.fontCreator;
+            fontCreator.clearCanvas();
+        }
+
+        function generateFromText() {
+            const fontCreator = window.fontCreator;
+            fontCreator.generateFromText();
+        }
+
+        function applyCipherPreset() {
+            const fontCreator = window.fontCreator;
+            fontCreator.applyCipherPreset();
+        }
+
+        function generateCipherFont() {
+            const fontCreator = window.fontCreator;
+            fontCreator.generateCipherFont();
+        }
+
+        function exportTTF() {
+            try {
+                const fontCreator = window.fontCreator;
+                const font = fontCreator.createFont();
+                const fontName = document.getElementById('fontName').value || 'CustomFont';
+                
+                // Convert to ArrayBuffer
+                const arrayBuffer = font.toArrayBuffer();
+                
+                // Create blob and download
+                const blob = new Blob([arrayBuffer], { type: 'font/ttf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${fontName}.ttf`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                fontCreator.updateStatus(`Font TTF ${fontName}.ttf berhasil diexport!`);
+            } catch (error) {
+                console.error('Error exporting TTF:', error);
+                window.fontCreator.updateStatus('Error: Gagal export TTF. Pastikan ada karakter yang dibuat.');
+            }
+        }
+
+        function exportWOFF() {
+            try {
+                const fontCreator = window.fontCreator;
+                const font = fontCreator.createFont();
+                const fontName = document.getElementById('fontName').value || 'CustomFont';
+                
+                // Convert to ArrayBuffer
+                const arrayBuffer = font.toArrayBuffer();
+                
+                // Create blob and download (WOFF is just TTF with different MIME type for web)
+                const blob = new Blob([arrayBuffer], { type: 'font/woff' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${fontName}.woff`;
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                fontCreator.updateStatus(`Font WOFF ${fontName}.woff berhasil diexport!`);
+            } catch (error) {
+                console.error('Error exporting WOFF:', error);
+                window.fontCreator.updateStatus('Error: Gagal export WOFF. Pastikan ada karakter yang dibuat.');
+            }
+        }
+
+        function exportFont() {
+            try {
+                const fontCreator = window.fontCreator;
+                fontCreator.saveCurrentCharacter();
+                
+                const fontName = document.getElementById('fontName').value || 'CustomFont';
+                const fontData = {
+                    name: fontName + '_' + Date.now(),
+                    characters: {},
+                    cipherMapping: fontCreator.cipherMapping,
+                    created: new Date().toISOString(),
+                    version: '2.0'
+                };
+                
+                // Convert ImageData to base64
+                for (let char in fontCreator.characters) {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = fontCreator.canvas.width;
+                    canvas.height = fontCreator.canvas.height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.putImageData(fontCreator.characters[char], 0, 0);
+                    fontData.characters[char] = canvas.toDataURL();
+                }
+                
+                // Download as JSON
+                const blob = new Blob([JSON.stringify(fontData, null, 2)], {
+                    type: 'application/json'
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = fontData.name + '.json';
+                a.click();
+                URL.revokeObjectURL(url);
+                
+                fontCreator.updateStatus('Font JSON data berhasil diexport!');
+            } catch (error) {
+                console.error('Error exporting JSON:', error);
+                window.fontCreator.updateStatus('Error: Gagal export JSON data.');
+            }
+        }
+
+        function importFont() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const fontData = JSON.parse(e.target.result);
+                        const fontCreator = window.fontCreator;
+                        
+                        // Clear current font
+                        fontCreator.characters = {};
+                        
+                        // Load characters
+                        for (let char in fontData.characters) {
+                            const img = new Image();
+                            img.onload = function() {
+                                const canvas = document.createElement('canvas');
+                                canvas.width = fontCreator.canvas.width;
+                                canvas.height = fontCreator.canvas.height;
+                                const ctx = canvas.getContext('2d');
+                                ctx.drawImage(img, 0, 0);
+                                fontCreator.characters[char] = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                                fontCreator.updateSavedCount();
+                                fontCreator.updatePreview();
+                            };
+                            img.src = fontData.characters[char];
+                        }
+                        
+                        // Load cipher mapping if available
+                        if (fontData.cipherMapping) {
+                            fontCreator.cipherMapping = fontData.cipherMapping;
+                            // Update UI
+                            document.querySelectorAll('.cipher-input').forEach(input => {
+                                const from = input.dataset.from;
+                                input.value = fontCreator.cipherMapping[from] || from;
+                            });
+                        }
+                        
+                        // Update font name
+                        const baseName = fontData.name.replace(/_\d+$/, '');
+                        document.getElementById('fontName').value = baseName;
+                        
+                        fontCreator.updateStatus(`Font ${baseName} berhasil diimport!`);
+                    } catch (error) {
+                        console.error('Error importing font:', error);
+                        window.fontCreator.updateStatus('Error: File JSON tidak valid.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function exportFont() {
+            const fontCreator = window.fontCreator;
+            fontCreator.saveCurrentCharacter();
+            
+            const fontData = {
+                name: 'CustomFont_' + Date.now(),
+                characters: {},
+                created: new Date().toISOString()
+            };
+            
+            // Convert ImageData to base64
+            for (let char in fontCreator.characters) {
+                const canvas = document.createElement('canvas');
+                canvas.width = fontCreator.canvas.width;
+                canvas.height = fontCreator.canvas.height;
+                const ctx = canvas.getContext('2d');
+                ctx.putImageData(fontCreator.characters[char], 0, 0);
+                fontData.characters[char] = canvas.toDataURL();
+            }
+            
+            // Download as JSON
+            const blob = new Blob([JSON.stringify(fontData, null, 2)], {
+                type: 'application/json'
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fontData.name + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            fontCreator.updateStatus('Font data berhasil diexport!');
+        }
+
+        // Initialize the application
+        window.addEventListener('DOMContentLoaded', () => {
+            window.fontCreator = new FontCreator();
+        });
+    </script>
 </body>
 </html>
