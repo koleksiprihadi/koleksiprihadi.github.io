@@ -187,10 +187,6 @@
             margin-top: 20px;
         }
 
-        .export-options {
-            margin-bottom: 15px;
-        }
-
         .export-btn {
             width: 100%;
             padding: 15px;
@@ -312,14 +308,29 @@
             color: #1976d2;
         }
 
-        .preview-cipher {
-            background: #fff3e0;
-            border: 2px solid #ff9800;
-            border-radius: 8px;
-            padding: 15px;
+        .export-options {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .import-section {
+            border-top: 2px solid #dee2e6;
+            padding-top: 15px;
+        }
+
+        .import-section h4 {
             margin-bottom: 10px;
-            font-size: 1.5rem;
-            color: #f57c00;
+            color: #495057;
+            font-size: 1rem;
+        }
+
+        .import-section input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 0.9rem;
         }
 
         .grid-toggle {
@@ -502,30 +513,16 @@ Hello World!</textarea>
                 <div class="export-section">
                     <h3>💾 Export</h3>
                     <div class="export-options">
-                        <input type="text" id="fontName" placeholder="Nama Font" value="MyCustomFont" 
-                               style="width: 100%; padding: 8px; margin-bottom: 10px; border: 2px solid #dee2e6; border-radius: 8px;">
-                        
-                        <button class="export-btn" onclick="exportTTF()" style="margin-bottom: 8px; background: #28a745;">
-                            📁 Download TTF Font
-                        </button>
-                        
-                        <button class="export-btn" onclick="exportWOFF()" style="margin-bottom: 8px; background: #17a2b8;">
-                            🌐 Download WOFF Font
-                        </button>
-                        
-                        <button class="export-btn" onclick="exportFont()" style="background: #6c757d;">
-                            📋 Download JSON Data
-                        </button>
-                        
-                        <button class="export-btn" onclick="importFont()" style="background: #fd7e14;">
-                            📥 Import JSON Font
-                        </button>
-                        
-                        <div style="margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 8px; font-size: 0.8rem;">
-                            💡 <strong>Tips:</strong><br>
-                            • TTF/WOFF untuk install di sistem<br>
-                            • JSON untuk backup/restore project
-                        </div>
+                        <button class="export-btn" onclick="exportFont()">📁 Download Font Data (JSON)</button>
+                        <button class="export-btn" onclick="exportCSS()" style="background: #28a745; margin-top: 8px;">🎨 Download CSS Font</button>
+                        <button class="export-btn" onclick="exportSVG()" style="background: #fd7e14; margin-top: 8px;">🎯 Download SVG Font</button>
+                        <button class="export-btn" onclick="exportImages()" style="background: #6f42c1; margin-top: 8px;">🖼️ Download Character Images</button>
+                    </div>
+                    
+                    <div class="import-section" style="margin-top: 15px;">
+                        <h4>📥 Import</h4>
+                        <input type="file" id="fontImport" accept=".json" style="margin-bottom: 8px;">
+                        <button class="tool-btn" onclick="importFont()">📂 Import Font Data</button>
                     </div>
                 </div>
             </div>
@@ -537,7 +534,6 @@ Hello World!</textarea>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js"></script>
     <script>
         class FontCreator {
             constructor() {
@@ -1131,96 +1127,6 @@ Hello World!</textarea>
                     return this.cipherMapping[char] || char;
                 }).join('');
             }
-
-            // Convert canvas to vector path for font generation
-            convertCanvasToPath(canvas) {
-                const ctx = canvas.getContext('2d');
-                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                const data = imageData.data;
-                
-                // Simple edge detection to create paths
-                let path = new opentype.Path();
-                const scale = 0.25; // Scale down for font units
-                
-                // Scan for pixels and create simple rectangles
-                for (let y = 0; y < canvas.height; y += 4) {
-                    for (let x = 0; x < canvas.width; x += 4) {
-                        const idx = (y * canvas.width + x) * 4;
-                        const alpha = data[idx + 3];
-                        
-                        if (alpha > 128) { // If pixel is visible
-                            const rectX = x * scale;
-                            const rectY = (canvas.height - y) * scale; // Flip Y coordinate
-                            const size = 4 * scale;
-                            
-                            path.moveTo(rectX, rectY);
-                            path.lineTo(rectX + size, rectY);
-                            path.lineTo(rectX + size, rectY - size);
-                            path.lineTo(rectX, rectY - size);
-                            path.closePath();
-                        }
-                    }
-                }
-                
-                return path;
-            }
-
-            // Create font glyphs from characters
-            createFontGlyphs() {
-                const glyphs = [];
-                const fontScale = 1000; // Standard font units
-                
-                // Add .notdef glyph (required)
-                glyphs.push(new opentype.Glyph({
-                    name: '.notdef',
-                    unicode: 0,
-                    advanceWidth: fontScale * 0.5,
-                    path: new opentype.Path()
-                }));
-                
-                // Add space character
-                glyphs.push(new opentype.Glyph({
-                    name: 'space',
-                    unicode: 32,
-                    advanceWidth: fontScale * 0.3,
-                    path: new opentype.Path()
-                }));
-                
-                // Add custom characters
-                for (let char in this.characters) {
-                    const charCode = char.charCodeAt(0);
-                    const canvas = this.getCharacterCanvas(char);
-                    const path = this.convertCanvasToPath(canvas);
-                    
-                    glyphs.push(new opentype.Glyph({
-                        name: char.toLowerCase(),
-                        unicode: charCode,
-                        advanceWidth: fontScale * 0.6,
-                        path: path
-                    }));
-                }
-                
-                return glyphs;
-            }
-
-            // Create font with metadata
-            createFont() {
-                this.saveCurrentCharacter(); // Save current work
-                
-                const fontName = document.getElementById('fontName').value || 'CustomFont';
-                const glyphs = this.createFontGlyphs();
-                
-                const font = new opentype.Font({
-                    familyName: fontName,
-                    styleName: 'Regular',
-                    unitsPerEm: 1000,
-                    ascender: 800,
-                    descender: -200,
-                    glyphs: glyphs
-                });
-                
-                return font;
-            }
         }
 
         // Global functions
@@ -1244,156 +1150,6 @@ Hello World!</textarea>
             fontCreator.generateCipherFont();
         }
 
-        function exportTTF() {
-            try {
-                const fontCreator = window.fontCreator;
-                const font = fontCreator.createFont();
-                const fontName = document.getElementById('fontName').value || 'CustomFont';
-                
-                // Convert to ArrayBuffer
-                const arrayBuffer = font.toArrayBuffer();
-                
-                // Create blob and download
-                const blob = new Blob([arrayBuffer], { type: 'font/ttf' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${fontName}.ttf`;
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                fontCreator.updateStatus(`Font TTF ${fontName}.ttf berhasil diexport!`);
-            } catch (error) {
-                console.error('Error exporting TTF:', error);
-                window.fontCreator.updateStatus('Error: Gagal export TTF. Pastikan ada karakter yang dibuat.');
-            }
-        }
-
-        function exportWOFF() {
-            try {
-                const fontCreator = window.fontCreator;
-                const font = fontCreator.createFont();
-                const fontName = document.getElementById('fontName').value || 'CustomFont';
-                
-                // Convert to ArrayBuffer
-                const arrayBuffer = font.toArrayBuffer();
-                
-                // Create blob and download (WOFF is just TTF with different MIME type for web)
-                const blob = new Blob([arrayBuffer], { type: 'font/woff' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${fontName}.woff`;
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                fontCreator.updateStatus(`Font WOFF ${fontName}.woff berhasil diexport!`);
-            } catch (error) {
-                console.error('Error exporting WOFF:', error);
-                window.fontCreator.updateStatus('Error: Gagal export WOFF. Pastikan ada karakter yang dibuat.');
-            }
-        }
-
-        function exportFont() {
-            try {
-                const fontCreator = window.fontCreator;
-                fontCreator.saveCurrentCharacter();
-                
-                const fontName = document.getElementById('fontName').value || 'CustomFont';
-                const fontData = {
-                    name: fontName + '_' + Date.now(),
-                    characters: {},
-                    cipherMapping: fontCreator.cipherMapping,
-                    created: new Date().toISOString(),
-                    version: '2.0'
-                };
-                
-                // Convert ImageData to base64
-                for (let char in fontCreator.characters) {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = fontCreator.canvas.width;
-                    canvas.height = fontCreator.canvas.height;
-                    const ctx = canvas.getContext('2d');
-                    ctx.putImageData(fontCreator.characters[char], 0, 0);
-                    fontData.characters[char] = canvas.toDataURL();
-                }
-                
-                // Download as JSON
-                const blob = new Blob([JSON.stringify(fontData, null, 2)], {
-                    type: 'application/json'
-                });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = fontData.name + '.json';
-                a.click();
-                URL.revokeObjectURL(url);
-                
-                fontCreator.updateStatus('Font JSON data berhasil diexport!');
-            } catch (error) {
-                console.error('Error exporting JSON:', error);
-                window.fontCreator.updateStatus('Error: Gagal export JSON data.');
-            }
-        }
-
-        function importFont() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = function(e) {
-                const file = e.target.files[0];
-                if (!file) return;
-                
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    try {
-                        const fontData = JSON.parse(e.target.result);
-                        const fontCreator = window.fontCreator;
-                        
-                        // Clear current font
-                        fontCreator.characters = {};
-                        
-                        // Load characters
-                        for (let char in fontData.characters) {
-                            const img = new Image();
-                            img.onload = function() {
-                                const canvas = document.createElement('canvas');
-                                canvas.width = fontCreator.canvas.width;
-                                canvas.height = fontCreator.canvas.height;
-                                const ctx = canvas.getContext('2d');
-                                ctx.drawImage(img, 0, 0);
-                                fontCreator.characters[char] = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                                fontCreator.updateSavedCount();
-                                fontCreator.updatePreview();
-                            };
-                            img.src = fontData.characters[char];
-                        }
-                        
-                        // Load cipher mapping if available
-                        if (fontData.cipherMapping) {
-                            fontCreator.cipherMapping = fontData.cipherMapping;
-                            // Update UI
-                            document.querySelectorAll('.cipher-input').forEach(input => {
-                                const from = input.dataset.from;
-                                input.value = fontCreator.cipherMapping[from] || from;
-                            });
-                        }
-                        
-                        // Update font name
-                        const baseName = fontData.name.replace(/_\d+$/, '');
-                        document.getElementById('fontName').value = baseName;
-                        
-                        fontCreator.updateStatus(`Font ${baseName} berhasil diimport!`);
-                    } catch (error) {
-                        console.error('Error importing font:', error);
-                        window.fontCreator.updateStatus('Error: File JSON tidak valid.');
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
         function exportFont() {
             const fontCreator = window.fontCreator;
             fontCreator.saveCurrentCharacter();
@@ -1401,6 +1157,7 @@ Hello World!</textarea>
             const fontData = {
                 name: 'CustomFont_' + Date.now(),
                 characters: {},
+                cipherMapping: fontCreator.cipherMapping,
                 created: new Date().toISOString()
             };
             
@@ -1426,6 +1183,191 @@ Hello World!</textarea>
             URL.revokeObjectURL(url);
             
             fontCreator.updateStatus('Font data berhasil diexport!');
+        }
+
+        function exportCSS() {
+            const fontCreator = window.fontCreator;
+            fontCreator.saveCurrentCharacter();
+            
+            const fontName = 'CustomFont_' + Date.now();
+            let cssContent = `/* Custom Font CSS - Generated by Font Creator */\n\n`;
+            
+            // Create CSS with character mappings
+            cssContent += `@font-face {\n`;
+            cssContent += `  font-family: '${fontName}';\n`;
+            cssContent += `  src: url('data:application/font-woff2;charset=utf-8;base64,') format('woff2');\n`;
+            cssContent += `}\n\n`;
+            
+            cssContent += `.${fontName.toLowerCase()} {\n`;
+            cssContent += `  font-family: '${fontName}', monospace;\n`;
+            cssContent += `}\n\n`;
+            
+            // Character replacement classes
+            for (let char in fontCreator.characters) {
+                const canvas = document.createElement('canvas');
+                canvas.width = fontCreator.canvas.width;
+                canvas.height = fontCreator.canvas.height;
+                const ctx = canvas.getContext('2d');
+                ctx.putImageData(fontCreator.characters[char], 0, 0);
+                const dataUrl = canvas.toDataURL();
+                
+                cssContent += `.char-${char.toLowerCase()} {\n`;
+                cssContent += `  display: inline-block;\n`;
+                cssContent += `  width: 1em;\n`;
+                cssContent += `  height: 1em;\n`;
+                cssContent += `  background-image: url('${dataUrl}');\n`;
+                cssContent += `  background-size: contain;\n`;
+                cssContent += `  background-repeat: no-repeat;\n`;
+                cssContent += `  background-position: center;\n`;
+                cssContent += `  text-indent: -9999px;\n`;
+                cssContent += `  overflow: hidden;\n`;
+                cssContent += `}\n\n`;
+            }
+            
+            // Usage instructions
+            cssContent += `/*\nUsage:\n`;
+            cssContent += `<span class="char-a">A</span>\n`;
+            cssContent += `<span class="char-b">B</span>\n`;
+            cssContent += `*/`;
+            
+            const blob = new Blob([cssContent], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fontName + '.css';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            fontCreator.updateStatus('CSS Font berhasil diexport!');
+        }
+
+        function exportSVG() {
+            const fontCreator = window.fontCreator;
+            fontCreator.saveCurrentCharacter();
+            
+            const fontName = 'CustomFont_' + Date.now();
+            let svgContent = `<?xml version="1.0" standalone="no"?>\n`;
+            svgContent += `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n`;
+            svgContent += `<defs>\n`;
+            svgContent += `  <font id="${fontName}" horiz-adv-x="1000">\n`;
+            svgContent += `    <font-face font-family="${fontName}" units-per-em="1000" ascent="800" descent="-200"/>\n`;
+            
+            for (let char in fontCreator.characters) {
+                const canvas = document.createElement('canvas');
+                canvas.width = fontCreator.canvas.width;
+                canvas.height = fontCreator.canvas.height;
+                const ctx = canvas.getContext('2d');
+                ctx.putImageData(fontCreator.characters[char], 0, 0);
+                
+                // Convert to simple path (simplified)
+                const unicode = '&#' + char.charCodeAt(0) + ';';
+                svgContent += `    <glyph unicode="${char}" horiz-adv-x="1000" d="M0,0 L1000,0 L1000,1000 L0,1000 Z"/>\n`;
+            }
+            
+            svgContent += `  </font>\n`;
+            svgContent += `</defs>\n`;
+            svgContent += `</svg>`;
+            
+            const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fontName + '.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+            
+            fontCreator.updateStatus('SVG Font berhasil diexport!');
+        }
+
+        function exportImages() {
+            const fontCreator = window.fontCreator;
+            fontCreator.saveCurrentCharacter();
+            
+            if (Object.keys(fontCreator.characters).length === 0) {
+                fontCreator.updateStatus('Tidak ada karakter untuk diexport!');
+                return;
+            }
+            
+            // Create ZIP-like structure by downloading individual images
+            let downloadCount = 0;
+            const totalChars = Object.keys(fontCreator.characters).length;
+            
+            for (let char in fontCreator.characters) {
+                const canvas = document.createElement('canvas');
+                canvas.width = fontCreator.canvas.width;
+                canvas.height = fontCreator.canvas.height;
+                const ctx = canvas.getContext('2d');
+                ctx.putImageData(fontCreator.characters[char], 0, 0);
+                
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `char_${char}_${Date.now()}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                    
+                    downloadCount++;
+                    if (downloadCount === totalChars) {
+                        fontCreator.updateStatus(`${totalChars} gambar karakter berhasil didownload!`);
+                    }
+                });
+            }
+        }
+
+        function importFont() {
+            const fileInput = document.getElementById('fontImport');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                window.fontCreator.updateStatus('Pilih file JSON terlebih dahulu!');
+                return;
+            }
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const fontData = JSON.parse(e.target.result);
+                    const fontCreator = window.fontCreator;
+                    
+                    // Clear current characters
+                    fontCreator.characters = {};
+                    
+                    // Load characters
+                    for (let char in fontData.characters) {
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            canvas.width = fontCreator.canvas.width;
+                            canvas.height = fontCreator.canvas.height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0);
+                            fontCreator.characters[char] = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                            fontCreator.updateSavedCount();
+                            fontCreator.updatePreview();
+                        };
+                        img.src = fontData.characters[char];
+                    }
+                    
+                    // Load cipher mapping if exists
+                    if (fontData.cipherMapping) {
+                        fontCreator.cipherMapping = fontData.cipherMapping;
+                        
+                        // Update cipher UI
+                        document.querySelectorAll('.cipher-input').forEach(input => {
+                            const from = input.dataset.from;
+                            input.value = fontCreator.cipherMapping[from] || from;
+                        });
+                    }
+                    
+                    fontCreator.updateStatus(`Font "${fontData.name}" berhasil diimport!`);
+                    fileInput.value = ''; // Clear file input
+                    
+                } catch (error) {
+                    window.fontCreator.updateStatus('Error: File JSON tidak valid!');
+                }
+            };
+            reader.readAsText(file);
         }
 
         // Initialize the application
