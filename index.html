@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Font Creator - Pembuat Font</title>
+    <title id="page-title">Portfolio Programmer</title>
     <style>
         * {
             margin: 0;
@@ -12,1368 +12,1108 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #333;
+            font-family: 'Arial', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        .container {
-            max-width: 1400px;
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background: rgba(0, 0, 0, 0.98);
+            box-shadow: 0 2px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 30px;
-        }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 300px 1fr 300px;
-            gap: 20px;
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .sidebar {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-        }
-
-        .sidebar h3 {
-            margin-bottom: 15px;
-            color: #495057;
-            font-size: 1.1rem;
-        }
-
-        .character-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-
-        .char-btn {
-            padding: 10px;
-            border: 2px solid #dee2e6;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .char-btn:hover {
-            background: #e9ecef;
-            transform: translateY(-1px);
-        }
-
-        .char-btn.active {
-            background: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-
-        .tools {
-            margin-bottom: 20px;
-        }
-
-        .tool-group {
-            margin-bottom: 15px;
-        }
-
-        .tool-btn {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 8px;
-            border: 2px solid #dee2e6;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 0.9rem;
-        }
-
-        .tool-btn:hover {
-            background: #e9ecef;
-        }
-
-        .tool-btn.active {
-            background: #28a745;
-            color: white;
-            border-color: #28a745;
-        }
-
-        .slider-group {
-            margin-bottom: 15px;
-        }
-
-        .slider-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            color: #666;
-        }
-
-        .slider {
-            width: 100%;
-            margin-bottom: 5px;
-        }
-
-        .canvas-container {
-            text-align: center;
-        }
-
-        .canvas-wrapper {
-            display: inline-block;
-            border: 3px solid #007bff;
-            border-radius: 10px;
-            background: white;
-            padding: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        #drawingCanvas {
-            cursor: crosshair;
-            display: block;
-        }
-
-        .canvas-info {
-            margin-top: 15px;
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .preview-section {
-            margin-bottom: 20px;
-        }
-
-        .preview-text {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .preview-display {
-            background: white;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            padding: 20px;
-            min-height: 150px;
-            font-size: 2rem;
-            line-height: 1.4;
-            word-wrap: break-word;
-        }
-
-        .export-section {
-            margin-top: 20px;
-        }
-
-        .export-btn {
-            width: 100%;
-            padding: 15px;
-            background: #dc3545;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-
-        .export-btn:hover {
-            background: #c82333;
-            transform: translateY(-1px);
-        }
-
-        .font-controls {
-            margin-bottom: 20px;
-        }
-
-        .color-picker {
-            width: 100%;
-            height: 40px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .mode-selector {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 5px;
-            margin-bottom: 20px;
-        }
-
-        .mode-btn {
-            padding: 10px 5px;
-            border: 2px solid #dee2e6;
-            background: white;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: bold;
-            transition: all 0.2s;
-        }
-
-        .mode-btn:hover {
-            background: #e9ecef;
-        }
-
-        .mode-btn.active {
-            background: #6f42c1;
-            color: white;
-            border-color: #6f42c1;
-        }
-
-        .mode-panel {
-            margin-bottom: 20px;
-        }
-
-        .text-input-section {
-            margin-bottom: 15px;
-        }
-
-        .font-selector {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-        }
-
-        .cipher-section {
-            font-size: 0.9rem;
-        }
-
-        .cipher-preset {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f8f9fa;
-            border-radius: 8px;
-        }
-
-        .cipher-mapping {
-            max-height: 200px;
-            overflow-y: auto;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            padding: 10px;
-            margin-bottom: 10px;
-            background: white;
-        }
-
-        .cipher-row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-            font-size: 0.8rem;
-        }
-
-        .cipher-input {
-            width: 30px;
-            padding: 3px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            text-align: center;
-            margin-left: 10px;
-        }
-
-        .preview-original {
-            background: #e3f2fd;
-            border: 2px solid #2196f3;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 10px;
-            font-size: 1.5rem;
-            color: #1976d2;
-        }
-
-        .export-options {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        .import-section {
-            border-top: 2px solid #dee2e6;
-            padding-top: 15px;
-        }
-
-        .import-section h4 {
-            margin-bottom: 10px;
-            color: #495057;
-            font-size: 1rem;
-        }
-
-        .import-section input[type="file"] {
-            width: 100%;
-            padding: 8px;
-            border: 2px solid #dee2e6;
-            border-radius: 8px;
-            font-size: 0.9rem;
-        }
-
-        .grid-toggle {
-            margin-bottom: 10px;
-        }
-
-        .status-bar {
-            background: #343a40;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 0 0 20px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 0.9rem;
+            padding: 0 2rem;
         }
 
-        @media (max-width: 1200px) {
-            .main-content {
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #3b82f6, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #3b82f6;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(45deg, #3b82f6, #f97316);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="%233b82f6" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(1deg); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #ffffff, #3b82f6, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: slideInUp 1s ease-out;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            color: #cccccc;
+            animation: slideInUp 1s ease-out 0.3s both;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            animation: slideInUp 1s ease-out 0.6s both;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #f97316;
+            border: 2px solid #f97316;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+
+        .btn-secondary:hover {
+            background: #f97316;
+            color: white;
+            box-shadow: 0 10px 30px rgba(249, 115, 22, 0.4);
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Sections */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(45deg, #3b82f6, #f97316);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* About Section */
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #3b82f6, #f97316);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6rem;
+            margin: 0 auto;
+            animation: pulse 2s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
+            padding: 8px; /* Padding for border effect */
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: center;
+            background: #1a1a1a;
+        }
+
+        .about-image .emoji-fallback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 6rem;
+            color: white;
+            display: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .about-text {
+            font-size: 1.1rem;
+            color: #cccccc;
+            line-height: 1.8;
+        }
+
+        /* Skills Section */
+        .skills {
+            background: #111111;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .skill-card {
+            background: #1a1a1a;
+            padding: 2rem;
+            border-radius: 15px;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .skill-card:hover::before {
+            left: 100%;
+        }
+
+        .skill-card:hover {
+            transform: translateY(-10px);
+            border-color: #3b82f6;
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+        }
+
+        .skill-card h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .skill-list {
+            list-style: none;
+        }
+
+        .skill-list li {
+            padding: 0.5rem 0;
+            color: #cccccc;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .skill-list li::before {
+            content: '▶';
+            position: absolute;
+            left: 0;
+            color: #f97316;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(45deg, #3b82f6, #f97316);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-content h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+
+        .project-content p {
+            color: #cccccc;
+            margin-bottom: 1rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tech-tag {
+            background: #333;
+            color: #f97316;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .project-links a {
+            color: #3b82f6;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .project-links a:hover {
+            color: #f97316;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: #111111;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .contact-info h3 {
+            color: #3b82f6;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info p {
+            color: #cccccc;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: #cccccc;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            color: #3b82f6;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 1rem;
+            color: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        /* Footer */
+        footer {
+            background: #000000;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid #333;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-links a {
+            color: #cccccc;
+            font-size: 1.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #3b82f6;
+            transform: translateY(-3px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.2rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content {
                 grid-template-columns: 1fr;
-                gap: 20px;
+                text-align: center;
             }
-            
-            .sidebar {
-                order: 2;
+
+            .contact-content {
+                grid-template-columns: 1fr;
             }
-            
-            .canvas-container {
-                order: 1;
+
+            .projects-grid {
+                grid-template-columns: 1fr;
             }
+        }
+
+        /* Smooth Scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading Animation */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎨 Font Creator</h1>
-            <p>Buat font kustom Anda sendiri dengan mudah</p>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-container">
+            <div class="logo" id="logo-text"></div>
+            <ul class="nav-links" id="nav-links">
+                <!-- Navigation items will be populated by JavaScript -->
+            </ul>
         </div>
+    </nav>
 
-        <div class="main-content">
-            <!-- Left Sidebar -->
-            <div class="sidebar">
-                <h3>📝 Karakter</h3>
-                <div class="character-grid" id="characterGrid"></div>
-
-                <h3>🛠️ Mode</h3>
-                <div class="mode-selector">
-                    <button class="mode-btn active" data-mode="draw">✏️ Gambar</button>
-                    <button class="mode-btn" data-mode="text">⌨️ Text</button>
-                    <button class="mode-btn" data-mode="cipher">🔐 Cipher</button>
-                </div>
-
-                <div id="drawMode" class="mode-panel">
-                    <h3>🛠️ Tools</h3>
-                    <div class="tools">
-                        <div class="tool-group">
-                            <button class="tool-btn active" data-tool="draw">✏️ Gambar</button>
-                            <button class="tool-btn" data-tool="erase">🧹 Hapus</button>
-                            <button class="tool-btn" data-tool="line">📏 Garis</button>
-                            <button class="tool-btn" data-tool="rectangle">⬛ Kotak</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="textMode" class="mode-panel" style="display: none;">
-                    <h3>📝 Text Input</h3>
-                    <div class="text-input-section">
-                        <label for="baseFont">Base Font:</label>
-                        <select id="baseFont" class="font-selector">
-                            <option value="Arial">Arial</option>
-                            <option value="Times New Roman">Times New Roman</option>
-                            <option value="Helvetica">Helvetica</option>
-                            <option value="Georgia">Georgia</option>
-                            <option value="Verdana">Verdana</option>
-                            <option value="Courier New">Courier New</option>
-                            <option value="Impact">Impact</option>
-                            <option value="Comic Sans MS">Comic Sans MS</option>
-                        </select>
-                        
-                        <div class="slider-group">
-                            <label for="textSize">Ukuran Text: <span id="textSizeValue">200</span>px</label>
-                            <input type="range" id="textSize" class="slider" min="100" max="350" value="200">
-                        </div>
-                        
-                        <textarea id="textInput" placeholder="Ketik karakter untuk font..." maxlength="1" 
-                                 style="width: 100%; height: 60px; font-size: 1.2rem; text-align: center; resize: none;"></textarea>
-                        
-                        <button class="tool-btn" onclick="generateFromText()">✨ Generate ke Canvas</button>
-                    </div>
-                </div>
-
-                <div id="cipherMode" class="mode-panel" style="display: none;">
-                    <h3>🔐 Cipher Mapping</h3>
-                    <div class="cipher-section">
-                        <div class="cipher-preset">
-                            <label>Quick Preset:</label>
-                            <select id="cipherPreset" class="font-selector">
-                                <option value="">-- Pilih Preset --</option>
-                                <option value="caesar1">Caesar +1 (a→b)</option>
-                                <option value="caesar3">Caesar +3 (a→d)</option>
-                                <option value="reverse">Reverse (a→z)</option>
-                                <option value="random">Random</option>
-                            </select>
-                            <button class="tool-btn" onclick="applyCipherPreset()" style="margin-top: 5px;">Apply Preset</button>
-                        </div>
-                        
-                        <div class="cipher-mapping" id="cipherMapping">
-                            <!-- Mapping akan di-generate oleh JS -->
-                        </div>
-                        
-                        <button class="tool-btn" onclick="generateCipherFont()">🔐 Generate Cipher Font</button>
-                    </div>
-                </div>
-
-                <div class="slider-group">
-                    <label for="brushSize">Ukuran Kuas: <span id="brushSizeValue">5</span>px</label>
-                    <input type="range" id="brushSize" class="slider" min="1" max="20" value="5">
-                </div>
-
-                <div class="slider-group">
-                    <label for="colorPicker">Warna:</label>
-                    <input type="color" id="colorPicker" class="color-picker" value="#000000">
-                </div>
-
-                <div class="grid-toggle">
-                    <label>
-                        <input type="checkbox" id="showGrid" checked> Tampilkan Grid
-                    </label>
-                </div>
-
-                <button class="tool-btn" onclick="clearCanvas()">🗑️ Hapus Semua</button>
-            </div>
-
-            <!-- Main Canvas Area -->
-            <div class="canvas-container">
-                <div class="canvas-wrapper">
-                    <canvas id="drawingCanvas" width="400" height="400"></canvas>
-                </div>
-                <div class="canvas-info">
-                    <p>Karakter aktif: <strong id="currentChar">A</strong></p>
-                    <p>Klik dan drag untuk menggambar karakter</p>
-                </div>
-            </div>
-
-            <!-- Right Sidebar -->
-            <div class="sidebar">
-                <h3>👁️ Preview</h3>
-                <div class="preview-section">
-                    <textarea class="preview-text" id="previewText" placeholder="Ketik teks untuk preview...">ABCDEFGHIJKLMNOPQRSTUVWXYZ
-1234567890
-Hello World!</textarea>
-                    
-                    <div class="preview-original" id="previewOriginal">
-                        <strong>Original:</strong><br>
-                        <div id="originalDisplay"></div>
-                    </div>
-                    
-                    <div class="preview-cipher" id="previewCipher">
-                        <strong>Cipher:</strong><br>
-                        <div id="cipherDisplay"></div>
-                    </div>
-                    
-                    <div class="preview-display" id="previewDisplay"></div>
-                </div>
-
-                <h3>⚙️ Pengaturan Font</h3>
-                <div class="font-controls">
-                    <div class="slider-group">
-                        <label for="fontSize">Ukuran Font: <span id="fontSizeValue">24</span>px</label>
-                        <input type="range" id="fontSize" class="slider" min="12" max="72" value="24">
-                    </div>
-                    
-                    <div class="slider-group">
-                        <label for="letterSpacing">Spasi Huruf: <span id="letterSpacingValue">0</span>px</label>
-                        <input type="range" id="letterSpacing" class="slider" min="-5" max="20" value="0">
-                    </div>
-                </div>
-
-                <div class="export-section">
-                    <h3>💾 Export</h3>
-                    <div class="export-options">
-                        <button class="export-btn" onclick="exportFont()">📁 Download Font Data (JSON)</button>
-                        <button class="export-btn" onclick="exportCSS()" style="background: #28a745; margin-top: 8px;">🎨 Download CSS Font</button>
-                        <button class="export-btn" onclick="exportSVG()" style="background: #fd7e14; margin-top: 8px;">🎯 Download SVG Font</button>
-                        <button class="export-btn" onclick="exportImages()" style="background: #6f42c1; margin-top: 8px;">🖼️ Download Character Images</button>
-                    </div>
-                    
-                    <div class="import-section" style="margin-top: 15px;">
-                        <h4>📥 Import</h4>
-                        <input type="file" id="fontImport" accept=".json" style="margin-bottom: 8px;">
-                        <button class="tool-btn" onclick="importFont()">📂 Import Font Data</button>
-                    </div>
-                </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 id="hero-name"></h1>
+            <p id="hero-title"></p>
+            <div class="hero-buttons" id="hero-buttons">
+                <!-- Buttons will be populated by JavaScript -->
             </div>
         </div>
+    </section>
 
-        <div class="status-bar">
-            <span>Status: <span id="status">Siap</span></span>
-            <span>Karakter tersimpan: <span id="savedChars">0</span></span>
+    <!-- About Section -->
+    <section id="about" class="fade-in">
+        <h2 id="about-heading"></h2>
+        <div class="about-content">
+            <div class="about-image" id="about-image"></div>
+            <div class="about-text" id="about-text">
+                <!-- About content will be populated by JavaScript -->
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills fade-in">
+        <h2 id="skills-heading"></h2>
+        <div class="skills-grid" id="skills-grid">
+            <!-- Skills will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="fade-in">
+        <h2 id="projects-heading"></h2>
+        <div class="projects-grid" id="projects-grid">
+            <!-- Projects will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact fade-in">
+        <h2 id="contact-heading"></h2>
+        <div class="contact-content">
+            <div class="contact-info">
+                <h3 id="contact-info-title"></h3>
+                <p id="contact-info-description"></p>
+                <div id="contact-items">
+                    <!-- Contact items will be populated by JavaScript -->
+                </div>
+            </div>
+            <form class="contact-form" id="contact-form">
+                <!-- Form fields will be populated by JavaScript -->
+                <button type="submit" class="btn btn-primary" id="submit-button"></button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="social-links" id="social-links">
+            <!-- Social links will be populated by JavaScript -->
+        </div>
+        <p id="footer-text"></p>
+    </footer>
 
     <script>
-        class FontCreator {
-            constructor() {
-                this.canvas = document.getElementById('drawingCanvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.isDrawing = false;
-                this.currentTool = 'draw';
-                this.currentChar = 'A';
-                this.brushSize = 5;
-                this.color = '#000000';
-                this.showGrid = true;
-                this.characters = {};
-                this.startX = 0;
-                this.startY = 0;
-                this.currentMode = 'draw';
-                this.cipherMapping = {};
+        // Configuration - Set your Apps Script API URL here
+        const APPS_SCRIPT_API_URL = 'https://script.google.com/macros/s/AKfycby6Lksc9abObzAhkFSEfNNpn0bv7SRtT0VaRaVFUVZBeXBsAWuM1EHhojVn8OXV4GY4/exec';
+        
+        // Fallback data if API fails to load
+        const fallbackData = {
+            personal: {
+                name: "John Doe",
+                title: "Full Stack Developer & UI/UX Designer",
+                image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face",
+                logo: "&lt;JohnDoe/&gt;",
+                location: "Jakarta, Indonesia",
+                email: "john.doe@email.com",
+                phone: "+62 812-3456-7890",
+                about: [
+                    "Halo! Saya adalah seorang Full Stack Developer dengan passion dalam menciptakan aplikasi web yang inovatif dan user-friendly.",
+                    "Saya selalu bersemangat untuk belajar teknologi baru dan mengimplementasikannya dalam proyek-proyek yang menantang.",
+                    "Ketika tidak sedang coding, saya senang berkontribusi pada open source projects dan berbagi pengetahuan melalui blog teknologi."
+                ]
+            },
+            navigation: [
+                { name: "Home", href: "#home" },
+                { name: "About", href: "#about" },
+                { name: "Skills", href: "#skills" },
+                { name: "Projects", href: "#projects" },
+                { name: "Contact", href: "#contact" }
+            ],
+            heroButtons: [
+                { text: "View My Work", href: "#projects", class: "btn-primary" },
+                { text: "Get In Touch", href: "#contact", class: "btn-secondary" }
+            ],
+            headings: {
+                about: "About Me",
+                skills: "My Skills",
+                projects: "Featured Projects",
+                contact: "Get In Touch"
+            },
+            skills: [
+                {
+                    category: "Frontend Development",
+                    items: ["HTML5 & CSS3", "JavaScript (ES6+)", "React.js & Next.js", "Vue.js & Nuxt.js", "TypeScript", "Tailwind CSS"]
+                },
+                {
+                    category: "Backend Development",
+                    items: ["Node.js & Express", "Python & Django", "PHP & Laravel", "RESTful APIs", "GraphQL", "Microservices"]
+                },
+                {
+                    category: "Database & Tools",
+                    items: ["MySQL & PostgreSQL", "MongoDB", "Git & GitHub", "Docker", "AWS & Vercel", "Figma & Adobe XD"]
+                }
+            ],
+            projects: [
+                {
+                    name: "E-Commerce Platform",
+                    description: "Platform e-commerce lengkap dengan sistem pembayaran, manajemen inventory, dan dashboard admin yang komprehensif.",
+                    image: "🛒",
+                    technologies: ["React", "Node.js", "MongoDB", "Stripe"],
+                    links: { demo: "#", github: "#" }
+                }
+            ],
+            contact: {
+                title: "Let's Work Together",
+                description: "Saya selalu terbuka untuk proyek baru dan peluarga kerja sama yang menarik. Mari diskusikan bagaimana saya bisa membantu mewujudkan ide Anda!",
+                formFields: [
+                    { label: "Nama", type: "text", name: "name", id: "name", required: true },
+                    { label: "Email", type: "email", name: "email", id: "email", required: true },
+                    { label: "Pesan", type: "textarea", name: "message", id: "message", rows: 5, required: true }
+                ],
+                submitButton: "Send Message"
+            },
+            social: [
+                { name: "🐙 GitHub", href: "#" },
+                { name: "💼 LinkedIn", href: "#" },
+                { name: "🐦 Twitter", href: "#" },
+                { name: "📸 Instagram", href: "#" }
+            ],
+            footer: { text: "© 2025 John Doe. All rights reserved." },
+            typewriterTexts: ['Full Stack Developer & UI/UX Designer', 'Creating Amazing Web Experiences', 'Passionate About Clean Code', 'Always Learning New Technologies']
+        };
+
+        // Global variable to hold portfolio data
+        let portfolioData = fallbackData;
+
+        // Function to fetch data from Google Apps Script
+        async function fetchPortfolioData() {
+            try {
+                showLoadingState();
+                console.log('Fetching data from Google Sheets...');
                 
-                this.init();
+                const response = await fetch(APPS_SCRIPT_API_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data && data.success) {
+                    portfolioData = data.data;
+                    console.log('Data successfully loaded from Google Sheets');
+                    hideLoadingState();
+                    return true;
+                } else {
+                    throw new Error('Invalid data format received');
+                }
+                
+            } catch (error) {
+                console.warn('Failed to load data from Google Sheets:', error);
+                console.log('Using fallback data...');
+                portfolioData = fallbackData;
+                hideLoadingState();
+                return false;
             }
+        }
 
-            init() {
-                this.setupCanvas();
-                this.createCharacterGrid();
-                this.bindEvents();
-                this.drawGrid();
-                this.updatePreview();
-            }
-
-            setupCanvas() {
-                this.canvas.addEventListener('mousedown', (e) => this.startDrawing(e));
-                this.canvas.addEventListener('mousemove', (e) => this.draw(e));
-                this.canvas.addEventListener('mouseup', () => this.stopDrawing());
-                this.canvas.addEventListener('mouseout', () => this.stopDrawing());
-                
-                // Touch events untuk mobile
-                this.canvas.addEventListener('touchstart', (e) => {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    const rect = this.canvas.getBoundingClientRect();
-                    this.startDrawing({
-                        offsetX: touch.clientX - rect.left,
-                        offsetY: touch.clientY - rect.top
-                    });
-                });
-                
-                this.canvas.addEventListener('touchmove', (e) => {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    const rect = this.canvas.getBoundingClientRect();
-                    this.draw({
-                        offsetX: touch.clientX - rect.left,
-                        offsetY: touch.clientY - rect.top
-                    });
-                });
-                
-                this.canvas.addEventListener('touchend', (e) => {
-                    e.preventDefault();
-                    this.stopDrawing();
-                });
-            }
-
-            createCharacterGrid() {
-                const grid = document.getElementById('characterGrid');
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()';
-                
-                chars.split('').forEach(char => {
-                    const btn = document.createElement('button');
-                    btn.className = 'char-btn';
-                    btn.textContent = char;
-                    btn.onclick = () => this.selectCharacter(char);
-                    grid.appendChild(btn);
-                });
-                
-                // Set karakter pertama sebagai aktif
-                grid.firstChild.classList.add('active');
-            }
-
-            bindEvents() {
-                // Mode selection
-                document.querySelectorAll('.mode-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        this.switchMode(btn.dataset.mode);
-                    });
-                });
-
-                // Tool selection
-                document.querySelectorAll('.tool-btn[data-tool]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        this.currentTool = btn.dataset.tool;
-                    });
-                });
-
-                // Brush size
-                const brushSize = document.getElementById('brushSize');
-                brushSize.addEventListener('input', (e) => {
-                    this.brushSize = parseInt(e.target.value);
-                    document.getElementById('brushSizeValue').textContent = this.brushSize;
-                });
-
-                // Color picker
-                document.getElementById('colorPicker').addEventListener('change', (e) => {
-                    this.color = e.target.value;
-                });
-
-                // Grid toggle
-                document.getElementById('showGrid').addEventListener('change', (e) => {
-                    this.showGrid = e.target.checked;
-                    this.redrawCanvas();
-                });
-
-                // Preview text
-                document.getElementById('previewText').addEventListener('input', () => {
-                    this.updatePreview();
-                });
-
-                // Font size
-                const fontSize = document.getElementById('fontSize');
-                fontSize.addEventListener('input', (e) => {
-                    document.getElementById('fontSizeValue').textContent = e.target.value;
-                    this.updatePreview();
-                });
-
-                // Letter spacing
-                const letterSpacing = document.getElementById('letterSpacing');
-                letterSpacing.addEventListener('input', (e) => {
-                    document.getElementById('letterSpacingValue').textContent = e.target.value;
-                    this.updatePreview();
-                });
-
-                // Text input mode
-                const textInput = document.getElementById('textInput');
-                textInput.addEventListener('input', (e) => {
-                    const char = e.target.value.toUpperCase();
-                    if (char.length === 1) {
-                        this.selectCharacter(char);
+        // Loading state functions
+        function showLoadingState() {
+            const loadingDiv = document.createElement('div');
+            loadingDiv.id = 'loading-indicator';
+            loadingDiv.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.9);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 9999;
+                font-size: 1.2rem;
+                color: #3b82f6;
+            `;
+            loadingDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="border: 3px solid #333; border-top: 3px solid #3b82f6; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+                    <div>Loading portfolio data...</div>
+                </div>
+                <style>
+                    @keyframes spin {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
                     }
-                });
-
-                // Text size slider
-                const textSize = document.getElementById('textSize');
-                textSize.addEventListener('input', (e) => {
-                    document.getElementById('textSizeValue').textContent = e.target.value;
-                });
-
-                // Base font selector
-                document.getElementById('baseFont').addEventListener('change', () => {
-                    this.updateTextPreview();
-                });
-
-                // Cipher preset
-                document.getElementById('cipherPreset').addEventListener('change', () => {
-                    // Auto apply when preset changes
-                    if (document.getElementById('cipherPreset').value) {
-                        this.applyCipherPreset();
-                    }
-                });
-
-                // Initialize cipher mapping
-                this.createCipherMapping();
-            }
-
-            selectCharacter(char) {
-                // Save current character
-                this.saveCurrentCharacter();
-                
-                // Switch to new character
-                this.currentChar = char;
-                document.getElementById('currentChar').textContent = char;
-                
-                // Update UI
-                document.querySelectorAll('.char-btn').forEach(btn => {
-                    btn.classList.toggle('active', btn.textContent === char);
-                });
-                
-                // Load character if exists
-                this.loadCharacter(char);
-                this.updateStatus(`Karakter ${char} dipilih`);
-                
-                // Update preview
-                this.updatePreview();
-            }
-
-            saveCurrentCharacter() {
-                const imageData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-                this.characters[this.currentChar] = imageData;
-                this.updateSavedCount();
-            }
-
-            loadCharacter(char) {
-                this.clearCanvas();
-                if (this.characters[char]) {
-                    this.ctx.putImageData(this.characters[char], 0, 0);
-                }
-                if (this.showGrid) {
-                    this.drawGrid();
-                }
-            }
-
-            startDrawing(e) {
-                this.isDrawing = true;
-                this.startX = e.offsetX;
-                this.startY = e.offsetY;
-                
-                if (this.currentTool === 'draw' || this.currentTool === 'erase') {
-                    this.draw(e);
-                }
-            }
-
-            draw(e) {
-                if (!this.isDrawing) return;
-
-                this.ctx.lineWidth = this.brushSize;
-                this.ctx.lineCap = 'round';
-
-                switch (this.currentTool) {
-                    case 'draw':
-                        this.ctx.globalCompositeOperation = 'source-over';
-                        this.ctx.strokeStyle = this.color;
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(this.startX, this.startY);
-                        this.ctx.lineTo(e.offsetX, e.offsetY);
-                        this.ctx.stroke();
-                        this.startX = e.offsetX;
-                        this.startY = e.offsetY;
-                        break;
-                        
-                    case 'erase':
-                        this.ctx.globalCompositeOperation = 'destination-out';
-                        this.ctx.beginPath();
-                        this.ctx.arc(e.offsetX, e.offsetY, this.brushSize, 0, 2 * Math.PI);
-                        this.ctx.fill();
-                        break;
-                }
-
-                // Update preview in real-time
-                this.updatePreviewRealTime();
-            }
-
-            stopDrawing() {
-                if (!this.isDrawing) return;
-                this.isDrawing = false;
-                
-                if (this.currentTool === 'line' || this.currentTool === 'rectangle') {
-                    this.drawShape();
-                }
-                
-                if (this.showGrid) {
-                    this.drawGrid();
-                }
-
-                // Update preview after finishing drawing
-                this.updatePreviewRealTime();
-            }
-
-            drawShape() {
-                const currentX = event.offsetX || this.canvas.width / 2;
-                const currentY = event.offsetY || this.canvas.height / 2;
-                
-                this.ctx.globalCompositeOperation = 'source-over';
-                this.ctx.strokeStyle = this.color;
-                this.ctx.lineWidth = this.brushSize;
-                
-                switch (this.currentTool) {
-                    case 'line':
-                        this.ctx.beginPath();
-                        this.ctx.moveTo(this.startX, this.startY);
-                        this.ctx.lineTo(currentX, currentY);
-                        this.ctx.stroke();
-                        break;
-                        
-                    case 'rectangle':
-                        const width = currentX - this.startX;
-                        const height = currentY - this.startY;
-                        this.ctx.strokeRect(this.startX, this.startY, width, height);
-                        break;
-                }
-                
-                // Update preview after drawing shape
-                this.updatePreviewRealTime();
-            }
-
-            drawGrid() {
-                if (!this.showGrid) return;
-                
-                this.ctx.save();
-                this.ctx.strokeStyle = '#e0e0e0';
-                this.ctx.lineWidth = 1;
-                this.ctx.globalCompositeOperation = 'source-over';
-                
-                const gridSize = 20;
-                
-                // Vertical lines
-                for (let x = 0; x <= this.canvas.width; x += gridSize) {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(x, 0);
-                    this.ctx.lineTo(x, this.canvas.height);
-                    this.ctx.stroke();
-                }
-                
-                // Horizontal lines
-                for (let y = 0; y <= this.canvas.height; y += gridSize) {
-                    this.ctx.beginPath();
-                    this.ctx.moveTo(0, y);
-                    this.ctx.lineTo(this.canvas.width, y);
-                    this.ctx.stroke();
-                }
-                
-                // Center lines
-                this.ctx.strokeStyle = '#ff6b6b';
-                this.ctx.lineWidth = 2;
-                
-                // Vertical center
-                this.ctx.beginPath();
-                this.ctx.moveTo(this.canvas.width / 2, 0);
-                this.ctx.lineTo(this.canvas.width / 2, this.canvas.height);
-                this.ctx.stroke();
-                
-                // Horizontal center
-                this.ctx.beginPath();
-                this.ctx.moveTo(0, this.canvas.height / 2);
-                this.ctx.lineTo(this.canvas.width, this.canvas.height / 2);
-                this.ctx.stroke();
-                
-                this.ctx.restore();
-            }
-
-            redrawCanvas() {
-                const tempData = this.ctx.getImageData(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                this.ctx.putImageData(tempData, 0, 0);
-                
-                if (this.showGrid) {
-                    this.drawGrid();
-                }
-            }
-
-            updatePreview() {
-                const previewText = document.getElementById('previewText').value;
-                const previewDisplay = document.getElementById('previewDisplay');
-                const originalDisplay = document.getElementById('originalDisplay');
-                const cipherDisplay = document.getElementById('cipherDisplay');
-                const fontSize = document.getElementById('fontSize').value;
-                const letterSpacing = document.getElementById('letterSpacing').value;
-                
-                // Update original text display
-                originalDisplay.textContent = previewText;
-                
-                // Update cipher text display
-                const cipherText = this.getCipherText(previewText);
-                cipherDisplay.textContent = cipherText;
-                
-                // Update main preview with custom characters
-                previewDisplay.innerHTML = '';
-                
-                for (let char of previewText) {
-                    const charSpan = document.createElement('span');
-                    charSpan.style.fontSize = fontSize + 'px';
-                    charSpan.style.letterSpacing = letterSpacing + 'px';
-                    charSpan.style.display = 'inline-block';
-                    
-                    const upperChar = char.toUpperCase();
-                    
-                    if (this.characters[upperChar] || upperChar === this.currentChar) {
-                        // Create mini canvas for character
-                        const miniCanvas = document.createElement('canvas');
-                        miniCanvas.width = Math.max(20, parseInt(fontSize) * 0.8);
-                        miniCanvas.height = Math.max(20, parseInt(fontSize) * 0.8);
-                        const miniCtx = miniCanvas.getContext('2d');
-                        
-                        // Scale down the character
-                        if (upperChar === this.currentChar) {
-                            // Use current canvas for active character
-                            miniCtx.drawImage(this.canvas, 0, 0, miniCanvas.width, miniCanvas.height);
-                        } else {
-                            // Use saved character
-                            miniCtx.drawImage(this.getCharacterCanvas(upperChar), 0, 0, miniCanvas.width, miniCanvas.height);
-                        }
-                        charSpan.appendChild(miniCanvas);
-                    } else {
-                        charSpan.textContent = char;
-                    }
-                    
-                    previewDisplay.appendChild(charSpan);
-                }
-            }
-
-            updatePreviewRealTime() {
-                // Update preview dengan karakter yang sedang digambar
-                this.updatePreview();
-            }
-
-            getCharacterCanvas(char) {
-                const tempCanvas = document.createElement('canvas');
-                tempCanvas.width = this.canvas.width;
-                tempCanvas.height = this.canvas.height;
-                const tempCtx = tempCanvas.getContext('2d');
-                
-                if (this.characters[char]) {
-                    tempCtx.putImageData(this.characters[char], 0, 0);
-                }
-                
-                return tempCanvas;
-            }
-
-            updateStatus(message) {
-                document.getElementById('status').textContent = message;
-                setTimeout(() => {
-                    document.getElementById('status').textContent = 'Siap';
-                }, 2000);
-            }
-
-            updateSavedCount() {
-                const count = Object.keys(this.characters).length;
-                document.getElementById('savedChars').textContent = count;
-            }
-
-            clearCanvas() {
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                if (this.showGrid) {
-                    this.drawGrid();
-                }
-                this.updateStatus('Canvas dibersihkan');
-                this.updatePreviewRealTime();
-            }
-
-            switchMode(mode) {
-                this.currentMode = mode;
-                
-                // Hide all mode panels
-                document.querySelectorAll('.mode-panel').forEach(panel => {
-                    panel.style.display = 'none';
-                });
-                
-                // Show selected mode panel
-                const selectedPanel = document.getElementById(mode + 'Mode');
-                if (selectedPanel) {
-                    selectedPanel.style.display = 'block';
-                }
-                
-                this.updateStatus(`Mode ${mode} aktif`);
-                this.updatePreview();
-            }
-
-            createCipherMapping() {
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                const mappingDiv = document.getElementById('cipherMapping');
-                mappingDiv.innerHTML = '';
-                
-                chars.split('').forEach(char => {
-                    const row = document.createElement('div');
-                    row.className = 'cipher-row';
-                    row.innerHTML = `
-                        <span>${char} →</span>
-                        <input type="text" class="cipher-input" maxlength="1" 
-                               data-from="${char}" value="${char}"
-                               onchange="window.fontCreator.updateCipherMapping('${char}', this.value)">
-                    `;
-                    mappingDiv.appendChild(row);
-                    this.cipherMapping[char] = char;
-                });
-            }
-
-            updateCipherMapping(from, to) {
-                this.cipherMapping[from] = to.toUpperCase();
-                this.updatePreview();
-            }
-
-            applyCipherPreset() {
-                const preset = document.getElementById('cipherPreset').value;
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                
-                switch (preset) {
-                    case 'caesar1':
-                        chars.split('').forEach((char, i) => {
-                            const newChar = chars[(i + 1) % chars.length];
-                            this.cipherMapping[char] = newChar;
-                        });
-                        break;
-                        
-                    case 'caesar3':
-                        chars.split('').forEach((char, i) => {
-                            const newChar = chars[(i + 3) % chars.length];
-                            this.cipherMapping[char] = newChar;
-                        });
-                        break;
-                        
-                    case 'reverse':
-                        chars.split('').forEach((char, i) => {
-                            const newChar = chars[chars.length - 1 - i];
-                            this.cipherMapping[char] = newChar;
-                        });
-                        break;
-                        
-                    case 'random':
-                        const shuffled = chars.split('').sort(() => Math.random() - 0.5);
-                        chars.split('').forEach((char, i) => {
-                            this.cipherMapping[char] = shuffled[i];
-                        });
-                        break;
-                }
-                
-                // Update UI inputs
-                document.querySelectorAll('.cipher-input').forEach(input => {
-                    const from = input.dataset.from;
-                    input.value = this.cipherMapping[from] || from;
-                });
-                
-                this.updatePreview();
-                this.updateStatus(`Cipher preset ${preset} diterapkan`);
-            }
-
-            generateFromText() {
-                const textInput = document.getElementById('textInput');
-                const char = textInput.value.toUpperCase().trim();
-                
-                if (!char || char.length !== 1) {
-                    this.updateStatus('Masukkan satu karakter saja');
-                    return;
-                }
-                
-                const baseFont = document.getElementById('baseFont').value;
-                const textSize = document.getElementById('textSize').value;
-                
-                // Clear canvas
-                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-                
-                // Set font and draw text
-                this.ctx.font = `${textSize}px ${baseFont}`;
-                this.ctx.fillStyle = this.color;
-                this.ctx.textAlign = 'center';
-                this.ctx.textBaseline = 'middle';
-                
-                const x = this.canvas.width / 2;
-                const y = this.canvas.height / 2;
-                
-                this.ctx.fillText(char, x, y);
-                
-                // Draw grid if enabled
-                if (this.showGrid) {
-                    this.drawGrid();
-                }
-                
-                // Update preview
-                this.updatePreviewRealTime();
-                this.updateStatus(`Karakter ${char} digenerate dari ${baseFont}`);
-                
-                // Clear text input
-                textInput.value = '';
-            }
-
-            generateCipherFont() {
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-                const baseFont = document.getElementById('baseFont').value;
-                const textSize = 200;
-                let generated = 0;
-                
-                chars.split('').forEach(originalChar => {
-                    const mappedChar = this.cipherMapping[originalChar];
-                    if (mappedChar && mappedChar !== originalChar) {
-                        // Create temporary canvas
-                        const tempCanvas = document.createElement('canvas');
-                        tempCanvas.width = this.canvas.width;
-                        tempCanvas.height = this.canvas.height;
-                        const tempCtx = tempCanvas.getContext('2d');
-                        
-                        // Generate character
-                        tempCtx.font = `${textSize}px ${baseFont}`;
-                        tempCtx.fillStyle = this.color;
-                        tempCtx.textAlign = 'center';
-                        tempCtx.textBaseline = 'middle';
-                        tempCtx.fillText(mappedChar, tempCanvas.width / 2, tempCanvas.height / 2);
-                        
-                        // Save to characters
-                        const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
-                        this.characters[originalChar] = imageData;
-                        generated++;
-                    }
-                });
-                
-                this.updateSavedCount();
-                this.updatePreview();
-                this.updateStatus(`${generated} karakter cipher digenerate dari ${baseFont}`);
-            }
-
-            getCipherText(text) {
-                return text.toUpperCase().split('').map(char => {
-                    return this.cipherMapping[char] || char;
-                }).join('');
-            }
+                </style>
+            `;
+            document.body.appendChild(loadingDiv);
         }
 
-        // Global functions
-        function clearCanvas() {
-            const fontCreator = window.fontCreator;
-            fontCreator.clearCanvas();
+        function hideLoadingState() {
+            const loadingDiv = document.getElementById('loading-indicator');
+            if (loadingDiv) {
+                loadingDiv.remove();
+            }
         }
-
-        function generateFromText() {
-            const fontCreator = window.fontCreator;
-            fontCreator.generateFromText();
-        }
-
-        function applyCipherPreset() {
-            const fontCreator = window.fontCreator;
-            fontCreator.applyCipherPreset();
-        }
-
-        function generateCipherFont() {
-            const fontCreator = window.fontCreator;
-            fontCreator.generateCipherFont();
-        }
-
-        function exportFont() {
-            const fontCreator = window.fontCreator;
-            fontCreator.saveCurrentCharacter();
+        function populateContent() {
+            // Set page title
+            document.getElementById('page-title').textContent = `${portfolioData.personal.name} - Portfolio`;
             
-            const fontData = {
-                name: 'CustomFont_' + Date.now(),
-                characters: {},
-                cipherMapping: fontCreator.cipherMapping,
-                created: new Date().toISOString()
-            };
-            
-            // Convert ImageData to base64
-            for (let char in fontCreator.characters) {
-                const canvas = document.createElement('canvas');
-                canvas.width = fontCreator.canvas.width;
-                canvas.height = fontCreator.canvas.height;
-                const ctx = canvas.getContext('2d');
-                ctx.putImageData(fontCreator.characters[char], 0, 0);
-                fontData.characters[char] = canvas.toDataURL();
-            }
-            
-            // Download as JSON
-            const blob = new Blob([JSON.stringify(fontData, null, 2)], {
-                type: 'application/json'
+            // Navigation
+            document.getElementById('logo-text').innerHTML = portfolioData.personal.logo;
+            const navLinksContainer = document.getElementById('nav-links');
+            portfolioData.navigation.forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = item.href;
+                a.textContent = item.name;
+                li.appendChild(a);
+                navLinksContainer.appendChild(li);
             });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fontData.name + '.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            fontCreator.updateStatus('Font data berhasil diexport!');
-        }
 
-        function exportCSS() {
-            const fontCreator = window.fontCreator;
-            fontCreator.saveCurrentCharacter();
+            // Hero Section
+            document.getElementById('hero-name').textContent = portfolioData.personal.name;
+            document.getElementById('hero-title').textContent = portfolioData.personal.title;
             
-            const fontName = 'CustomFont_' + Date.now();
-            let cssContent = `/* Custom Font CSS - Generated by Font Creator */\n\n`;
+            const heroButtonsContainer = document.getElementById('hero-buttons');
+            portfolioData.heroButtons.forEach(button => {
+                const a = document.createElement('a');
+                a.href = button.href;
+                a.className = `btn ${button.class}`;
+                a.textContent = button.text;
+                heroButtonsContainer.appendChild(a);
+            });
+
+            // About Section
+            document.getElementById('about-heading').textContent = portfolioData.headings.about;
             
-            // Create CSS with character mappings
-            cssContent += `@font-face {\n`;
-            cssContent += `  font-family: '${fontName}';\n`;
-            cssContent += `  src: url('data:application/font-woff2;charset=utf-8;base64,') format('woff2');\n`;
-            cssContent += `}\n\n`;
+            // Handle profile image (URL or emoji)
+            const aboutImageContainer = document.getElementById('about-image');
+            const imageUrl = portfolioData.personal.image;
             
-            cssContent += `.${fontName.toLowerCase()} {\n`;
-            cssContent += `  font-family: '${fontName}', monospace;\n`;
-            cssContent += `}\n\n`;
-            
-            // Character replacement classes
-            for (let char in fontCreator.characters) {
-                const canvas = document.createElement('canvas');
-                canvas.width = fontCreator.canvas.width;
-                canvas.height = fontCreator.canvas.height;
-                const ctx = canvas.getContext('2d');
-                ctx.putImageData(fontCreator.characters[char], 0, 0);
-                const dataUrl = canvas.toDataURL();
+            // Check if image is URL or emoji
+            if (imageUrl && (imageUrl.startsWith('http') || imageUrl.startsWith('data:'))) {
+                // It's a URL - create img element
+                const img = document.createElement('img');
+                img.src = imageUrl;
+                img.alt = portfolioData.personal.name || 'Profile Photo';
+                img.style.display = 'block';
                 
-                cssContent += `.char-${char.toLowerCase()} {\n`;
-                cssContent += `  display: inline-block;\n`;
-                cssContent += `  width: 1em;\n`;
-                cssContent += `  height: 1em;\n`;
-                cssContent += `  background-image: url('${dataUrl}');\n`;
-                cssContent += `  background-size: contain;\n`;
-                cssContent += `  background-repeat: no-repeat;\n`;
-                cssContent += `  background-position: center;\n`;
-                cssContent += `  text-indent: -9999px;\n`;
-                cssContent += `  overflow: hidden;\n`;
-                cssContent += `}\n\n`;
+                // Add fallback emoji
+                const fallback = document.createElement('div');
+                fallback.className = 'emoji-fallback';
+                fallback.textContent = '👨‍💻';
+                
+                // Handle image load error
+                img.onerror = function() {
+                    img.style.display = 'none';
+                    fallback.style.display = 'block';
+                };
+                
+                // Clear container and add new elements
+                aboutImageContainer.innerHTML = '';
+                aboutImageContainer.appendChild(img);
+                aboutImageContainer.appendChild(fallback);
+            } else {
+                // It's an emoji - display as text
+                aboutImageContainer.innerHTML = '';
+                aboutImageContainer.textContent = imageUrl || '👨‍💻';
             }
             
-            // Usage instructions
-            cssContent += `/*\nUsage:\n`;
-            cssContent += `<span class="char-a">A</span>\n`;
-            cssContent += `<span class="char-b">B</span>\n`;
-            cssContent += `*/`;
+            const aboutTextContainer = document.getElementById('about-text');
+            portfolioData.personal.about.forEach(paragraph => {
+                const p = document.createElement('p');
+                p.textContent = paragraph;
+                aboutTextContainer.appendChild(p);
+            });
+
+            // Skills Section
+            document.getElementById('skills-heading').textContent = portfolioData.headings.skills;
+            const skillsGridContainer = document.getElementById('skills-grid');
+            portfolioData.skills.forEach(skillCategory => {
+                const skillCard = document.createElement('div');
+                skillCard.className = 'skill-card';
+                
+                const h3 = document.createElement('h3');
+                h3.textContent = skillCategory.category;
+                skillCard.appendChild(h3);
+                
+                const ul = document.createElement('ul');
+                ul.className = 'skill-list';
+                skillCategory.items.forEach(skill => {
+                    const li = document.createElement('li');
+                    li.textContent = skill;
+                    ul.appendChild(li);
+                });
+                
+                skillCard.appendChild(ul);
+                skillsGridContainer.appendChild(skillCard);
+            });
+
+            // Projects Section
+            document.getElementById('projects-heading').textContent = portfolioData.headings.projects;
+            const projectsGridContainer = document.getElementById('projects-grid');
+            portfolioData.projects.forEach(project => {
+                const projectCard = document.createElement('div');
+                projectCard.className = 'project-card';
+                
+                const projectImage = document.createElement('div');
+                projectImage.className = 'project-image';
+                projectImage.textContent = project.image;
+                
+                const projectContent = document.createElement('div');
+                projectContent.className = 'project-content';
+                
+                const h3 = document.createElement('h3');
+                h3.textContent = project.name;
+                
+                const p = document.createElement('p');
+                p.textContent = project.description;
+                
+                const techDiv = document.createElement('div');
+                techDiv.className = 'project-tech';
+                project.technologies.forEach(tech => {
+                    const span = document.createElement('span');
+                    span.className = 'tech-tag';
+                    span.textContent = tech;
+                    techDiv.appendChild(span);
+                });
+                
+                const linksDiv = document.createElement('div');
+                linksDiv.className = 'project-links';
+                
+                const demoLink = document.createElement('a');
+                demoLink.href = project.links.demo;
+                demoLink.target = '_blank';
+                demoLink.textContent = 'Live Demo';
+                
+                const githubLink = document.createElement('a');
+                githubLink.href = project.links.github;
+                githubLink.target = '_blank';
+                githubLink.textContent = 'GitHub';
+                
+                linksDiv.appendChild(demoLink);
+                linksDiv.appendChild(githubLink);
+                
+                projectContent.appendChild(h3);
+                projectContent.appendChild(p);
+                projectContent.appendChild(techDiv);
+                projectContent.appendChild(linksDiv);
+                
+                projectCard.appendChild(projectImage);
+                projectCard.appendChild(projectContent);
+                projectsGridContainer.appendChild(projectCard);
+            });
+
+            // Contact Section
+            document.getElementById('contact-heading').textContent = portfolioData.headings.contact;
+            document.getElementById('contact-info-title').textContent = portfolioData.contact.title;
+            document.getElementById('contact-info-description').textContent = portfolioData.contact.description;
             
-            const blob = new Blob([cssContent], { type: 'text/css' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fontName + '.css';
-            a.click();
-            URL.revokeObjectURL(url);
+            const contactItemsContainer = document.getElementById('contact-items');
+            const contactItems = [
+                { icon: '📧', text: portfolioData.personal.email },
+                { icon: '📱', text: portfolioData.personal.phone },
+                { icon: '📍', text: portfolioData.personal.location }
+            ];
             
-            fontCreator.updateStatus('CSS Font berhasil diexport!');
+            contactItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'contact-item';
+                div.innerHTML = `${item.icon} ${item.text}`;
+                contactItemsContainer.appendChild(div);
+            });
+
+            // Contact Form
+            const contactForm = document.getElementById('contact-form');
+            portfolioData.contact.formFields.forEach(field => {
+                const formGroup = document.createElement('div');
+                formGroup.className = 'form-group';
+                
+                const label = document.createElement('label');
+                label.setAttribute('for', field.id);
+                label.textContent = field.label;
+                
+                let input;
+                if (field.type === 'textarea') {
+                    input = document.createElement('textarea');
+                    input.rows = field.rows;
+                } else {
+                    input = document.createElement('input');
+                    input.type = field.type;
+                }
+                
+                input.id = field.id;
+                input.name = field.name;
+                input.required = field.required;
+                
+                formGroup.appendChild(label);
+                formGroup.appendChild(input);
+                contactForm.insertBefore(formGroup, contactForm.lastElementChild);
+            });
+            
+            document.getElementById('submit-button').textContent = portfolioData.contact.submitButton;
+
+            // Social Links
+            const socialLinksContainer = document.getElementById('social-links');
+            portfolioData.social.forEach(social => {
+                const a = document.createElement('a');
+                a.href = social.href;
+                a.target = '_blank';
+                a.textContent = social.name;
+                socialLinksContainer.appendChild(a);
+            });
+
+            // Footer
+            document.getElementById('footer-text').textContent = portfolioData.footer.text;
         }
 
-        function exportSVG() {
-            const fontCreator = window.fontCreator;
-            fontCreator.saveCurrentCharacter();
+        // Initialize content when page loads
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Try to fetch data from Google Sheets first
+            const dataLoaded = await fetchPortfolioData();
             
-            const fontName = 'CustomFont_' + Date.now();
-            let svgContent = `<?xml version="1.0" standalone="no"?>\n`;
-            svgContent += `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">\n`;
-            svgContent += `<defs>\n`;
-            svgContent += `  <font id="${fontName}" horiz-adv-x="1000">\n`;
-            svgContent += `    <font-face font-family="${fontName}" units-per-em="1000" ascent="800" descent="-200"/>\n`;
+            // Populate content regardless of data source
+            populateContent();
             
-            for (let char in fontCreator.characters) {
-                const canvas = document.createElement('canvas');
-                canvas.width = fontCreator.canvas.width;
-                canvas.height = fontCreator.canvas.height;
-                const ctx = canvas.getContext('2d');
-                ctx.putImageData(fontCreator.characters[char], 0, 0);
-                
-                // Convert to simple path (simplified)
-                const unicode = '&#' + char.charCodeAt(0) + ';';
-                svgContent += `    <glyph unicode="${char}" horiz-adv-x="1000" d="M0,0 L1000,0 L1000,1000 L0,1000 Z"/>\n`;
+            // Show notification about data source
+            if (dataLoaded) {
+                console.log('✅ Portfolio loaded from Google Sheets');
+            } else {
+                console.log('⚠️ Portfolio loaded with fallback data');
+                // Optionally show a subtle notification to user
+                showDataSourceNotification(false);
             }
             
-            svgContent += `  </font>\n`;
-            svgContent += `</defs>\n`;
-            svgContent += `</svg>`;
-            
-            const blob = new Blob([svgContent], { type: 'image/svg+xml' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fontName + '.svg';
-            a.click();
-            URL.revokeObjectURL(url);
-            
-            fontCreator.updateStatus('SVG Font berhasil diexport!');
+            // Start other functions after content is loaded
+            setTimeout(() => {
+                initializeAnimations();
+                startTypewriterEffect();
+            }, 100);
+        });
+
+        // Function to show data source notification
+        function showDataSourceNotification(isFromSheets) {
+            if (!isFromSheets) {
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: rgba(249, 115, 22, 0.9);
+                    color: white;
+                    padding: 10px 15px;
+                    border-radius: 5px;
+                    font-size: 0.9rem;
+                    z-index: 1000;
+                    transition: opacity 0.3s ease;
+                `;
+                notification.textContent = 'Using demo data - Connect to Google Sheets for live updates';
+                document.body.appendChild(notification);
+                
+                // Auto hide after 5 seconds
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 300);
+                }, 5000);
+            }
         }
 
-        function exportImages() {
-            const fontCreator = window.fontCreator;
-            fontCreator.saveCurrentCharacter();
-            
-            if (Object.keys(fontCreator.characters).length === 0) {
-                fontCreator.updateStatus('Tidak ada karakter untuk diexport!');
-                return;
-            }
-            
-            // Create ZIP-like structure by downloading individual images
-            let downloadCount = 0;
-            const totalChars = Object.keys(fontCreator.characters).length;
-            
-            for (let char in fontCreator.characters) {
-                const canvas = document.createElement('canvas');
-                canvas.width = fontCreator.canvas.width;
-                canvas.height = fontCreator.canvas.height;
-                const ctx = canvas.getContext('2d');
-                ctx.putImageData(fontCreator.characters[char], 0, 0);
-                
-                canvas.toBlob((blob) => {
-                    const url = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `char_${char}_${Date.now()}.png`;
-                    a.click();
-                    URL.revokeObjectURL(url);
-                    
-                    downloadCount++;
-                    if (downloadCount === totalChars) {
-                        fontCreator.updateStatus(`${totalChars} gambar karakter berhasil didownload!`);
+        // Function to populate content from JSON
+
+        function initializeAnimations() {
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.getElementById('navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Fade in animation on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
                     }
                 });
-            }
-        }
+            }, observerOptions);
 
-        function importFont() {
-            const fileInput = document.getElementById('fontImport');
-            const file = fileInput.files[0];
-            
-            if (!file) {
-                window.fontCreator.updateStatus('Pilih file JSON terlebih dahulu!');
-                return;
-            }
-            
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const fontData = JSON.parse(e.target.result);
-                    const fontCreator = window.fontCreator;
-                    
-                    // Clear current characters
-                    fontCreator.characters = {};
-                    
-                    // Load characters
-                    for (let char in fontData.characters) {
-                        const img = new Image();
-                        img.onload = function() {
-                            const canvas = document.createElement('canvas');
-                            canvas.width = fontCreator.canvas.width;
-                            canvas.height = fontCreator.canvas.height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0);
-                            fontCreator.characters[char] = ctx.getImageData(0, 0, canvas.width, canvas.height);
-                            fontCreator.updateSavedCount();
-                            fontCreator.updatePreview();
-                        };
-                        img.src = fontData.characters[char];
-                    }
-                    
-                    // Load cipher mapping if exists
-                    if (fontData.cipherMapping) {
-                        fontCreator.cipherMapping = fontData.cipherMapping;
-                        
-                        // Update cipher UI
-                        document.querySelectorAll('.cipher-input').forEach(input => {
-                            const from = input.dataset.from;
-                            input.value = fontCreator.cipherMapping[from] || from;
+            document.querySelectorAll('.fade-in').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Smooth scrolling for navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
                         });
                     }
-                    
-                    fontCreator.updateStatus(`Font "${fontData.name}" berhasil diimport!`);
-                    fileInput.value = ''; // Clear file input
-                    
-                } catch (error) {
-                    window.fontCreator.updateStatus('Error: File JSON tidak valid!');
-                }
-            };
-            reader.readAsText(file);
+                });
+            });
+
+            // Form submission
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Terima kasih! Pesan Anda telah dikirim. Saya akan segera menghubungi Anda kembali.');
+                this.reset();
+            });
         }
 
-        // Initialize the application
-        window.addEventListener('DOMContentLoaded', () => {
-            window.fontCreator = new FontCreator();
-        });
+        function startTypewriterEffect() {
+            const typingText = document.getElementById('hero-title');
+            const texts = portfolioData.typewriterTexts;
+            let textIndex = 0;
+            let charIndex = 0;
+            let isDeleting = false;
+
+            function typeEffect() {
+                const currentText = texts[textIndex];
+                
+                if (isDeleting) {
+                    typingText.textContent = currentText.substring(0, charIndex - 1);
+                    charIndex--;
+                } else {
+                    typingText.textContent = currentText.substring(0, charIndex + 1);
+                    charIndex++;
+                }
+
+                if (!isDeleting && charIndex === currentText.length) {
+                    setTimeout(() => isDeleting = true, 2000);
+                } else if (isDeleting && charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % texts.length;
+                }
+
+                setTimeout(typeEffect, isDeleting ? 50 : 100);
+            }
+
+            // Start typing effect after content is loaded
+            setTimeout(typeEffect, 1000);
+        }
     </script>
 </body>
 </html>
