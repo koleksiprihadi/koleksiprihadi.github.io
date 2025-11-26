@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Kursi - Bank Indonesia 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #001a33 0%, #004d7a 25%, #0080bf 50%, #00a8cc 75%, #00bfff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Particle Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(255, 215, 0, 0) 70%);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glowing Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 1;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: #ffd700;
+            top: -100px;
+            right: -100px;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: #00bfff;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: 4s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.5;
+            }
+        }
+
+        /* Container */
+        .ticket-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Logo */
+        .logo {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            font-weight: bold;
+            color: #001a33;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.1);
+            }
+        }
+
+        /* Title */
+        .title {
+            color: #ffd700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
+            font-weight: 600;
+        }
+
+        /* Divider */
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(255, 215, 0, 0.5) 20%, 
+                rgba(255, 215, 0, 0.8) 50%, 
+                rgba(255, 215, 0, 0.5) 80%, 
+                transparent 100%);
+            margin: 25px 0;
+        }
+
+        /* Info Section */
+        .info-section {
+            margin-bottom: 30px;
+        }
+
+        .info-label {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            color: #ffffff;
+            font-size: 22px;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            line-height: 1.4;
+        }
+
+        /* Seat Number */
+        .seat-section {
+            margin: 40px 0;
+            padding: 40px 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 3px solid rgba(255, 215, 0, 0.4);
+            border-radius: 20px;
+            position: relative;
+            box-shadow: inset 0 0 30px rgba(255, 215, 0, 0.2);
+        }
+
+        .seat-label {
+            color: #ffd700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .seat-number {
+            color: #ffd700;
+            font-size: 120px;
+            font-weight: 900;
+            text-shadow: 0 5px 20px rgba(255, 215, 0, 0.6),
+                         0 0 40px rgba(255, 215, 0, 0.4);
+            line-height: 1;
+            letter-spacing: 5px;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 5px 20px rgba(255, 215, 0, 0.6),
+                             0 0 40px rgba(255, 215, 0, 0.4);
+            }
+            50% {
+                text-shadow: 0 5px 30px rgba(255, 215, 0, 0.8),
+                             0 0 60px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        /* VIP Badge */
+        .vip-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #001a33;
+            padding: 12px 40px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            animation: pulse-badge 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-badge {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.7);
+            }
+        }
+
+        .vip-badge::before {
+            content: "★";
+            margin-right: 10px;
+            animation: spin 4s linear infinite;
+            display: inline-block;
+        }
+
+        .vip-badge::after {
+            content: "★";
+            margin-left: 10px;
+            animation: spin 4s linear infinite reverse;
+            display: inline-block;
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 215, 0, 0.3);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .ticket-container {
+                padding: 40px 25px;
+            }
+
+            .seat-number {
+                font-size: 90px;
+            }
+
+            .info-value {
+                font-size: 18px;
+            }
+
+            .vip-badge {
+                font-size: 16px;
+                padding: 10px 30px;
+            }
+        }
+
+        /* Corner Decorations */
+        .corner-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .corner-top-left {
+            top: 20px;
+            left: 20px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 15px 0 0 0;
+        }
+
+        .corner-top-right {
+            top: 20px;
+            right: 20px;
+            border-left: none;
+            border-bottom: none;
+            border-radius: 0 15px 0 0;
+        }
+
+        .corner-bottom-left {
+            bottom: 20px;
+            left: 20px;
+            border-right: none;
+            border-top: none;
+            border-radius: 0 0 0 15px;
+        }
+
+        .corner-bottom-right {
+            bottom: 20px;
+            right: 20px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div id="particles"></div>
+
+    <!-- Ticket Container -->
+    <div class="ticket-container">
+        <!-- Corner Decorations -->
+        <div class="corner-decoration corner-top-left"></div>
+        <div class="corner-decoration corner-top-right"></div>
+        <div class="corner-decoration corner-bottom-left"></div>
+        <div class="corner-decoration corner-bottom-right"></div>
+
+        <!-- Logo -->
+        <div class="logo">BI</div>
+
+        <!-- Title -->
+        <div class="title">Pertemuan Tahunan 2025</div>
+
+        <div class="divider"></div>
+
+        <!-- Instansi -->
+        <div class="info-section">
+            <div class="info-label">Instansi</div>
+            <div class="info-value" id="instansi">Bank Indonesia</div>
+        </div>
+
+        <!-- Nama -->
+        <div class="info-section">
+            <div class="info-label">Nama Peserta</div>
+            <div class="info-value" id="nama">Dr. Perry Warjiyo</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Seat Number -->
+        <div class="seat-section">
+            <div class="seat-label">Nomor Kursi</div>
+            <div class="seat-number" id="seatNumber">A1</div>
+        </div>
+
+        <!-- VIP Badge (Hidden by default) -->
+        <div class="vip-badge" id="vipBadge" style="display: none;">VIP</div>
+
+        <!-- Jam Kehadiran -->
+        <div id="jamKehadiranSection" style="display: none; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(255, 215, 0, 0.3);">
+            <div style="color: rgba(255, 255, 255, 0.7); font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 8px;">
+                Waktu Absensi
+            </div>
+            <div id="jamKehadiran" style="color: #ffd700; font-size: 18px; font-weight: 600;">
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Pertemuan Tahunan Bank Indonesia</p>
+            <p>TANGGUH DAN MANDIRI: SINERGI MENDORONG PERTUMBUHAN EKONOMI</p>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // ===== KONFIGURASI API =====
+            // Ganti dengan URL Web App Anda setelah deploy
+            const API_URL = 'https://script.google.com/macros/s/AKfycbyRaIAsK2l6phzy4kqgSSfNjTEcP1Z3fOFuRk0uDNeadGx75UMcW9DgZ-GvEB-pbzJRRw/exec';
+
+            // ===== GET INSTANSI FROM URL =====
+            function getUrlParameter(name) {
+                const urlParams = new URLSearchParams(window.location.search);
+                return urlParams.get(name);
+            }
+
+            // ===== LOAD DATA FROM API =====
+            function loadTicketData(instansi) {
+                if (!instansi) {
+                    showError('Instansi tidak ditemukan dalam URL');
+                    return;
+                }
+
+                // Show loading
+                $('#instansi').text('Loading...');
+                $('#nama').text('Loading...');
+                $('#seatNumber').text('...');
+
+                $.ajax({
+                    url: API_URL,
+                    type: 'GET',
+                    data: { 
+                        action: 'getDetail',
+                        instansi: instansi
+                    },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            displayTicket(response.data.detail);
+                        } else {
+                            showError('Data tidak ditemukan: ' + response.message);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        showError('Gagal memuat data: ' + error);
+                    }
+                });
+            }
+
+            // ===== DISPLAY TICKET DATA =====
+            function displayTicket(data) {
+                $('#instansi').text(data.instansi);
+                
+                // Check if diwakilkan
+                if (data.isDiwakilkan && data.namaPerwakilan) {
+                    // Tampilkan nama perwakilan
+                    const namaTampil = data.namaPerwakilan;
+                    const jabatanTampil = data.jabatanPerwakilan || '';
+                    
+                    $('#nama').html(
+                        namaTampil + 
+                        (jabatanTampil ? '<br><small style="font-size: 16px; color: rgba(255,255,255,0.8);">(' + jabatanTampil + ')</small>' : '') +
+                        '<br><small style="font-size: 14px; color: #ffd700;">Mewakili: ' + data.nama + '</small>'
+                    );
+                } else {
+                    // Tampilkan nama asli
+                    $('#nama').text(data.nama);
+                }
+                
+                $('#seatNumber').text(data.noKursi);
+                
+                // Show VIP badge only if VIP
+                if (data.isVip === true || data.isVip === 'TRUE' || data.isVip === 'true') {
+                    $('#vipBadge').fadeIn(500);
+                } else {
+                    $('#vipBadge').hide();
+                }
+
+                // Show jam kehadiran if available
+                if (data.jamKehadiran) {
+                    $('#jamKehadiran').text(data.jamKehadiran);
+                    $('#jamKehadiranSection').fadeIn(500);
+                }
+
+                // Animate entrance
+                $('.ticket-container').addClass('loaded');
+            }
+
+            // ===== SHOW ERROR =====
+            function showError(message) {
+                $('.ticket-container').html(`
+                    <div style="text-align: center; color: #ffffff;">
+                        <div style="font-size: 60px; margin-bottom: 20px;">⚠️</div>
+                        <h2 style="color: #ffd700; margin-bottom: 15px;">Error</h2>
+                        <p style="color: rgba(255,255,255,0.8);">${message}</p>
+                        <button onclick="window.location.href='form-absensi.html'" 
+                                style="margin-top: 30px; padding: 15px 30px; background: linear-gradient(135deg, #ffd700, #ffed4e); 
+                                       border: none; border-radius: 15px; font-weight: bold; cursor: pointer; color: #001a33;">
+                            Kembali ke Form
+                        </button>
+                    </div>
+                `);
+            }
+
+            // Create Particles
+            function createParticles() {
+                const particleCount = 50;
+                const $particlesContainer = $('#particles');
+
+                for (let i = 0; i < particleCount; i++) {
+                    const size = Math.random() * 4 + 2;
+                    const left = Math.random() * 100;
+                    const duration = (Math.random() * 15 + 10);
+                    const delay = Math.random() * 5;
+
+                    $('<div>')
+                        .addClass('particle')
+                        .css({
+                            width: size + 'px',
+                            height: size + 'px',
+                            left: left + '%',
+                            animationDuration: duration + 's',
+                            animationDelay: delay + 's'
+                        })
+                        .appendTo($particlesContainer);
+                }
+            }
+
+            // ===== INITIALIZE =====
+            createParticles();
+            
+            // Get instansi from URL and load data
+            const instansi = getUrlParameter('instansi');
+            if (instansi) {
+                loadTicketData(decodeURIComponent(instansi));
+            } else {
+                showError('Instansi tidak ditemukan dalam URL. Mohon akses melalui form absensi.');
+            }
+        });
+    </script>
+</body>
+</html>

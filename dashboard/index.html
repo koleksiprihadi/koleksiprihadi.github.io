@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Tamu - Bank Indonesia 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #001a33 0%, #004d7a 25%, #0080bf 50%, #00a8cc 75%, #00bfff 100%);
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Particle Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(255, 215, 0, 0) 70%);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #001a33;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.1);
+            }
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: #ffd700;
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Statistics Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.8s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.3);
+            border-color: #ffd700;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            color: #ffd700;
+            font-size: 36px;
+            font-weight: bold;
+            text-shadow: 0 2px 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Filter Panel */
+        .filter-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            margin-bottom: 30px;
+        }
+
+        .filter-title {
+            color: #ffd700;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .filter-checkbox {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            border-radius: 10px;
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-checkbox:hover {
+            background: rgba(255, 215, 0, 0.1);
+            border-color: rgba(255, 215, 0, 0.5);
+        }
+
+        .filter-checkbox.active {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+        }
+
+        .filter-checkbox input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .filter-checkbox label {
+            color: #ffffff;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        /* Search Box */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            color: #ffffff;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .search-input:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Table Container */
+        .table-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 25px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            overflow-x: auto;
+        }
+
+        .table-info {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(255, 215, 0, 0.2);
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            color: #ffd700;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 14px;
+            border-bottom: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        td {
+            padding: 15px;
+            color: #ffffff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-vip {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #001a33;
+        }
+
+        .badge-regular {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+
+        .badge-hadir {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        .badge-belum {
+            background: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+            border: 1px solid #f44336;
+        }
+
+        .badge-diwakilkan {
+            background: rgba(33, 150, 243, 0.3);
+            color: #2196f3;
+            border: 1px solid #2196f3;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #ffffff;
+            font-size: 18px;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 215, 0, 0.3);
+            border-top: 4px solid #ffd700;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            .stat-value {
+                font-size: 28px;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            .table-container {
+                padding: 15px;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .empty-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .empty-text {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">BI</div>
+            <h1>Dashboard Kehadiran</h1>
+            <p class="subtitle">Pertemuan Tahunan Bank Indonesia 2025</p>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">✓</div>
+                <div class="stat-label">Total Hadir</div>
+                <div class="stat-value" id="statTotalHadir">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">★</div>
+                <div class="stat-label">VIP Hadir</div>
+                <div class="stat-value" id="statVipHadir">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👤</div>
+                <div class="stat-label">VIP Diwakilkan</div>
+                <div class="stat-value" id="statVipDiwakilkan">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-label">Non VIP</div>
+                <div class="stat-value" id="statNonVip">0</div>
+            </div>
+        </div>
+
+        <!-- Filter Panel -->
+        <div class="filter-panel">
+            <div class="filter-title">Filter Tamu</div>
+            
+            <div class="filter-group">
+                <div class="filter-checkbox active" id="filterAll">
+                    <input type="radio" name="mainFilter" id="checkAll" checked>
+                    <label for="checkAll">Semua Tamu</label>
+                </div>
+            </div>
+
+            <div class="filter-group" id="additionalFilters" style="display: none;">
+                <div class="filter-checkbox" data-filter="hadir">
+                    <input type="checkbox" id="checkHadir">
+                    <label for="checkHadir">Hadir</label>
+                </div>
+                <div class="filter-checkbox" data-filter="vip">
+                    <input type="checkbox" id="checkVip">
+                    <label for="checkVip">VIP</label>
+                </div>
+                <div class="filter-checkbox" data-filter="nonvip">
+                    <input type="checkbox" id="checkNonVip">
+                    <label for="checkNonVip">Non VIP</label>
+                </div>
+                <div class="filter-checkbox" data-filter="diwakilkan">
+                    <input type="checkbox" id="checkDiwakilkan">
+                    <label for="checkDiwakilkan">Diwakilkan</label>
+                </div>
+            </div>
+
+            <!-- Search Box -->
+            <div class="search-box">
+                <input type="text" class="search-input" id="searchInput" placeholder="🔍 Cari nama tamu atau instansi...">
+            </div>
+        </div>
+
+        <!-- Table Container -->
+        <div class="table-container">
+            <div class="table-info">
+                Menampilkan <strong id="displayCount">0</strong> dari <strong id="totalCount">0</strong> tamu
+            </div>
+            
+            <div id="tableContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading data...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // ===== KONFIGURASI API =====
+            const API_URL = 'https://script.google.com/macros/s/AKfycbyRaIAsK2l6phzy4kqgSSfNjTEcP1Z3fOFuRk0uDNeadGx75UMcW9DgZ-GvEB-pbzJRRw/exec';
+            
+            let allTamu = [];
+            let filteredTamu = [];
+            
+            // ===== CREATE PARTICLES =====
+            function createParticles() {
+                const particleCount = 50;
+                const $particlesContainer = $('#particles');
+
+                for (let i = 0; i < particleCount; i++) {
+                    const size = Math.random() * 4 + 2;
+                    const left = Math.random() * 100;
+                    const duration = (Math.random() * 15 + 10);
+                    const delay = Math.random() * 5;
+
+                    $('<div>')
+                        .addClass('particle')
+                        .css({
+                            width: size + 'px',
+                            height: size + 'px',
+                            left: left + '%',
+                            animationDuration: duration + 's',
+                            animationDelay: delay + 's'
+                        })
+                        .appendTo($particlesContainer);
+                }
+            }
+
+            // ===== LOAD DATA FROM API =====
+            function loadData() {
+                $.ajax({
+                    url: API_URL,
+                    type: 'GET',
+                    data: { action: 'getAllTamu' },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            allTamu = response.data.tamu;
+                            filteredTamu = allTamu;
+                            
+                            // Update statistics
+                            updateStatistics(response.data.statistics);
+                            
+                            // Render table
+                            renderTable();
+                        } else {
+                            showError('Gagal memuat data: ' + response.message);
+                        }
+                    },
+                    error: function() {
+                        showError('Gagal terhubung ke server. Pastikan API URL sudah benar.');
+                    }
+                });
+            }
+
+            // ===== UPDATE STATISTICS =====
+            function updateStatistics(stats) {
+                $('#statTotalHadir').text(stats.totalHadir);
+                $('#statVipHadir').text(stats.vipHadir);
+                $('#statVipDiwakilkan').text(stats.vipDiwakilkan);
+                $('#statNonVip').text(stats.nonVip);
+            }
+
+            // ===== RENDER TABLE =====
+            function renderTable() {
+                const $tableContent = $('#tableContent');
+                
+                if (filteredTamu.length === 0) {
+                    $tableContent.html(`
+                        <div class="empty-state">
+                            <div class="empty-icon">🔍</div>
+                            <div class="empty-text">Tidak ada data yang sesuai dengan filter</div>
+                        </div>
+                    `);
+                    $('#displayCount').text(0);
+                    $('#totalCount').text(allTamu.length);
+                    return;
+                }
+
+                let tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Instansi</th>
+                                <th>Nama</th>
+                                <th>Jabatan</th>
+                                <th>Status</th>
+                                <th>Kursi</th>
+                                <th>Kehadiran</th>
+                                <th>Jam Kehadiran</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+
+                filteredTamu.forEach(function(tamu, index) {
+                    const statusBadge = tamu.isVip ? '<span class="badge badge-vip">VIP</span>' : '<span class="badge badge-regular">Regular</span>';
+                    const kehadiranBadge = tamu.isHadir ? '<span class="badge badge-hadir">Hadir</span>' : '<span class="badge badge-belum">Belum Hadir</span>';
+                    const diwakilkanBadge = tamu.isDiwakilkan ? '<br><span class="badge badge-diwakilkan">Diwakilkan</span>' : '';
+                    
+                    let namaTampil = tamu.nama;
+                    if (tamu.isDiwakilkan && tamu.namaPerwakilan) {
+                        namaTampil += '<br><small style="color: #ffd700;">Diwakili: ' + tamu.namaPerwakilan + '</small>';
+                    }
+
+                    const jamKehadiran = tamu.jamKehadiran || '-';
+
+                    tableHTML += `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${tamu.instansi}</td>
+                            <td>${namaTampil}</td>
+                            <td>${tamu.jabatan}</td>
+                            <td>${statusBadge}</td>
+                            <td><strong>${tamu.noKursi}</strong></td>
+                            <td>${kehadiranBadge}${diwakilkanBadge}</td>
+                            <td><small>${jamKehadiran}</small></td>
+                        </tr>
+                    `;
+                });
+
+                tableHTML += `
+                        </tbody>
+                    </table>
+                `;
+
+                $tableContent.html(tableHTML);
+                
+                // Update counts
+                $('#displayCount').text(filteredTamu.length);
+                $('#totalCount').text(allTamu.length);
+            }
+
+            // ===== APPLY FILTERS =====
+            function applyFilters() {
+                const searchTerm = $('#searchInput').val().toLowerCase();
+                const filterAll = $('#checkAll').is(':checked');
+                
+                // Get selected filters
+                const filters = {
+                    hadir: $('#checkHadir').is(':checked'),
+                    vip: $('#checkVip').is(':checked'),
+                    nonvip: $('#checkNonVip').is(':checked'),
+                    diwakilkan: $('#checkDiwakilkan').is(':checked')
+                };
+
+                // Filter data
+                filteredTamu = allTamu.filter(function(tamu) {
+                    // Search filter
+                    const matchSearch = searchTerm === '' || 
+                        tamu.nama.toLowerCase().includes(searchTerm) ||
+                        tamu.instansi.toLowerCase().includes(searchTerm) ||
+                        (tamu.namaPerwakilan && tamu.namaPerwakilan.toLowerCase().includes(searchTerm));
+
+                    if (!matchSearch) return false;
+
+                    // If "All" is selected, show all
+                    if (filterAll) return true;
+
+                    // If no filters selected, show none
+                    const anyFilterSelected = filters.hadir || filters.vip || filters.nonvip || filters.diwakilkan;
+                    if (!anyFilterSelected) return false;
+
+                    // Apply multiple filters (OR logic)
+                    let matchFilter = false;
+                    
+                    if (filters.hadir && tamu.isHadir) matchFilter = true;
+                    if (filters.vip && tamu.isVip) matchFilter = true;
+                    if (filters.nonvip && !tamu.isVip) matchFilter = true;
+                    if (filters.diwakilkan && tamu.isDiwakilkan) matchFilter = true;
+
+                    return matchFilter;
+                });
+
+                renderTable();
+            }
+
+            // ===== EVENT HANDLERS =====
+            
+            // Filter All
+            $('#filterAll').on('click', function() {
+                $('#checkAll').prop('checked', true);
+                $('#additionalFilters').slideUp(300);
+                
+                // Uncheck all additional filters
+                $('#additionalFilters input[type="checkbox"]').prop('checked', false);
+                $('#additionalFilters .filter-checkbox').removeClass('active');
+                
+                $(this).addClass('active');
+                applyFilters();
+            });
+
+            // Additional Filters
+            $('#additionalFilters .filter-checkbox').on('click', function() {
+                const $checkbox = $(this).find('input[type="checkbox"]');
+                $checkbox.prop('checked', !$checkbox.prop('checked'));
+                
+                // Toggle active class
+                if ($checkbox.is(':checked')) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+                
+                // Uncheck "All" and show additional filters
+                $('#checkAll').prop('checked', false);
+                $('#filterAll').removeClass('active');
+                $('#additionalFilters').slideDown(300);
+                
+                applyFilters();
+            });
+
+            // Search
+            $('#searchInput').on('keyup', function() {
+                applyFilters();
+            });
+
+            // Show error
+            function showError(message) {
+                $('#tableContent').html(`
+                    <div class="empty-state">
+                        <div class="empty-icon">⚠️</div>
+                        <div class="empty-text">${message}</div>
+                    </div>
+                `);
+            }
+
+            // ===== INITIALIZE =====
+            createParticles();
+            loadData();
+        });
+    </script>
+</body>
+</html>
