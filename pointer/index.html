@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement - Bank Indonesia 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #001a33 0%, #004d7a 25%, #0080bf 50%, #00a8cc 75%, #00bfff 100%);
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Particle Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(255, 215, 0, 0) 70%);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            font-weight: bold;
+            color: #001a33;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: #ffd700;
+            font-size: 14px;
+            font-weight: 500;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* VIP List Section */
+        .vip-section {
+            background: rgba(200, 255, 255, 0.35);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 20px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .section-title {
+            color: #001a33;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: '★';
+            color: #ffd700;
+            font-size: 24px;
+            margin-right: 10px;
+        }
+
+        .vip-list {
+            list-style: none;
+            max-height: 300px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 10px;
+        }
+
+        /* Custom Scrollbar */
+        .vip-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .vip-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+
+        .vip-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 10px;
+        }
+
+        .vip-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ffed4e, #ffd700);
+        }
+
+        .vip-item {
+            color: #001a33;
+            font-size: 16px;
+            font-weight: 500;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0, 26, 51, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .vip-item:last-child {
+            border-bottom: none;
+        }
+
+        .vip-number {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #001a33;
+            font-weight: bold;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 14px;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .loading {
+            text-align: center;
+            color: #001a33;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        /* Text Editor Section */
+        .editor-section {
+            background: rgba(200, 255, 255, 0.35);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 30px;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .editor-title {
+            color: #001a33;
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .editor-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .font-control {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 10px;
+        }
+
+        .font-control label {
+            color: #001a33;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .font-size-btn {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #001a33;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+        }
+
+        .font-size-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.6);
+        }
+
+        .font-size-display {
+            color: #001a33;
+            font-weight: bold;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        #textEditor {
+            width: 100%;
+            min-height: 400px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(0, 26, 51, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            color: #001a33;
+            font-size: 16px;
+            line-height: 1.8;
+            resize: vertical;
+            outline: none;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+
+        #textEditor:focus {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .auto-save-indicator {
+            color: #001a33;
+            font-size: 12px;
+            margin-top: 10px;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        /* Scroll Navigation */
+        .scroll-nav {
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 100;
+        }
+
+        .scroll-btn {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #7ed321, #a0e742);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 20px rgba(126, 211, 33, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .scroll-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(126, 211, 33, 0.7);
+        }
+
+        .scroll-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: #ffffff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 22px;
+            }
+
+            .vip-section, .editor-section {
+                padding: 20px;
+            }
+
+            .section-title, .editor-title {
+                font-size: 18px;
+            }
+
+            .editor-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .scroll-nav {
+                right: 15px;
+                bottom: 15px;
+            }
+
+            .scroll-btn {
+                width: 50px;
+                height: 50px;
+            }
+
+            .scroll-btn svg {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">BI</div>
+            <h1>Announcement Board</h1>
+            <p class="subtitle">Pertemuan Tahunan Bank Indonesia 2025</p>
+        </div>
+
+        <!-- VIP List Section -->
+        <div class="vip-section">
+            <div class="section-title">VIP Hadir</div>
+            <ol class="vip-list" id="vipList">
+                <div class="loading">Loading data VIP...</div>
+            </ol>
+        </div>
+
+        <!-- Text Editor Section -->
+        <div class="editor-section">
+            <div class="editor-header">
+                <div class="editor-title">Pengumuman</div>
+                <div class="editor-controls">
+                    <div class="font-control">
+                        <label>Font:</label>
+                        <button class="font-size-btn" id="decreaseFont" title="Perkecil">−</button>
+                        <span class="font-size-display" id="fontSizeDisplay">16px</span>
+                        <button class="font-size-btn" id="increaseFont" title="Perbesar">+</button>
+                    </div>
+                </div>
+            </div>
+            <textarea id="textEditor" placeholder="Ketik pengumuman di sini..."></textarea>
+            <div class="auto-save-indicator">
+                <span id="saveStatus">Auto-save: Ready</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scroll Navigation -->
+    <div class="scroll-nav">
+        <button class="scroll-btn" id="scrollUp" title="Scroll text editor ke atas">
+            <svg viewBox="0 0 24 24">
+                <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+            </svg>
+        </button>
+        <button class="scroll-btn" id="scrollDown" title="Scroll text editor ke bawah">
+            <svg viewBox="0 0 24 24">
+                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            // ===== KONFIGURASI API =====
+            const API_URL = 'https://script.google.com/macros/s/AKfycbyRaIAsK2l6phzy4kqgSSfNjTEcP1Z3fOFuRk0uDNeadGx75UMcW9DgZ-GvEB-pbzJRRw/exec';
+            
+            // ===== LOCAL STORAGE KEYS =====
+            const STORAGE_KEY_TEXT = 'bi_announcement_text';
+            const STORAGE_KEY_FONT_SIZE = 'bi_announcement_font_size';
+            
+            let currentFontSize = 16;
+            let saveTimeout = null;
+
+            // ===== CREATE PARTICLES =====
+            function createParticles() {
+                const particleCount = 50;
+                const $particlesContainer = $('#particles');
+
+                for (let i = 0; i < particleCount; i++) {
+                    const size = Math.random() * 4 + 2;
+                    const left = Math.random() * 100;
+                    const duration = (Math.random() * 15 + 10);
+                    const delay = Math.random() * 5;
+
+                    $('<div>')
+                        .addClass('particle')
+                        .css({
+                            width: size + 'px',
+                            height: size + 'px',
+                            left: left + '%',
+                            animationDuration: duration + 's',
+                            animationDelay: delay + 's'
+                        })
+                        .appendTo($particlesContainer);
+                }
+            }
+
+            // ===== LOAD VIP LIST =====
+            function loadVIPList() {
+                $.ajax({
+                    url: API_URL,
+                    type: 'GET',
+                    data: { action: 'getAllTamu' },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            const allTamu = response.data.tamu;
+                            
+                            // Filter VIP yang sudah hadir
+                            const vipHadir = allTamu.filter(function(tamu) {
+                                return tamu.isVip === true && tamu.isHadir === true;
+                            });
+
+                            displayVIPList(vipHadir);
+                        } else {
+                            showError('Gagal memuat data VIP');
+                        }
+                    },
+                    error: function() {
+                        showError('Gagal terhubung ke server');
+                    }
+                });
+            }
+
+            // ===== DISPLAY VIP LIST =====
+            function displayVIPList(vipList) {
+                const $vipListContainer = $('#vipList');
+                
+                if (vipList.length === 0) {
+                    $vipListContainer.html('<div class="loading">Belum ada VIP yang hadir</div>');
+                    return;
+                }
+
+                $vipListContainer.empty();
+
+                vipList.forEach(function(vip, index) {
+                    const namaTampil = vip.isDiwakilkan && vip.namaPerwakilan 
+                        ? vip.namaPerwakilan + ' (mewakili ' + vip.nama + ')'
+                        : vip.nama;
+
+                    const $item = $('<li>')
+                        .addClass('vip-item')
+                        .html(`
+                            <span class="vip-number">${index + 1}</span>
+                            <span>${namaTampil} - ${vip.instansi}</span>
+                        `);
+                    
+                    $vipListContainer.append($item);
+                });
+            }
+
+            // ===== SHOW ERROR =====
+            function showError(message) {
+                $('#vipList').html('<div class="loading" style="color: #e74c3c;">' + message + '</div>');
+            }
+
+            // ===== TEXT EDITOR - LOAD FROM LOCALSTORAGE =====
+            function loadEditorContent() {
+                const savedText = localStorage.getItem(STORAGE_KEY_TEXT);
+                const savedFontSize = localStorage.getItem(STORAGE_KEY_FONT_SIZE);
+
+                if (savedText) {
+                    $('#textEditor').val(savedText);
+                }
+
+                if (savedFontSize) {
+                    currentFontSize = parseInt(savedFontSize);
+                    updateFontSize();
+                }
+            }
+
+            // ===== TEXT EDITOR - AUTO SAVE =====
+            function autoSave() {
+                const text = $('#textEditor').val();
+                localStorage.setItem(STORAGE_KEY_TEXT, text);
+                
+                // Show save status
+                $('#saveStatus').text('Auto-save: Tersimpan ✓').css('color', '#7ed321');
+                
+                setTimeout(function() {
+                    $('#saveStatus').text('Auto-save: Ready').css('color', '#001a33');
+                }, 2000);
+            }
+
+            // ===== TEXT EDITOR - CHANGE EVENT =====
+            $('#textEditor').on('input', function() {
+                $('#saveStatus').text('Auto-save: Menyimpan...').css('color', '#f39c12');
+                
+                // Debounce save
+                clearTimeout(saveTimeout);
+                saveTimeout = setTimeout(autoSave, 1000);
+            });
+
+            // ===== FONT SIZE CONTROLS =====
+            function updateFontSize() {
+                $('#textEditor').css('font-size', currentFontSize + 'px');
+                $('#fontSizeDisplay').text(currentFontSize + 'px');
+                localStorage.setItem(STORAGE_KEY_FONT_SIZE, currentFontSize);
+            }
+
+            $('#increaseFont').on('click', function() {
+                if (currentFontSize < 32) {
+                    currentFontSize += 2;
+                    updateFontSize();
+                }
+            });
+
+            $('#decreaseFont').on('click', function() {
+                if (currentFontSize > 10) {
+                    currentFontSize -= 2;
+                    updateFontSize();
+                }
+            });
+
+            // ===== SCROLL NAVIGATION (LINE BY LINE) =====
+            const lineHeight = 29; // Line height based on font-size 16px * 1.8 line-height ≈ 29px
+            
+            $('#scrollUp').on('click', function() {
+                // Scroll text editor up by one line
+                const $editor = $('#textEditor');
+                const currentScroll = $editor.scrollTop();
+                $editor.animate({
+                    scrollTop: currentScroll - lineHeight
+                }, 200, 'swing');
+            });
+
+            $('#scrollDown').on('click', function() {
+                // Scroll text editor down by one line
+                const $editor = $('#textEditor');
+                const currentScroll = $editor.scrollTop();
+                $editor.animate({
+                    scrollTop: currentScroll + lineHeight
+                }, 200, 'swing');
+            });
+
+            // Keyboard shortcuts for text editor scroll
+            $('#textEditor').on('keydown', function(e) {
+                // Ctrl + Arrow Up - Scroll up one line
+                if (e.ctrlKey && e.keyCode === 38) {
+                    e.preventDefault();
+                    const $editor = $(this);
+                    const currentScroll = $editor.scrollTop();
+                    $editor.animate({
+                        scrollTop: currentScroll - lineHeight
+                    }, 150);
+                }
+                // Ctrl + Arrow Down - Scroll down one line
+                if (e.ctrlKey && e.keyCode === 40) {
+                    e.preventDefault();
+                    const $editor = $(this);
+                    const currentScroll = $editor.scrollTop();
+                    $editor.animate({
+                        scrollTop: currentScroll + lineHeight
+                    }, 150);
+                }
+                // Page Up - Scroll editor up by 5 lines
+                if (e.keyCode === 33) {
+                    e.preventDefault();
+                    const $editor = $(this);
+                    const currentScroll = $editor.scrollTop();
+                    $editor.animate({
+                        scrollTop: currentScroll - (lineHeight * 5)
+                    }, 300);
+                }
+                // Page Down - Scroll editor down by 5 lines
+                if (e.keyCode === 34) {
+                    e.preventDefault();
+                    const $editor = $(this);
+                    const currentScroll = $editor.scrollTop();
+                    $editor.animate({
+                        scrollTop: currentScroll + (lineHeight * 5)
+                    }, 300);
+                }
+            });
+
+            // ===== INITIALIZE =====
+            createParticles();
+            loadVIPList();
+            loadEditorContent();
+
+            // Auto-refresh VIP list every 30 seconds
+            setInterval(loadVIPList, 30000);
+        });
+    </script>
+</body>
+</html>
