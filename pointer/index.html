@@ -275,6 +275,140 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 10px;
+        }
+
+        .control-group label {
+            color: #001a33;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+
+        .lines-selector {
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid rgba(0, 26, 51, 0.2);
+            border-radius: 8px;
+            padding: 4px 8px;
+            color: #001a33;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .lines-selector:hover {
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .timer-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            padding: 8px 15px;
+            border-radius: 10px;
+        }
+
+        .timer-display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #001a33;
+            min-width: 80px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer-display.warning {
+            color: #f39c12;
+            animation: pulse 1s infinite;
+        }
+
+        .timer-display.expired {
+            color: #e74c3c;
+            animation: flash 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        @keyframes flash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .timer-input {
+            width: 60px;
+            padding: 6px;
+            border: 2px solid rgba(0, 26, 51, 0.2);
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            color: #001a33;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .timer-input:focus {
+            border-color: #ffd700;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .timer-btn {
+            background: linear-gradient(135deg, #3498db, #5dade2);
+            color: #ffffff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 3px 10px rgba(52, 152, 219, 0.4);
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .timer-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.6);
+        }
+
+        .timer-btn:active {
+            transform: translateY(0);
+        }
+
+        .timer-btn.reset {
+            background: linear-gradient(135deg, #95a5a6, #bdc3c7);
+        }
+
+        .timer-btn.reset:hover {
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.6);
+        }
+
+        .timer-btn.pause {
+            background: linear-gradient(135deg, #e67e22, #f39c12);
+        }
+
+        .timer-btn.pause:hover {
+            box-shadow: 0 5px 15px rgba(230, 126, 34, 0.6);
         }
 
         .refresh-btn {
@@ -418,6 +552,18 @@
         }
 
         .load-status-indicator {
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        #loadStatus {
+            color: #001a33;
+            font-size: 12px;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        .load-status-indicator {
             color: #001a33;
             font-size: 12px;
             margin-top: 10px;
@@ -435,7 +581,7 @@
 
         .scroll-btn {
             width: 70px;
-            height: 180px;
+            height: 120px;
             background: linear-gradient(135deg, #7ed321, #a0e742);
             border: none;
             border-radius: 12px;
@@ -498,6 +644,30 @@
                 align-items: flex-start;
             }
 
+            .editor-controls {
+                width: 100%;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .control-group, .timer-container {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .timer-container {
+                flex-wrap: wrap;
+            }
+
+            .timer-display {
+                font-size: 18px;
+                min-width: 70px;
+            }
+
+            .timer-input {
+                width: 50px;
+            }
+
             .display-container {
                 flex-direction: column;
             }
@@ -510,7 +680,7 @@
 
             .scroll-btn {
                 width: 100px;
-                height: 300px;
+                height: 60px;
                 flex-direction: row;
                 gap: 10px;
             }
@@ -531,7 +701,7 @@
         <!-- Header -->
         <div class="header">
             <div class="logo">BI</div>
-            <h1>Announcement Board</h1>
+            <h1>Pointer Board</h1>
             <p class="subtitle">Pertemuan Tahunan Bank Indonesia 2025</p>
         </div>
 
@@ -546,18 +716,40 @@
         <!-- Text Editor Section -->
         <div class="editor-section">
             <div class="editor-header">
-                <div class="editor-title">Pengumuman</div>
+                <div class="editor-title">Pointer</div>
                 <div class="editor-controls">
                     <button class="refresh-btn" id="refreshText" title="Muat ulang dari API">
                         <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: #001a33;">
                             <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
                         </svg>
                     </button>
-                    <div class="font-control">
+                    
+                    <div class="control-group">
+                        <label>Scroll:</label>
+                        <select class="lines-selector" id="linesPerClick">
+                            <option value="2">2 Baris</option>
+                            <option value="4" selected>4 Baris</option>
+                            <option value="6">6 Baris</option>
+                            <option value="8">8 Baris</option>
+                            <option value="10">10 Baris</option>
+                            <option value="12">12 Baris</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group font-control">
                         <label>Font:</label>
                         <button class="font-size-btn" id="decreaseFont" title="Perkecil">−</button>
                         <span class="font-size-display" id="fontSizeDisplay">16px</span>
                         <button class="font-size-btn" id="increaseFont" title="Perbesar">+</button>
+                    </div>
+                    
+                    <div class="timer-container">
+                        <label>Timer:</label>
+                        <input type="number" class="timer-input" id="timerMinutes" min="1" max="60" value="10" title="Menit">
+                        <span style="color: #001a33; font-weight: 600;">min</span>
+                        <div class="timer-display" id="timerDisplay">00:00</div>
+                        <button class="timer-btn" id="startTimer" title="Mulai timer">Start</button>
+                        <button class="timer-btn reset" id="resetTimer" title="Reset timer">Reset</button>
                     </div>
                 </div>
             </div>
@@ -599,9 +791,16 @@
             const STORAGE_KEY_TEXT = 'bi_announcement_text';
             const STORAGE_KEY_FONT_SIZE = 'bi_announcement_font_size';
             const STORAGE_KEY_LAST_FETCH = 'bi_announcement_last_fetch';
+            const STORAGE_KEY_LINES_PER_CLICK = 'bi_announcement_lines_per_click';
             
             let currentFontSize = 16;
             let saveTimeout = null;
+            let linesPerClick = 4; // Default 4 baris
+            
+            // ===== TIMER VARIABLES =====
+            let timerInterval = null;
+            let timerSeconds = 0;
+            let timerRunning = false;
 
             // ===== CREATE PARTICLES =====
             function createParticles() {
@@ -791,24 +990,115 @@
                 }, 2000);
             });
 
-            // ===== SCROLL NAVIGATION (4 LINES PER CLICK + MANUAL SCROLL) =====
+            // ===== TIMER FUNCTIONS =====
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = seconds % 60;
+                return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+            }
+
+            function updateTimerDisplay() {
+                const $display = $('#timerDisplay');
+                $display.text(formatTime(timerSeconds));
+                
+                // Add warning class when < 1 minute
+                if (timerSeconds <= 60 && timerSeconds > 0) {
+                    $display.addClass('warning').removeClass('expired');
+                } else if (timerSeconds === 0) {
+                    $display.addClass('expired').removeClass('warning');
+                } else {
+                    $display.removeClass('warning expired');
+                }
+            }
+
+            function startTimer() {
+                if (timerRunning) {
+                    // Pause
+                    clearInterval(timerInterval);
+                    timerRunning = false;
+                    $('#startTimer').text('Resume').removeClass('pause');
+                    return;
+                }
+
+                // Start or Resume
+                if (timerSeconds === 0) {
+                    // Start new timer
+                    const minutes = parseInt($('#timerMinutes').val()) || 5;
+                    timerSeconds = minutes * 60;
+                }
+
+                timerRunning = true;
+                $('#startTimer').text('Pause').addClass('pause');
+                
+                timerInterval = setInterval(function() {
+                    timerSeconds--;
+                    updateTimerDisplay();
+                    
+                    if (timerSeconds <= 0) {
+                        clearInterval(timerInterval);
+                        timerRunning = false;
+                        $('#startTimer').text('Start').removeClass('pause');
+                        
+                        // Alert when time's up
+                        if (window.confirm('⏰ Waktu habis! Timer selesai.')) {
+                            resetTimer();
+                        }
+                    }
+                }, 1000);
+                
+                updateTimerDisplay();
+            }
+
+            function resetTimer() {
+                clearInterval(timerInterval);
+                timerRunning = false;
+                timerSeconds = 0;
+                $('#startTimer').text('Start').removeClass('pause');
+                updateTimerDisplay();
+            }
+
+            $('#startTimer').on('click', startTimer);
+            $('#resetTimer').on('click', resetTimer);
+
+            // Update display when minutes input changes
+            $('#timerMinutes').on('change', function() {
+                if (!timerRunning) {
+                    resetTimer();
+                }
+            });
+
+            // ===== LINES PER CLICK SETTING =====
+            function loadLinesPerClick() {
+                const saved = localStorage.getItem(STORAGE_KEY_LINES_PER_CLICK);
+                if (saved) {
+                    linesPerClick = parseInt(saved);
+                    $('#linesPerClick').val(linesPerClick);
+                }
+            }
+
+            $('#linesPerClick').on('change', function() {
+                linesPerClick = parseInt($(this).val());
+                localStorage.setItem(STORAGE_KEY_LINES_PER_CLICK, linesPerClick);
+            });
+
+            // ===== SCROLL NAVIGATION (DYNAMIC LINES PER CLICK) =====
             const lineHeight = 29; // Line height based on font-size 16px * 1.8 line-height ≈ 29px
-            const linesPerClick = 4; // 4 lines per button click
-            const scrollDistance = lineHeight * linesPerClick; // 29px * 4 = 116px
             
             $('#scrollUp').on('click', function() {
-                // Scroll text display up by 4 lines
+                // Scroll text display up by configured lines
                 const $display = $('#textDisplay');
                 const currentScroll = $display.scrollTop();
+                const scrollDistance = lineHeight * linesPerClick;
                 $display.animate({
                     scrollTop: Math.max(0, currentScroll - scrollDistance)
                 }, 300, 'swing');
             });
 
             $('#scrollDown').on('click', function() {
-                // Scroll text display down by 4 lines
+                // Scroll text display down by configured lines
                 const $display = $('#textDisplay');
                 const currentScroll = $display.scrollTop();
+                const scrollDistance = lineHeight * linesPerClick;
                 $display.animate({
                     scrollTop: currentScroll + scrollDistance
                 }, 300, 'swing');
@@ -851,9 +1141,11 @@
             createParticles();
             loadVIPList();
             loadDisplayContent();
+            loadLinesPerClick();
+            updateTimerDisplay();
 
             // Auto-refresh VIP list every 30 seconds
-            setInterval(loadVIPList, 30000);
+            // setInterval(loadVIPList, 30000);
         });
     </script>
 </body>
