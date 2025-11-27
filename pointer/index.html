@@ -244,6 +244,16 @@
             position: relative;
         }
 
+        .display-container {
+            display: flex;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        .text-display-wrapper {
+            flex: 1;
+        }
+
         .editor-header {
             display: flex;
             justify-content: space-between;
@@ -415,28 +425,27 @@
             opacity: 0.7;
         }
 
-        /* Scroll Navigation */
+        /* Scroll Navigation - Side Buttons */
         .scroll-nav {
-            position: fixed;
-            right: 30px;
-            bottom: 30px;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            z-index: 100;
+            gap: 15px;
+            justify-content: center;
         }
 
         .scroll-btn {
-            width: 150px;
-            height: 150px;
+            width: 70px;
+            height: 180px;
             background: linear-gradient(135deg, #7ed321, #a0e742);
             border: none;
-            border-radius: 50%;
+            border-radius: 12px;
             cursor: pointer;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 25px rgba(126, 211, 33, 0.6);
+            gap: 8px;
+            box-shadow: 0 6px 20px rgba(126, 211, 33, 0.5);
             transition: all 0.3s ease;
             /* iOS Safari specific */
             touch-action: manipulation;
@@ -444,20 +453,25 @@
             -webkit-touch-callout: none;
             user-select: none;
             -webkit-user-select: none;
+            font-size: 12px;
+            font-weight: 600;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .scroll-btn:hover {
-            transform: scale(1.15);
-            box-shadow: 0 10px 35px rgba(126, 211, 33, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(126, 211, 33, 0.7);
         }
 
         .scroll-btn:active {
-            transform: scale(0.95);
+            transform: translateY(0);
         }
 
         .scroll-btn svg {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
             fill: #ffffff;
         }
 
@@ -484,20 +498,26 @@
                 align-items: flex-start;
             }
 
+            .display-container {
+                flex-direction: column;
+            }
+
             .scroll-nav {
-                right: 15px;
-                bottom: 15px;
-                gap: 15px;
+                flex-direction: row;
+                justify-content: center;
+                margin-top: 15px;
             }
 
             .scroll-btn {
-                width: 70px;
-                height: 70px;
+                width: 100px;
+                height: 300px;
+                flex-direction: row;
+                gap: 10px;
             }
 
             .scroll-btn svg {
-                width: 35px;
-                height: 35px;
+                width: 28px;
+                height: 28px;
             }
         }
     </style>
@@ -541,25 +561,29 @@
                     </div>
                 </div>
             </div>
-            <div id="textDisplay"></div>
+            <div class="display-container">
+                <div class="text-display-wrapper">
+                    <div id="textDisplay"></div>
+                </div>
+                <div class="scroll-nav">
+                    <button class="scroll-btn" id="scrollUp" title="Scroll text display ke atas (4 baris)">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+                        </svg>
+                        <span>Naik</span>
+                    </button>
+                    <button class="scroll-btn" id="scrollDown" title="Scroll text display ke bawah (4 baris)">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                        </svg>
+                        <span>Turun</span>
+                    </button>
+                </div>
+            </div>
             <div class="load-status-indicator">
                 <span id="loadStatus">Ready</span>
             </div>
         </div>
-    </div>
-
-    <!-- Scroll Navigation -->
-    <div class="scroll-nav">
-        <button class="scroll-btn" id="scrollUp" title="Scroll text editor ke atas">
-            <svg viewBox="0 0 24 24">
-                <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
-            </svg>
-        </button>
-        <button class="scroll-btn" id="scrollDown" title="Scroll text editor ke bawah">
-            <svg viewBox="0 0 24 24">
-                <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
-            </svg>
-        </button>
     </div>
 
     <!-- jQuery -->
