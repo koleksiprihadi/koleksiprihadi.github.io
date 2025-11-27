@@ -153,7 +153,7 @@
 
         .vip-list {
             list-style: none;
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
             overflow-x: hidden;
             padding-right: 10px;
@@ -248,6 +248,46 @@
             align-items: center;
         }
 
+        .refresh-btn {
+            background: linear-gradient(135deg, #4caf50, #66bb6a);
+            color: #ffffff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(76, 175, 80, 0.4);
+        }
+
+        .refresh-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.6);
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.95);
+        }
+
+        .refresh-btn svg {
+            animation: none;
+        }
+
+        .refresh-btn.loading svg {
+            animation: rotate-refresh 1s linear infinite;
+        }
+
+        @keyframes rotate-refresh {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
         .font-control {
             display: flex;
             align-items: center;
@@ -292,9 +332,9 @@
             text-align: center;
         }
 
-        #textEditor {
+        #textDisplay {
             width: 100%;
-            min-height: 400px;
+            height: 400px;
             background: rgba(255, 255, 255, 0.5);
             border: 2px solid rgba(0, 26, 51, 0.2);
             border-radius: 15px;
@@ -302,19 +342,45 @@
             color: #001a33;
             font-size: 16px;
             line-height: 1.8;
-            resize: vertical;
-            outline: none;
-            transition: all 0.3s ease;
-            overflow-y: auto;
+            overflow: hidden;
+            position: relative;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            user-select: text;
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            touch-action: none;
+            -webkit-overflow-scrolling: none;
+            pointer-events: none; /* Prevent mouse interaction */
         }
 
-        #textEditor:focus {
-            background: rgba(255, 255, 255, 0.7);
-            border-color: #ffd700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        #textContent {
+            pointer-events: auto; /* Allow text selection */
+            cursor: default;
         }
 
-        .auto-save-indicator {
+        /* Disable scrollbar */
+        #textDisplay::-webkit-scrollbar {
+            display: none !important;
+        }
+
+        #textDisplay {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        #textContent {
+            position: relative;
+            transition: transform 0.2s ease;
+        }
+
+        /* Prevent wheel scroll */
+        #textDisplay, #textContent {
+            overscroll-behavior: none;
+        }
+
+        .load-status-indicator {
             color: #001a33;
             font-size: 12px;
             margin-top: 10px;
@@ -424,6 +490,11 @@
             <div class="editor-header">
                 <div class="editor-title">Pengumuman</div>
                 <div class="editor-controls">
+                    <button class="refresh-btn" id="refreshText" title="Muat ulang dari API">
+                        <svg viewBox="0 0 24 24" style="width: 18px; height: 18px; fill: #001a33;">
+                            <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                        </svg>
+                    </button>
                     <div class="font-control">
                         <label>Font:</label>
                         <button class="font-size-btn" id="decreaseFont" title="Perkecil">−</button>
@@ -432,9 +503,11 @@
                     </div>
                 </div>
             </div>
-            <textarea id="textEditor" placeholder="Ketik pengumuman di sini..."></textarea>
-            <div class="auto-save-indicator">
-                <span id="saveStatus">Auto-save: Ready</span>
+            <div id="textDisplay">
+                <div id="textContent"></div>
+            </div>
+            <div class="load-status-indicator">
+                <span id="loadStatus">Ready</span>
             </div>
         </div>
     </div>
@@ -460,10 +533,12 @@
         $(document).ready(function() {
             // ===== KONFIGURASI API =====
             const API_URL = 'https://script.google.com/macros/s/AKfycbyRaIAsK2l6phzy4kqgSSfNjTEcP1Z3fOFuRk0uDNeadGx75UMcW9DgZ-GvEB-pbzJRRw/exec';
+            const ANNOUNCEMENT_API_URL = 'https://script.google.com/macros/s/AKfycbxdMc8KB85B7cRugaqV7m7sld1jpS2-JPvjNyiyqbJZ0sWtLUspIlmRWzVkqVb9hatPiw/exec';
             
             // ===== LOCAL STORAGE KEYS =====
             const STORAGE_KEY_TEXT = 'bi_announcement_text';
             const STORAGE_KEY_FONT_SIZE = 'bi_announcement_font_size';
+            const STORAGE_KEY_LAST_FETCH = 'bi_announcement_last_fetch';
             
             let currentFontSize = 16;
             let saveTimeout = null;
@@ -551,46 +626,85 @@
                 $('#vipList').html('<div class="loading" style="color: #e74c3c;">' + message + '</div>');
             }
 
-            // ===== TEXT EDITOR - LOAD FROM LOCALSTORAGE =====
-            function loadEditorContent() {
+            // ===== TEXT DISPLAY - LOAD FROM API =====
+            let currentScrollPosition = 0;
+            const lineHeight = 29;
+
+            function loadAnnouncementFromAPI() {
+                $('#loadStatus').text('Loading text dari API...').css('color', '#f39c12');
+                
+                $.ajax({
+                    url: ANNOUNCEMENT_API_URL,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response && response.Text) {
+                            const announcementText = response.Text;
+                            
+                            // Set text ke display
+                            $('#textContent').text(announcementText);
+                            
+                            // Reset scroll position
+                            currentScrollPosition = 0;
+                            $('#textContent').css('transform', 'translateY(0)');
+                            
+                            // Save to localStorage
+                            localStorage.setItem(STORAGE_KEY_TEXT, announcementText);
+                            localStorage.setItem(STORAGE_KEY_LAST_FETCH, new Date().toISOString());
+                            
+                            $('#loadStatus').text('Text berhasil dimuat dari API ✓').css('color', '#7ed321');
+                            
+                            setTimeout(function() {
+                                $('#loadStatus').text('Ready').css('color', '#001a33');
+                            }, 3000);
+                        } else {
+                            $('#loadStatus').text('Format API tidak valid').css('color', '#e74c3c');
+                        }
+                    },
+                    error: function() {
+                        $('#loadStatus').text('Gagal memuat text dari API').css('color', '#e74c3c');
+                        
+                        // Fallback to localStorage if API fails
+                        const savedText = localStorage.getItem(STORAGE_KEY_TEXT);
+                        if (savedText) {
+                            $('#textContent').text(savedText);
+                            $('#loadStatus').text('Menggunakan data tersimpan').css('color', '#f39c12');
+                        }
+                    }
+                });
+            }
+
+            // ===== TEXT DISPLAY - LOAD FROM LOCALSTORAGE =====
+            function loadDisplayContent() {
                 const savedText = localStorage.getItem(STORAGE_KEY_TEXT);
                 const savedFontSize = localStorage.getItem(STORAGE_KEY_FONT_SIZE);
+                const lastFetch = localStorage.getItem(STORAGE_KEY_LAST_FETCH);
 
-                if (savedText) {
-                    $('#textEditor').val(savedText);
-                }
-
+                // Load font size
                 if (savedFontSize) {
                     currentFontSize = parseInt(savedFontSize);
                     updateFontSize();
                 }
-            }
 
-            // ===== TEXT EDITOR - AUTO SAVE =====
-            function autoSave() {
-                const text = $('#textEditor').val();
-                localStorage.setItem(STORAGE_KEY_TEXT, text);
-                
-                // Show save status
-                $('#saveStatus').text('Auto-save: Tersimpan ✓').css('color', '#7ed321');
-                
-                setTimeout(function() {
-                    $('#saveStatus').text('Auto-save: Ready').css('color', '#001a33');
-                }, 2000);
-            }
+                // Check if we need to fetch from API
+                // Fetch if: no saved text OR last fetch > 1 hour ago
+                const shouldFetch = !savedText || !lastFetch || 
+                    (new Date() - new Date(lastFetch)) > (60 * 60 * 1000); // 1 hour
 
-            // ===== TEXT EDITOR - CHANGE EVENT =====
-            $('#textEditor').on('input', function() {
-                $('#saveStatus').text('Auto-save: Menyimpan...').css('color', '#f39c12');
-                
-                // Debounce save
-                clearTimeout(saveTimeout);
-                saveTimeout = setTimeout(autoSave, 1000);
-            });
+                if (shouldFetch) {
+                    // Fetch from API
+                    loadAnnouncementFromAPI();
+                } else {
+                    // Use cached text
+                    if (savedText) {
+                        $('#textContent').text(savedText);
+                    }
+                }
+            }
 
             // ===== FONT SIZE CONTROLS =====
             function updateFontSize() {
-                $('#textEditor').css('font-size', currentFontSize + 'px');
+                $('#textDisplay').css('font-size', currentFontSize + 'px');
                 $('#fontSizeDisplay').text(currentFontSize + 'px');
                 localStorage.setItem(STORAGE_KEY_FONT_SIZE, currentFontSize);
             }
@@ -609,71 +723,70 @@
                 }
             });
 
-            // ===== SCROLL NAVIGATION (LINE BY LINE) =====
-            const lineHeight = 29; // Line height based on font-size 16px * 1.8 line-height ≈ 29px
+            // ===== REFRESH TEXT FROM API =====
+            $('#refreshText').on('click', function() {
+                const $btn = $(this);
+                $btn.addClass('loading').prop('disabled', true);
+                
+                loadAnnouncementFromAPI();
+                
+                setTimeout(function() {
+                    $btn.removeClass('loading').prop('disabled', false);
+                }, 2000);
+            });
+
+            // ===== SCROLL NAVIGATION (BUTTON ONLY - NO MANUAL SCROLL) =====
+            function scrollContent(direction) {
+                const $content = $('#textContent');
+                const $display = $('#textDisplay');
+                
+                // Calculate content and container heights
+                const contentHeight = $content[0].scrollHeight;
+                const displayHeight = $display.height();
+                const maxScroll = -(contentHeight - displayHeight);
+                
+                // Update scroll position
+                if (direction === 'up') {
+                    currentScrollPosition += lineHeight;
+                    if (currentScrollPosition > 0) {
+                        currentScrollPosition = 0;
+                    }
+                } else if (direction === 'down') {
+                    currentScrollPosition -= lineHeight;
+                    if (currentScrollPosition < maxScroll) {
+                        currentScrollPosition = maxScroll;
+                    }
+                }
+                
+                // Apply transform
+                $content.css('transform', 'translateY(' + currentScrollPosition + 'px)');
+            }
             
             $('#scrollUp').on('click', function() {
-                // Scroll text editor up by one line
-                const $editor = $('#textEditor');
-                const currentScroll = $editor.scrollTop();
-                $editor.animate({
-                    scrollTop: currentScroll - lineHeight
-                }, 200, 'swing');
+                scrollContent('up');
             });
 
             $('#scrollDown').on('click', function() {
-                // Scroll text editor down by one line
-                const $editor = $('#textEditor');
-                const currentScroll = $editor.scrollTop();
-                $editor.animate({
-                    scrollTop: currentScroll + lineHeight
-                }, 200, 'swing');
+                scrollContent('down');
             });
 
-            // Keyboard shortcuts for text editor scroll
-            $('#textEditor').on('keydown', function(e) {
-                // Ctrl + Arrow Up - Scroll up one line
-                if (e.ctrlKey && e.keyCode === 38) {
-                    e.preventDefault();
-                    const $editor = $(this);
-                    const currentScroll = $editor.scrollTop();
-                    $editor.animate({
-                        scrollTop: currentScroll - lineHeight
-                    }, 150);
-                }
-                // Ctrl + Arrow Down - Scroll down one line
-                if (e.ctrlKey && e.keyCode === 40) {
-                    e.preventDefault();
-                    const $editor = $(this);
-                    const currentScroll = $editor.scrollTop();
-                    $editor.animate({
-                        scrollTop: currentScroll + lineHeight
-                    }, 150);
-                }
-                // Page Up - Scroll editor up by 5 lines
-                if (e.keyCode === 33) {
-                    e.preventDefault();
-                    const $editor = $(this);
-                    const currentScroll = $editor.scrollTop();
-                    $editor.animate({
-                        scrollTop: currentScroll - (lineHeight * 5)
-                    }, 300);
-                }
-                // Page Down - Scroll editor down by 5 lines
-                if (e.keyCode === 34) {
-                    e.preventDefault();
-                    const $editor = $(this);
-                    const currentScroll = $editor.scrollTop();
-                    $editor.animate({
-                        scrollTop: currentScroll + (lineHeight * 5)
-                    }, 300);
-                }
+            // ===== PREVENT MANUAL SCROLL =====
+            // Prevent mouse wheel scroll
+            $('#textDisplay').on('wheel', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            // Prevent touch scroll on mobile
+            $('#textDisplay').on('touchmove', function(e) {
+                e.preventDefault();
+                return false;
             });
 
             // ===== INITIALIZE =====
             createParticles();
             loadVIPList();
-            loadEditorContent();
+            loadDisplayContent();
 
             // Auto-refresh VIP list every 30 seconds
             setInterval(loadVIPList, 30000);
