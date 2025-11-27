@@ -2,13 +2,19 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Announcement - Bank Indonesia 2025</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        /* Disable zoom and pinch */
+        html {
+            touch-action: pan-x pan-y;
+            -ms-touch-action: pan-x pan-y;
         }
 
         body {
@@ -18,6 +24,19 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+            touch-action: manipulation;
+            -ms-touch-action: manipulation;
+            /* iOS Safari specific fixes */
+            -webkit-text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        /* Prevent iOS Safari double-tap zoom on specific elements */
+        .container, .vip-section, .editor-section, #textDisplay {
+            touch-action: manipulation;
+            -ms-touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Particle Background */
@@ -153,7 +172,7 @@
 
         .vip-list {
             list-style: none;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
             overflow-x: hidden;
             padding-right: 10px;
@@ -260,6 +279,12 @@
             justify-content: center;
             transition: all 0.3s ease;
             box-shadow: 0 3px 10px rgba(76, 175, 80, 0.4);
+            /* iOS Safari specific */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .refresh-btn:hover {
@@ -318,6 +343,12 @@
             justify-content: center;
             transition: all 0.3s ease;
             box-shadow: 0 3px 10px rgba(255, 215, 0, 0.4);
+            /* iOS Safari specific */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .font-size-btn:hover {
@@ -334,50 +365,46 @@
 
         #textDisplay {
             width: 100%;
-            height: 400px;
+            min-height: 400px;
+            max-height: 600px;
             background: rgba(255, 255, 255, 0.5);
             border: 2px solid rgba(0, 26, 51, 0.2);
             border-radius: 15px;
-            padding: 20px;
+            padding: 25px;
             color: #001a33;
             font-size: 16px;
             line-height: 1.8;
-            overflow: hidden;
-            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
             white-space: pre-wrap;
             word-wrap: break-word;
+            cursor: default;
             user-select: text;
             -webkit-user-select: text;
             -moz-user-select: text;
             -ms-user-select: text;
-            touch-action: none;
-            -webkit-overflow-scrolling: none;
-            pointer-events: none; /* Prevent mouse interaction */
+            touch-action: pan-y;
+            -webkit-overflow-scrolling: touch;
+            transition: all 0.3s ease;
         }
 
-        #textContent {
-            pointer-events: auto; /* Allow text selection */
-            cursor: default;
-        }
-
-        /* Disable scrollbar */
+        /* Custom Scrollbar for text display */
         #textDisplay::-webkit-scrollbar {
-            display: none !important;
+            width: 12px;
         }
 
-        #textDisplay {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
+        #textDisplay::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
         }
 
-        #textContent {
-            position: relative;
-            transition: transform 0.2s ease;
+        #textDisplay::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 10px;
         }
 
-        /* Prevent wheel scroll */
-        #textDisplay, #textContent {
-            overscroll-behavior: none;
+        #textDisplay::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ffed4e, #ffd700);
         }
 
         .load-status-indicator {
@@ -395,13 +422,13 @@
             bottom: 30px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
             z-index: 100;
         }
 
         .scroll-btn {
-            width: 60px;
-            height: 60px;
+            width: 150px;
+            height: 150px;
             background: linear-gradient(135deg, #7ed321, #a0e742);
             border: none;
             border-radius: 50%;
@@ -409,18 +436,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 5px 20px rgba(126, 211, 33, 0.5);
+            box-shadow: 0 8px 25px rgba(126, 211, 33, 0.6);
             transition: all 0.3s ease;
+            /* iOS Safari specific */
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .scroll-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 8px 30px rgba(126, 211, 33, 0.7);
+            transform: scale(1.15);
+            box-shadow: 0 10px 35px rgba(126, 211, 33, 0.8);
+        }
+
+        .scroll-btn:active {
+            transform: scale(0.95);
         }
 
         .scroll-btn svg {
-            width: 30px;
-            height: 30px;
+            width: 40px;
+            height: 40px;
             fill: #ffffff;
         }
 
@@ -450,16 +487,17 @@
             .scroll-nav {
                 right: 15px;
                 bottom: 15px;
+                gap: 15px;
             }
 
             .scroll-btn {
-                width: 50px;
-                height: 50px;
+                width: 70px;
+                height: 70px;
             }
 
             .scroll-btn svg {
-                width: 24px;
-                height: 24px;
+                width: 35px;
+                height: 35px;
             }
         }
     </style>
@@ -503,9 +541,7 @@
                     </div>
                 </div>
             </div>
-            <div id="textDisplay">
-                <div id="textContent"></div>
-            </div>
+            <div id="textDisplay"></div>
             <div class="load-status-indicator">
                 <span id="loadStatus">Ready</span>
             </div>
@@ -627,9 +663,6 @@
             }
 
             // ===== TEXT DISPLAY - LOAD FROM API =====
-            let currentScrollPosition = 0;
-            const lineHeight = 29;
-
             function loadAnnouncementFromAPI() {
                 $('#loadStatus').text('Loading text dari API...').css('color', '#f39c12');
                 
@@ -642,11 +675,10 @@
                             const announcementText = response.Text;
                             
                             // Set text ke display
-                            $('#textContent').text(announcementText);
+                            $('#textDisplay').text(announcementText);
                             
-                            // Reset scroll position
-                            currentScrollPosition = 0;
-                            $('#textContent').css('transform', 'translateY(0)');
+                            // Reset scroll position to top
+                            $('#textDisplay').scrollTop(0);
                             
                             // Save to localStorage
                             localStorage.setItem(STORAGE_KEY_TEXT, announcementText);
@@ -667,7 +699,7 @@
                         // Fallback to localStorage if API fails
                         const savedText = localStorage.getItem(STORAGE_KEY_TEXT);
                         if (savedText) {
-                            $('#textContent').text(savedText);
+                            $('#textDisplay').text(savedText);
                             $('#loadStatus').text('Menggunakan data tersimpan').css('color', '#f39c12');
                         }
                     }
@@ -697,7 +729,7 @@
                 } else {
                     // Use cached text
                     if (savedText) {
-                        $('#textContent').text(savedText);
+                        $('#textDisplay').text(savedText);
                     }
                 }
             }
@@ -735,52 +767,60 @@
                 }, 2000);
             });
 
-            // ===== SCROLL NAVIGATION (BUTTON ONLY - NO MANUAL SCROLL) =====
-            function scrollContent(direction) {
-                const $content = $('#textContent');
-                const $display = $('#textDisplay');
-                
-                // Calculate content and container heights
-                const contentHeight = $content[0].scrollHeight;
-                const displayHeight = $display.height();
-                const maxScroll = -(contentHeight - displayHeight);
-                
-                // Update scroll position
-                if (direction === 'up') {
-                    currentScrollPosition += lineHeight;
-                    if (currentScrollPosition > 0) {
-                        currentScrollPosition = 0;
-                    }
-                } else if (direction === 'down') {
-                    currentScrollPosition -= lineHeight;
-                    if (currentScrollPosition < maxScroll) {
-                        currentScrollPosition = maxScroll;
-                    }
-                }
-                
-                // Apply transform
-                $content.css('transform', 'translateY(' + currentScrollPosition + 'px)');
-            }
+            // ===== SCROLL NAVIGATION (4 LINES PER CLICK + MANUAL SCROLL) =====
+            const lineHeight = 29; // Line height based on font-size 16px * 1.8 line-height ≈ 29px
+            const linesPerClick = 4; // 4 lines per button click
+            const scrollDistance = lineHeight * linesPerClick; // 29px * 4 = 116px
             
             $('#scrollUp').on('click', function() {
-                scrollContent('up');
+                // Scroll text display up by 4 lines
+                const $display = $('#textDisplay');
+                const currentScroll = $display.scrollTop();
+                $display.animate({
+                    scrollTop: Math.max(0, currentScroll - scrollDistance)
+                }, 300, 'swing');
             });
 
             $('#scrollDown').on('click', function() {
-                scrollContent('down');
+                // Scroll text display down by 4 lines
+                const $display = $('#textDisplay');
+                const currentScroll = $display.scrollTop();
+                $display.animate({
+                    scrollTop: currentScroll + scrollDistance
+                }, 300, 'swing');
             });
 
-            // ===== PREVENT MANUAL SCROLL =====
-            // Prevent mouse wheel scroll
-            $('#textDisplay').on('wheel', function(e) {
-                e.preventDefault();
-                return false;
+            // ===== PREVENT iOS SAFARI DOUBLE-TAP ZOOM =====
+            // This is critical for iPad Safari
+            let lastTouchEnd = 0;
+            
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+
+            // Additional prevention for specific elements
+            $('.container, .vip-section, .editor-section, #textDisplay').on('touchend', function(e) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
             });
 
-            // Prevent touch scroll on mobile
-            $('#textDisplay').on('touchmove', function(e) {
+            // Prevent gesturestart (pinch zoom) on iOS
+            document.addEventListener('gesturestart', function(e) {
                 e.preventDefault();
-                return false;
+            });
+
+            document.addEventListener('gesturechange', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('gestureend', function(e) {
+                e.preventDefault();
             });
 
             // ===== INITIALIZE =====
