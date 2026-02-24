@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Absensi - Bank Indonesia 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #001a33 0%, #004d7a 25%, #0080bf 50%, #00a8cc 75%, #00bfff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Particle Background */
+        #particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.8) 0%, rgba(255, 215, 0, 0) 70%);
+            border-radius: 50%;
+            animation: float linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glowing Orbs */
+        .orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 1;
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        .orb1 {
+            width: 400px;
+            height: 400px;
+            background: #ffd700;
+            top: -100px;
+            right: -100px;
+        }
+
+        .orb2 {
+            width: 300px;
+            height: 300px;
+            background: #00bfff;
+            bottom: -50px;
+            left: -50px;
+            animation-delay: 4s;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+                opacity: 0.3;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.5;
+            }
+        }
+
+        /* Container */
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3),
+                        inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            font-weight: bold;
+            color: #001a33;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+            animation: rotate 10s linear infinite;
+        }
+
+        @keyframes rotate {
+            0%, 100% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.1);
+            }
+        }
+
+        h1 {
+            color: #ffffff;
+            font-size: 28px;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            color: #ffd700;
+            font-size: 16px;
+            font-weight: 500;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #ffffff;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        select, input[type="text"] {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            color: #000000;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        select:focus, input[type="text"]:focus {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: #ffd700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        select option {
+            background: #001a33;
+            color: #000000;
+        }
+
+        /* Button Group */
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #001a33;
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-outline {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            transform: translateY(-3px);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            color: #001a33;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 30px;
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
+        }
+
+        .btn-submit:active {
+            transform: translateY(-1px);
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+
+        /* Representative Form */
+        .representative-form {
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .representative-form label {
+            color: #ffd700;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 600;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: rgba(76, 175, 80, 0.2);
+            border: 2px solid #4caf50;
+            color: #4caf50;
+        }
+
+        .alert-error {
+            background: rgba(244, 67, 54, 0.2);
+            border: 2px solid #f44336;
+            color: #f44336;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 40px 25px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Effects -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div id="particles"></div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="header">
+            <div class="logo">BI</div>
+            <h1>Form Daftar Hadir</h1>
+            <p class="subtitle">Pertemuan Tahunan Bank Indonesia</p>
+        </div>
+
+        <div id="alertContainer"></div>
+
+        <form id="attendanceForm">
+            <!-- Instansi -->
+            <div class="form-group">
+                <label for="instansi">Instansi</label>
+                <select id="instansi" required>
+                    <option value="">Pilih Instansi</option>
+                </select>
+            </div>
+
+            <!-- Info Peserta (Auto-filled, Read-only) -->
+            <div class="form-group" id="pesertaInfo" style="display: none;">
+                <label>Nama Peserta</label>
+                <input type="text" id="namaPeserta" readonly>
+            </div>
+
+            <div class="form-group" id="jabatanInfo" style="display: none;">
+                <label>Jabatan</label>
+                <input type="text" id="jabatanPeserta" readonly>
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="btn btn-outline" id="btnDiwakilkan">
+                    ✓ Diwakilkan
+                </button>
+            </div>
+
+            <!-- Representative Form (Hidden by default) -->
+            <div id="representativeForm" class="representative-form hidden">
+                <div class="form-group">
+                    <label for="namaWakil">Nama Wakil</label>
+                    <input type="text" id="namaWakil" placeholder="Masukkan nama yang mewakili">
+                </div>
+                <div class="form-group">
+                    <label for="jabatanWakil">Jabatan Wakil</label>
+                    <input type="text" id="jabatanWakil" placeholder="Masukkan jabatan">
+                </div>
+            </div>
+
+            <!-- Waktu Kehadiran -->
+            <div class="form-group">
+                <label for="waktu">Waktu Kehadiran</label>
+                <input type="text" id="waktu" readonly style="cursor: default;">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-submit">
+                Submit Absensi
+            </button>
+        </form>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    
+    <!-- Select2 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
+    <!-- Select2 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    
+    <style>
+        /* Select2 Custom Styling */
+        .select2-container--default .select2-selection--single {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+            height: 50px;
+            padding: 10px;
+        }
+        
+        .select2-container--default .select2-selection--single .select2-selection__rendered {
+            color: #000000;
+            line-height: 30px;
+            padding-left: 10px;
+        }
+        
+        .select2-container--default .select2-selection--single .select2-selection__arrow {
+            height: 48px;
+            right: 10px;
+        }
+        
+        .select2-dropdown {
+            background: #ffffff;
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 15px;
+        }
+        
+        .select2-container--default .select2-results__option {
+            color: #000000;
+            padding: 10px 15px;
+        }
+        
+        .select2-container--default .select2-results__option--highlighted[aria-selected] {
+            background: rgba(255, 215, 0, 0.3);
+        }
+        
+        .select2-container--default .select2-search--dropdown .select2-search__field {
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+            color: #000000;
+            padding: 10px;
+        }
+        
+        .select2-container--default .select2-results__option[aria-selected=true] {
+            background: rgba(255, 215, 0, 0.2);
+            color: #000000;
+        }
+    </style>
+    
+    <script>
+        $(document).ready(function() {
+            // ===== KONFIGURASI API =====
+            // Ganti dengan URL Web App Anda setelah deploy
+            const API_URL = 'https://script.google.com/macros/s/AKfycbyRaIAsK2l6phzy4kqgSSfNjTEcP1Z3fOFuRk0uDNeadGx75UMcW9DgZ-GvEB-pbzJRRw/exec';
+            
+            let isRepresentative = false;
+            let selectedInstansi = null; // Menyimpan data instansi yang dipilih
+
+            // ===== LOAD INSTANSI DARI API =====
+            function loadInstansi() {
+                $.ajax({
+                    url: API_URL,
+                    type: 'GET',
+                    data: { action: 'getInstansi' },
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            const instansiList = response.data.instansi;
+                            $('#instansi').empty().append('<option value="">Pilih Instansi</option>');
+                            
+                            instansiList.forEach(function(item) {
+                                $('#instansi').append($('<option>', {
+                                    value: item.instansi,
+                                    text: item.instansi,
+                                    'data-nama': item.nama,
+                                    'data-jabatan': item.jabatan,
+                                    'data-isvip': item.isVip,
+                                    'data-nokursi': item.noKursi
+                                }));
+                            });
+                            
+                            // Initialize Select2 setelah data loaded
+                            initSelect2();
+                        } else {
+                            showAlert('Gagal memuat data instansi: ' + response.message, 'error');
+                        }
+                    },
+                    error: function() {
+                        showAlert('Gagal terhubung ke server. Pastikan API URL sudah benar.', 'error');
+                    }
+                });
+            }
+
+            // ===== INITIALIZE SELECT2 =====
+            function initSelect2() {
+                $('#instansi').select2({
+                    placeholder: 'Cari atau pilih instansi',
+                    allowClear: true,
+                    width: '100%'
+                });
+            }
+
+            // ===== HANDLE INSTANSI SELECTION =====
+            $('#instansi').on('change', function() {
+                const selectedOption = $(this).find(':selected');
+                const instansi = selectedOption.val();
+                
+                if (instansi) {
+                    // Simpan data instansi yang dipilih
+                    selectedInstansi = {
+                        instansi: instansi,
+                        nama: selectedOption.data('nama'),
+                        jabatan: selectedOption.data('jabatan'),
+                        isVip: selectedOption.data('isvip'),
+                        noKursi: selectedOption.data('nokursi')
+                    };
+                    
+                    // Tampilkan info peserta
+                    $('#namaPeserta').val(selectedInstansi.nama);
+                    $('#jabatanPeserta').val(selectedInstansi.jabatan);
+                    $('#pesertaInfo, #jabatanInfo').slideDown(300);
+                } else {
+                    selectedInstansi = null;
+                    $('#pesertaInfo, #jabatanInfo').slideUp(300);
+                }
+            });
+
+            // Create Particles
+            function createParticles() {
+                const particleCount = 50;
+                const $particlesContainer = $('#particles');
+
+                for (let i = 0; i < particleCount; i++) {
+                    const size = Math.random() * 4 + 2;
+                    const left = Math.random() * 100;
+                    const duration = (Math.random() * 15 + 10);
+                    const delay = Math.random() * 5;
+
+                    $('<div>')
+                        .addClass('particle')
+                        .css({
+                            width: size + 'px',
+                            height: size + 'px',
+                            left: left + '%',
+                            animationDuration: duration + 's',
+                            animationDelay: delay + 's'
+                        })
+                        .appendTo($particlesContainer);
+                }
+            }
+
+            // Set Current Time
+            function updateTime() {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                };
+                $('#waktu').val(now.toLocaleDateString('id-ID', options));
+            }
+
+            // Toggle Representative Form dengan jQuery
+            $('#btnDiwakilkan').on('click', function() {
+                isRepresentative = !isRepresentative;
+                
+                if (isRepresentative) {
+                    // Tampilkan form wakil
+                    $('#representativeForm').slideDown(300).removeClass('hidden');
+                    
+                    // Update button style
+                    $(this).css('background', 'rgba(255, 215, 0, 0.3)')
+                           .html('✓ Mode Diwakilkan Aktif');
+                    
+                    // Tambah required ke form wakil
+                    $('#namaWakil, #jabatanWakil').prop('required', true);
+                } else {
+                    // Sembunyikan form wakil
+                    $('#representativeForm').slideUp(300, function() {
+                        $(this).addClass('hidden');
+                    });
+                    
+                    // Update button style
+                    $(this).css('background', 'rgba(255, 255, 255, 0.1)')
+                           .html('✓ Diwakilkan');
+                    
+                    // Hapus required dari form wakil
+                    $('#namaWakil, #jabatanWakil').prop('required', false);
+                    
+                    // Clear form wakil
+                    $('#namaWakil, #jabatanWakil').val('');
+                }
+            });
+
+            // Show Alert dengan jQuery
+            function showAlert(message, type) {
+                const $alert = $('<div>')
+                    .addClass(`alert alert-${type}`)
+                    .text(message)
+                    .hide()
+                    .appendTo('#alertContainer')
+                    .fadeIn(300);
+
+                setTimeout(function() {
+                    $alert.fadeOut(300, function() {
+                        $(this).remove();
+                    });
+                }, 5000);
+            }
+
+            // ===== FORM SUBMISSION =====
+            $('#attendanceForm').on('submit', function(e) {
+                e.preventDefault();
+
+                const instansi = $('#instansi').val();
+
+                // Validasi instansi
+                if (!instansi || !selectedInstansi) {
+                    showAlert('Mohon pilih instansi!', 'error');
+                    return;
+                }
+
+                // Validasi berdasarkan mode
+                if (isRepresentative) {
+                    const namaWakil = $('#namaWakil').val().trim();
+                    const jabatanWakil = $('#jabatanWakil').val().trim();
+
+                    if (!namaWakil || !jabatanWakil) {
+                        showAlert('Mohon lengkapi data wakil!', 'error');
+                        return;
+                    }
+
+                    // Submit data dengan perwakilan
+                    submitAbsensi(instansi, true, namaWakil, jabatanWakil);
+                } else {
+                    // Submit data tanpa perwakilan
+                    submitAbsensi(instansi, false, '', '');
+                }
+            });
+
+            // ===== SUBMIT ABSENSI KE API =====
+            function submitAbsensi(instansi, isDiwakilkan, namaPerwakilan, jabatanPerwakilan) {
+                // Show loading
+                const $submitBtn = $('.btn-submit');
+                const originalText = $submitBtn.html();
+                $submitBtn.prop('disabled', true).html('Menyimpan...');
+
+                $.ajax({
+                    url: API_URL,
+                    type: 'POST',
+                    data: {
+                        action: 'absen',
+                        instansi: instansi,
+                        isDiwakilkan: isDiwakilkan,
+                        namaPerwakilan: namaPerwakilan,
+                        jabatanPerwakilan: jabatanPerwakilan
+                    },
+                    success: function(response) {
+                        // Parse response jika masih string
+                        if (typeof response === 'string') {
+                            try {
+                                response = JSON.parse(response);
+                            } catch(e) {
+                                console.error('Parse error:', e);
+                            }
+                        }
+
+                        if (response && response.success) {
+                            showAlert('Absensi berhasil disimpan!', 'success');
+                            
+                            // Redirect setelah 1 detik
+                            setTimeout(function() {
+                                // Encode instansi untuk URL
+                                const encodedInstansi = encodeURIComponent(instansi);
+                                window.location.href = '/nokursi/?instansi=' + encodedInstansi;
+                            }, 1000);
+                        } else {
+                            const errorMsg = response && response.message ? response.message : 'Gagal menyimpan absensi';
+                            showAlert('Error: ' + errorMsg, 'error');
+                            $submitBtn.prop('disabled', false).html(originalText);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error:', {xhr, status, error});
+                        showAlert('Error: Gagal menghubungi server. Cek console untuk detail.', 'error');
+                        $submitBtn.prop('disabled', false).html(originalText);
+                    }
+                });
+            }
+
+            // ===== INITIALIZE =====
+            createParticles();
+            updateTime();
+            setInterval(updateTime, 1000);
+            
+            // Load data instansi dari API
+            loadInstansi();
+        });
+    </script>
+</body>
+</html>
