@@ -1,0 +1,583 @@
+{
+  "meta": {
+    "project": "BrewLink",
+    "versi": "1.0",
+    "tanggal": "2026-03",
+    "kurs_usd": 16000,
+    "catatan": "Development in-house TeknoMaven dicatat Rp 0 cash-out. Angka dapat bervariasi ±15% tergantung kondisi lapangan.",
+    "total_24_bulan": 613000000
+  },
+  "summary": [
+    {
+      "fase": 1,
+      "label": "Fase 1 — MVP Kalbar Beta",
+      "periode": "Bln 1–6",
+      "total": 89500000
+    },
+    {
+      "fase": 2,
+      "label": "Fase 2 — Ekspansi Kalimantan",
+      "periode": "Bln 7–12",
+      "total": 143000000
+    },
+    {
+      "fase": 3,
+      "label": "Fase 3 — Ekspansi Nasional",
+      "periode": "Tahun 2",
+      "total": 380000000
+    }
+  ],
+  "komposisi_24_bulan": [
+    {
+      "kategori": "SDM (Community + QA + Advisor)",
+      "persen": 28,
+      "total": 173000000,
+      "warna": "#3b82f6"
+    },
+    {
+      "kategori": "Marketing & Komunitas",
+      "persen": 21,
+      "total": 129000000,
+      "warna": "#8b5cf6"
+    },
+    {
+      "kategori": "Development Lanjutan (Fase 3)",
+      "persen": 19,
+      "total": 168000000,
+      "warna": "#3b82f6"
+    },
+    {
+      "kategori": "Operasional & Misc",
+      "persen": 18,
+      "total": 110000000,
+      "warna": "#e8960a"
+    },
+    {
+      "kategori": "Infrastruktur & Cloud",
+      "persen": 9,
+      "total": 55000000,
+      "warna": "#16a87a"
+    },
+    {
+      "kategori": "API Third-Party",
+      "persen": 3,
+      "total": 18000000,
+      "warna": "#e8960a"
+    },
+    {
+      "kategori": "Legal & Administrasi",
+      "persen": 2,
+      "total": 9000000,
+      "warna": "#ef4444"
+    }
+  ],
+  "fase": [
+    {
+      "id": 1,
+      "nama": "Fase 1 — MVP Development",
+      "periode": "Bln 1–6",
+      "deskripsi": "Kalbar Beta · Custom order + gramasi + chat + trust system",
+      "ikon": "🛠️",
+      "total": 90000000,
+      "pos": [
+        {
+          "kategori": "A. Development (In-house TeknoMaven)",
+          "items": [
+            {
+              "nama": "Biaya opportunity dev",
+              "keterangan": "7 sprint × 2 minggu = 14 minggu full-stack",
+              "catatan": "In-house TeknoMaven — tidak ada biaya eksplisit, dicatat sebagai opportunity cost",
+              "tag": "Dev Time",
+              "satuan": "minggu",
+              "volume": 14,
+              "harga_satuan": 0,
+              "total": 0,
+              "is_opportunity_cost": true
+            },
+            {
+              "nama": "UI/UX Design assets",
+              "keterangan": "Figma Pro, icon pack, font license",
+              "catatan": null,
+              "tag": "Tools",
+              "satuan": "paket",
+              "volume": 1,
+              "harga_satuan": 2500000,
+              "total": 2500000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "QA testing & device testing",
+              "keterangan": "Mobile, tablet, cross-browser",
+              "catatan": null,
+              "tag": "QA",
+              "satuan": "bulan",
+              "volume": 3,
+              "harga_satuan": 1000000,
+              "total": 3000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "B. Infrastruktur & Cloud",
+          "items": [
+            {
+              "nama": "Supabase Pro",
+              "keterangan": "DB, Auth, Storage, Realtime",
+              "catatan": "$25/bln × 6 bln",
+              "tag": "Cloud",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 400000,
+              "total": 2400000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Vercel Pro",
+              "keterangan": "Hosting Next.js, edge functions",
+              "catatan": "$20/bln × 6 bln",
+              "tag": "Cloud",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 320000,
+              "total": 1920000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Domain + SSL",
+              "keterangan": "brewlink.id — Niagahoster/Dewaweb",
+              "catatan": null,
+              "tag": "Cloud",
+              "satuan": "tahun",
+              "volume": 1,
+              "harga_satuan": 350000,
+              "total": 350000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "C. Integrasi Third-Party",
+          "items": [
+            {
+              "nama": "Midtrans — MDR payment",
+              "keterangan": "1.5–2% per transaksi, dibebankan ke buyer",
+              "catatan": "Biaya registrasi merchant Rp 0 (gratis)",
+              "tag": "Payment",
+              "satuan": "setup",
+              "volume": 1,
+              "harga_satuan": 0,
+              "total": 0,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Binderbyte API (kurir tracker)",
+              "keterangan": "JNE, JNT, SiCepat, Anteraja",
+              "catatan": "Plan Starter Rp 100k/bln",
+              "tag": "API",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 100000,
+              "total": 600000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "WhatsApp Business API",
+              "keterangan": "Notifikasi stok kritis & order update",
+              "catatan": "Fonnte / Zenziva ~Rp 100k/bln",
+              "tag": "API",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 100000,
+              "total": 600000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Email transactional",
+              "keterangan": "Resend.com — order confirm, undangan staff",
+              "catatan": "Free tier cukup untuk 3k email/bln",
+              "tag": "API",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 0,
+              "total": 0,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "D. Legalitas & Administrasi",
+          "items": [
+            {
+              "nama": "Pendirian PT / CV TeknoMaven",
+              "keterangan": "Notaris, NIB, NPWP badan",
+              "catatan": null,
+              "tag": "Legal",
+              "satuan": "paket",
+              "volume": 1,
+              "harga_satuan": 5000000,
+              "total": 5000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Pendaftaran merek BrewLink",
+              "keterangan": "DJKI — kelas 35 (marketplace) + kelas 42",
+              "catatan": null,
+              "tag": "Legal",
+              "satuan": "kelas",
+              "volume": 2,
+              "harga_satuan": 2000000,
+              "total": 4000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "E. Marketing & Community Building",
+          "items": [
+            {
+              "nama": "Event kopi lokal Pontianak",
+              "keterangan": "2 event × sponsor/booth untuk onboarding roastery",
+              "catatan": null,
+              "tag": "Marketing",
+              "satuan": "event",
+              "volume": 2,
+              "harga_satuan": 5000000,
+              "total": 10000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Konten sosmed & branding kit",
+              "keterangan": "Logo finalisasi, template Canva, feed IG",
+              "catatan": null,
+              "tag": "Marketing",
+              "satuan": "paket",
+              "volume": 1,
+              "harga_satuan": 5000000,
+              "total": 5000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Incentive early adopter",
+              "keterangan": "Gratis Pro 3 bln untuk 20 roastery pertama",
+              "catatan": "20 × Rp 150k × 3 bln = Rp 9jt foregone revenue",
+              "tag": "Marketing",
+              "satuan": "roastery",
+              "volume": 20,
+              "harga_satuan": 0,
+              "total": 0,
+              "is_opportunity_cost": true
+            }
+          ]
+        },
+        {
+          "kategori": "F. Operasional Tim",
+          "items": [
+            {
+              "nama": "Community lead / ops",
+              "keterangan": "Onboarding roastery, kurasi konten, support",
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 6000000,
+              "total": 36000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Q Grader advisor",
+              "keterangan": "Validasi cupping score, konsultasi produk",
+              "catatan": "Part-time, 4 hari/bln",
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 2000000,
+              "total": 12000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Operasional & misc",
+              "keterangan": "Transport, meeting, ATK, hosting test",
+              "catatan": null,
+              "tag": "Ops",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 1105000,
+              "total": 6630000,
+              "is_opportunity_cost": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "nama": "Fase 2 — Ekspansi Kalimantan",
+      "periode": "Bln 7–12",
+      "deskripsi": "Balikpapan · Samarinda · Banjarmasin · Knowledge Hub live",
+      "ikon": "🚀",
+      "total": 143000000,
+      "pos": [
+        {
+          "kategori": "A. Development Lanjutan",
+          "items": [
+            {
+              "nama": "Sprint 8–14",
+              "keterangan": "Knowledge hub, matchmaking v2, admin panel, theme preset",
+              "catatan": null,
+              "tag": "Dev Time",
+              "satuan": "minggu",
+              "volume": 14,
+              "harga_satuan": 0,
+              "total": 0,
+              "is_opportunity_cost": true
+            },
+            {
+              "nama": "Mobile-first optimization",
+              "keterangan": "PWA, performance, offline mode untuk POS",
+              "catatan": null,
+              "tag": "Dev",
+              "satuan": "paket",
+              "volume": 1,
+              "harga_satuan": 5000000,
+              "total": 5000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "B. Infrastruktur (Scaled)",
+          "items": [
+            {
+              "nama": "Supabase Pro (scale up)",
+              "keterangan": "$25–50/bln sesuai usage",
+              "catatan": null,
+              "tag": "Cloud",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 600000,
+              "total": 3600000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Vercel Pro + Bandwidth",
+              "keterangan": null,
+              "catatan": null,
+              "tag": "Cloud",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 400000,
+              "total": 2400000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Binderbyte API (upgrade)",
+              "keterangan": "Volume lebih tinggi",
+              "catatan": null,
+              "tag": "API",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 300000,
+              "total": 1800000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "C. Tim Ekspansi",
+          "items": [
+            {
+              "nama": "Community lead (lanjut)",
+              "keterangan": null,
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 6000000,
+              "total": 36000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Freelance content creator",
+              "keterangan": "Origin story, knowledge hub, sosmed",
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 3000000,
+              "total": 18000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Customer support part-time",
+              "keterangan": "Penanganan dispute, onboarding mitra baru",
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 2500000,
+              "total": 15000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "D. Marketing Ekspansi",
+          "items": [
+            {
+              "nama": "Event & roadshow 3 kota",
+              "keterangan": "Balikpapan, Samarinda, Banjarmasin",
+              "catatan": null,
+              "tag": "Marketing",
+              "satuan": "kota",
+              "volume": 3,
+              "harga_satuan": 10000000,
+              "total": 30000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Digital ads (Meta + Google)",
+              "keterangan": "Targeting coffee shop owner B2B",
+              "catatan": null,
+              "tag": "Marketing",
+              "satuan": "bulan",
+              "volume": 4,
+              "harga_satuan": 5000000,
+              "total": 20000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Operasional & perjalanan dinas",
+              "keterangan": null,
+              "catatan": null,
+              "tag": "Ops",
+              "satuan": "bulan",
+              "volume": 6,
+              "harga_satuan": 1866667,
+              "total": 11200000,
+              "is_opportunity_cost": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "nama": "Fase 3 — Ekspansi Nasional",
+      "periode": "Tahun 2",
+      "deskripsi": "Sulawesi · Jawa · Sumatera · Series A preparation",
+      "ikon": "🌏",
+      "total": 380000000,
+      "pos": [
+        {
+          "kategori": "A. Engineering Team",
+          "items": [
+            {
+              "nama": "Backend engineer",
+              "keterangan": "Skalabilitas, keamanan, API publik",
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 12,
+              "harga_satuan": 8000000,
+              "total": 96000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Frontend / mobile dev",
+              "keterangan": "React Native atau Next.js native app",
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 12,
+              "harga_satuan": 6000000,
+              "total": 72000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "B. Infrastruktur Skala Nasional",
+          "items": [
+            {
+              "nama": "Supabase Scale / AWS RDS",
+              "keterangan": "Multi-region, read replica, backup",
+              "catatan": null,
+              "tag": "Cloud",
+              "satuan": "bulan",
+              "volume": 12,
+              "harga_satuan": 2000000,
+              "total": 24000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "CDN + monitoring (Datadog)",
+              "keterangan": null,
+              "catatan": null,
+              "tag": "Cloud",
+              "satuan": "bulan",
+              "volume": 12,
+              "harga_satuan": 1000000,
+              "total": 12000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "C. Tim Operasional Nasional",
+          "items": [
+            {
+              "nama": "Head of Growth",
+              "keterangan": null,
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 12,
+              "harga_satuan": 7000000,
+              "total": 84000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "City reps (3 kota baru)",
+              "keterangan": "Sulawesi, Jawa, Sumatera",
+              "catatan": null,
+              "tag": "SDM",
+              "satuan": "bulan",
+              "volume": 12,
+              "harga_satuan": 3000000,
+              "total": 36000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        },
+        {
+          "kategori": "D. Marketing Nasional + Legal",
+          "items": [
+            {
+              "nama": "Campaign nasional + PR",
+              "keterangan": null,
+              "catatan": null,
+              "tag": "Marketing",
+              "satuan": "tahun",
+              "volume": 1,
+              "harga_satuan": 40000000,
+              "total": 40000000,
+              "is_opportunity_cost": false
+            },
+            {
+              "nama": "Partnership AEKI & event nasional",
+              "keterangan": null,
+              "catatan": null,
+              "tag": "Marketing",
+              "satuan": "tahun",
+              "volume": 1,
+              "harga_satuan": 16000000,
+              "total": 16000000,
+              "is_opportunity_cost": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

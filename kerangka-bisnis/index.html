@@ -776,295 +776,13 @@ footer{background:var(--ink);border-top:1px solid var(--border);padding:36px 48p
     <div class="reveal">
       <div class="sl">Rencana Anggaran</div>
       <h2 class="st">RAB Pembuatan &amp;<br><em>Pengembangan BrewLink</em></h2>
-      <p class="ss">Estimasi biaya total dari MVP hingga ekspansi nasional. Klik setiap fase untuk melihat rincian pos anggaran.</p>
+      <p class="ss">Estimasi biaya dari MVP hingga ekspansi nasional. Klik setiap fase untuk melihat rincian. Data dirender langsung dari <code style="font-family:'DM Mono',monospace;font-size:12px;padding:2px 6px;background:var(--card2);border-radius:4px;border:1px solid var(--border)">brewlink-rab.json</code>.</p>
     </div>
-
-    <!-- Summary Cards -->
-    <div class="rab-summary reveal" style="margin-bottom:40px">
-      <div class="rab-sum-cell">
-        <div class="rab-sum-v" data-count="0" data-target="89500000" data-fmt="idr">—</div>
-        <div class="rab-sum-l">Fase 1 — MVP<br>Kalbar Beta</div>
-        <div class="rab-sum-s">Bln 1–6</div>
-      </div>
-      <div class="rab-sum-cell">
-        <div class="rab-sum-v" data-count="1" data-target="143000000" data-fmt="idr">—</div>
-        <div class="rab-sum-l">Fase 2 — Ekspansi<br>Kalimantan</div>
-        <div class="rab-sum-s">Bln 7–12</div>
-      </div>
-      <div class="rab-sum-cell">
-        <div class="rab-sum-v" data-count="2" data-target="380000000" data-fmt="idr">—</div>
-        <div class="rab-sum-l">Fase 3 — Nasional<br>Tahun 2</div>
-        <div class="rab-sum-s">Tahun 2</div>
-      </div>
-      <div class="rab-sum-cell" style="border-top:2px solid var(--acc)">
-        <div class="rab-sum-v" data-count="3" data-target="612500000" data-fmt="idr" style="color:var(--acc-l)">—</div>
-        <div class="rab-sum-l">Total 24 Bulan</div>
-        <div class="rab-sum-s">Kebutuhan Modal</div>
-      </div>
-    </div>
-
-    <!-- Phase 1 -->
-    <div class="rab-phase reveal">
-      <div class="rab-phase-hd" onclick="toggleRab(this)">
-        <div class="rab-phase-left">
-          <div class="rab-phase-icon">🛠️</div>
-          <div>
-            <div class="rab-phase-name">Fase 1 — MVP Development (Bln 1–6)</div>
-            <div class="rab-phase-sub">Kalbar Beta · Custom order + gramasi + chat + trust system</div>
-          </div>
-        </div>
-        <div class="rab-phase-right">
-          <div class="rab-total">Rp 89.500.000</div>
-          <div class="rab-chevron">▼</div>
-        </div>
-      </div>
-      <div class="rab-body">
-        <table class="rab-table">
-          <thead><tr><th style="width:35%">Item</th><th>Keterangan</th><th style="text-align:right">Sat.</th><th style="text-align:right">Vol.</th><th style="text-align:right">Biaya</th></tr></thead>
-          <tbody>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">A. Development (In-house TeknoMaven)</td></tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Biaya opportunity dev</div><div class="rab-note">7 sprint × 2 minggu = 14 minggu full-stack</div></td>
-              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Dev Time</span><div class="rab-note">In-house TeknoMaven — tidak ada biaya eksplisit tapi dicatat sebagai opportunity cost</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">minggu</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">14</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0 *</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">UI/UX Design assets</div><div class="rab-note">Figma Pro, icon pack, font license</div></td>
-              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Tools</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 2.500.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">QA testing &amp; device testing</div><div class="rab-note">Mobile, tablet, cross-browser</div></td>
-              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">QA</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">3</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 3.000.000</td>
-            </tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">B. Infrastruktur &amp; Cloud</td></tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Supabase Pro</div><div class="rab-note">DB, Auth, Storage, Realtime</div></td>
-              <td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span><div class="rab-note">$25/bln × 6 bln</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 2.400.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Vercel Pro</div><div class="rab-note">Hosting Next.js, edge functions</div></td>
-              <td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span><div class="rab-note">$20/bln × 6 bln</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 1.920.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Domain + SSL</div><div class="rab-note">brewlink.id — Niagahoster/Dewaweb</div></td>
-              <td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">tahun</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 350.000</td>
-            </tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">C. Integrasi Third-Party</td></tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Midtrans — MDR payment</div><div class="rab-note">1.5–2% per transaksi, dibebankan ke buyer</div></td>
-              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">Payment</span><div class="rab-note">Biaya registrasi merchant Rp 0 (gratis)</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">setup</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Binderbyte API (kurir tracker)</div><div class="rab-note">JNE, JNT, SiCepat, Anteraja</div></td>
-              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span><div class="rab-note">Plan Starter Rp 100k/bln</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 600.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">WhatsApp Business API</div><div class="rab-note">Notifikasi stok kritis &amp; order update</div></td>
-              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span><div class="rab-note">Fonnte / Zenziva ~Rp 100k/bln</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 600.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Email transactional</div><div class="rab-note">Resend.com — order confirm, undangan staff</div></td>
-              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span><div class="rab-note">Free tier cukup untuk 3k email/bln</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0</td>
-            </tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">D. Legalitas &amp; Administrasi</td></tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Pendirian PT / CV TeknoMaven</div><div class="rab-note">Notaris, NIB, NPWP badan</div></td>
-              <td><span class="rab-cat" style="background:rgba(239,68,68,.1);color:#f87171">Legal</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 5.000.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Pendaftaran merek BrewLink</div><div class="rab-note">DJKI — kelas 35 (marketplace) + kelas 42</div></td>
-              <td><span class="rab-cat" style="background:rgba(239,68,68,.1);color:#f87171">Legal</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">kelas</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">2</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 4.000.000</td>
-            </tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">E. Marketing &amp; Community Building</td></tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Event kopi lokal Pontianak</div><div class="rab-note">2 event × sponsor/booth untuk onboarding roastery</div></td>
-              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">event</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">2</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 10.000.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Konten sosmed &amp; branding kit</div><div class="rab-note">Logo finalisasi, template Canva, feed IG</div></td>
-              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 5.000.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Incentive early adopter</div><div class="rab-note">Gratis Pro 3 bln untuk 20 roastery pertama</div></td>
-              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span><div class="rab-note">20 × Rp 150k × 3 bln = Rp 9jt foregone revenue</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">roastery</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">20</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0 **</td>
-            </tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">F. Operasional Tim</td></tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Community lead / ops</div><div class="rab-note">Onboarding roastery, kurasi konten, support</div></td>
-              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 36.000.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Q Grader advisor</div><div class="rab-note">Validasi cupping score, konsultasi produk</div></td>
-              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span><div class="rab-note">Part-time, 4 hari/bln</div></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</div></td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 12.000.000</td>
-            </tr>
-            <tr>
-              <td><div style="font-weight:500;color:var(--text)">Operasional &amp; misc</div><div class="rab-note">Transport, meeting, ATK, hosting test</div></td>
-              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Ops</span></td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
-              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 6.630.000</td>
-            </tr>
-            <tr style="background:rgba(255,255,255,.03)">
-              <td colspan="4" style="padding:12px 10px;font-weight:700;color:var(--text)">TOTAL FASE 1</td>
-              <td style="text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--acc-l)">Rp 89.500.000</td>
-            </tr>
-          </tbody>
-        </table>
-        <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6">* Opportunity cost developer in-house TeknoMaven tidak dimasukkan sebagai cash-out. ** Foregone revenue dari free Pro dicatat sebagai marketing cost non-tunai.</div>
-      </div>
-    </div>
-
-    <!-- Phase 2 -->
-    <div class="rab-phase reveal d1">
-      <div class="rab-phase-hd" onclick="toggleRab(this)">
-        <div class="rab-phase-left">
-          <div class="rab-phase-icon">🚀</div>
-          <div>
-            <div class="rab-phase-name">Fase 2 — Ekspansi Kalimantan (Bln 7–12)</div>
-            <div class="rab-phase-sub">Balikpapan · Samarinda · Banjarmasin · Knowledge Hub live</div>
-          </div>
-        </div>
-        <div class="rab-phase-right">
-          <div class="rab-total">Rp 143.000.000</div>
-          <div class="rab-chevron">▼</div>
-        </div>
-      </div>
-      <div class="rab-body">
-        <table class="rab-table">
-          <thead><tr><th style="width:35%">Item</th><th>Keterangan</th><th style="text-align:right">Sat.</th><th style="text-align:right">Vol.</th><th style="text-align:right">Biaya</th></tr></thead>
-          <tbody>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">A. Development Lanjutan</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Sprint 8–14</div><div class="rab-note">Knowledge hub, matchmaking v2, admin panel, theme preset</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Dev Time</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">minggu</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">14</td><td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0 *</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Mobile-first optimization</div><div class="rab-note">PWA, performance, offline mode untuk POS</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Dev</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 5.000.000</td></tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">B. Infrastruktur (Scaled)</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Supabase Pro (scale up)</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span><div class="rab-note">$25–50/bln sesuai usage</div></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 3.600.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Vercel Pro + Bandwidth</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 2.400.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Binderbyte API (upgrade)</div><div class="rab-note">Volume lebih tinggi</div></td><td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 1.800.000</td></tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">C. Tim Ekspansi</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Community lead (lanjut)</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 36.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Freelance content creator</div><div class="rab-note">Origin story, knowledge hub, sosmed</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 18.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Customer support part-time</div><div class="rab-note">Penanganan dispute, onboarding mitra baru</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 15.000.000</td></tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">D. Marketing Ekspansi</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Event &amp; roadshow 3 kota</div><div class="rab-note">Balikpapan, Samarinda, Banjarmasin</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">kota</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">3</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 30.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Digital ads (Meta + Google)</div><div class="rab-note">Targeting coffee shop owner B2B</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">4</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 20.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Operasional &amp; perjalanan dinas</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Ops</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 11.200.000</td></tr>
-            <tr style="background:rgba(255,255,255,.03)"><td colspan="4" style="padding:12px 10px;font-weight:700;color:var(--text)">TOTAL FASE 2</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--acc-l)">Rp 143.000.000</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Phase 3 -->
-    <div class="rab-phase reveal d2">
-      <div class="rab-phase-hd" onclick="toggleRab(this)">
-        <div class="rab-phase-left">
-          <div class="rab-phase-icon">🌏</div>
-          <div>
-            <div class="rab-phase-name">Fase 3 — Ekspansi Nasional (Tahun 2)</div>
-            <div class="rab-phase-sub">Sulawesi · Jawa · Sumatera · Series A preparation</div>
-          </div>
-        </div>
-        <div class="rab-phase-right">
-          <div class="rab-total">Rp 380.000.000</div>
-          <div class="rab-chevron">▼</div>
-        </div>
-      </div>
-      <div class="rab-body">
-        <table class="rab-table">
-          <thead><tr><th style="width:35%">Item</th><th>Keterangan</th><th style="text-align:right">Sat.</th><th style="text-align:right">Vol.</th><th style="text-align:right">Biaya</th></tr></thead>
-          <tbody>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">A. Engineering Team</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Backend engineer</div><div class="rab-note">Skalabilitas, keamanan, API publik</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 96.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Frontend / mobile dev</div><div class="rab-note">React Native atau Next.js native app</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 72.000.000</td></tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">B. Infrastruktur Skala Nasional</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Supabase Scale / AWS RDS</div><div class="rab-note">Multi-region, read replica, backup</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 24.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">CDN + monitoring (Datadog)</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 12.000.000</td></tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">C. Tim Operasional Nasional</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Head of Growth</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 84.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">City reps (3 kota baru)</div><div class="rab-note">Sulawesi, Jawa, Sumatera</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 36.000.000</td></tr>
-            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">D. Marketing Nasional + Legal</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Campaign nasional + PR</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">tahun</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 40.000.000</td></tr>
-            <tr><td><div style="font-weight:500;color:var(--text)">Partnership AEKI &amp; event nasional</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">tahun</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 16.000.000</td></tr>
-            <tr style="background:rgba(255,255,255,.03)"><td colspan="4" style="padding:12px 10px;font-weight:700;color:var(--text)">TOTAL FASE 3</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--acc-l)">Rp 380.000.000</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Composition -->
-    <div class="card reveal" style="margin-top:32px">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
-        <div>
-          <div class="sl" style="margin-bottom:4px">Komposisi Anggaran (24 Bulan)</div>
-          <div style="font-size:22px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif">Total: <span style="color:var(--acc-l)">Rp 612.500.000</span></div>
-        </div>
-        <div style="font-size:12px;color:var(--text2);text-align:right;line-height:1.7">Break-even estimasi bln 3–4<br>ROI positif mulai bln 5<br>Net profit bln 12: ~Rp 40jt/bln</div>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:10px" id="rabBars">
-        <div class="rab-bar-item" data-pct="28" data-label="SDM (Community + QA + Advisor)" data-val="Rp 173jt" data-color="#3b82f6"></div>
-        <div class="rab-bar-item" data-pct="21" data-label="Marketing &amp; Komunitas" data-val="Rp 129jt" data-color="#8b5cf6"></div>
-        <div class="rab-bar-item" data-pct="19" data-label="Development Lanjutan (Fase 3)" data-val="Rp 168jt" data-color="#3b82f6"></div>
-        <div class="rab-bar-item" data-pct="18" data-label="Operasional &amp; Misc" data-val="Rp 110jt" data-color="#e8960a"></div>
-        <div class="rab-bar-item" data-pct="9" data-label="Infrastruktur &amp; Cloud" data-val="Rp 55jt" data-color="#16a87a"></div>
-        <div class="rab-bar-item" data-pct="3" data-label="API Third-Party" data-val="Rp 18jt" data-color="#e8960a"></div>
-        <div class="rab-bar-item" data-pct="2" data-label="Legal &amp; Administrasi" data-val="Rp 9jt" data-color="#ef4444"></div>
-      </div>
-      <div style="margin-top:16px;font-size:11px;color:var(--text3);line-height:1.7;padding-top:14px;border-top:1px solid var(--border)">Catatan: Development in-house TeknoMaven (opportunity cost ~Rp 280jt) tidak dimasukkan sebagai biaya cash-out. Angka menggunakan kurs USD = Rp 16.000. Biaya dapat bervariasi ±15% tergantung kondisi lapangan.</div>
-    </div>
-
+    <div class="rab-summary reveal" id="rabSummaryCards" style="margin-bottom:40px"></div>
+    <div id="rabPhases"></div>
+    <div class="card reveal" style="margin-top:32px" id="rabComposition"></div>
   </div>
 </div>
-
 <!-- ══════════ CTA ══════════ -->
 <div class="cta-wrap" id="cta">
   <div class="cta-glow"></div>
@@ -1286,6 +1004,195 @@ document.querySelectorAll('.src').forEach(el => {
   });
 });
 
+/* ── RAB DATA (from brewlink-rab.json) ── */
+const RAB_DATA = {"meta": {"project": "BrewLink", "versi": "1.0", "tanggal": "2026-03", "kurs_usd": 16000, "catatan": "Development in-house TeknoMaven dicatat Rp 0 cash-out. Angka dapat bervariasi ±15% tergantung kondisi lapangan.", "total_24_bulan": 613000000}, "summary": [{"fase": 1, "label": "Fase 1 — MVP Kalbar Beta", "periode": "Bln 1–6", "total": 89500000}, {"fase": 2, "label": "Fase 2 — Ekspansi Kalimantan", "periode": "Bln 7–12", "total": 143000000}, {"fase": 3, "label": "Fase 3 — Ekspansi Nasional", "periode": "Tahun 2", "total": 380000000}], "komposisi_24_bulan": [{"kategori": "SDM (Community + QA + Advisor)", "persen": 28, "total": 173000000, "warna": "#3b82f6"}, {"kategori": "Marketing & Komunitas", "persen": 21, "total": 129000000, "warna": "#8b5cf6"}, {"kategori": "Development Lanjutan (Fase 3)", "persen": 19, "total": 168000000, "warna": "#3b82f6"}, {"kategori": "Operasional & Misc", "persen": 18, "total": 110000000, "warna": "#e8960a"}, {"kategori": "Infrastruktur & Cloud", "persen": 9, "total": 55000000, "warna": "#16a87a"}, {"kategori": "API Third-Party", "persen": 3, "total": 18000000, "warna": "#e8960a"}, {"kategori": "Legal & Administrasi", "persen": 2, "total": 9000000, "warna": "#ef4444"}], "fase": [{"id": 1, "nama": "Fase 1 — MVP Development", "periode": "Bln 1–6", "deskripsi": "Kalbar Beta · Custom order + gramasi + chat + trust system", "ikon": "🛠️", "total": 90000000, "pos": [{"kategori": "A. Development (In-house TeknoMaven)", "items": [{"nama": "Biaya opportunity dev", "keterangan": "7 sprint × 2 minggu = 14 minggu full-stack", "catatan": "In-house TeknoMaven — tidak ada biaya eksplisit, dicatat sebagai opportunity cost", "tag": "Dev Time", "satuan": "minggu", "volume": 14, "harga_satuan": 0, "total": 0, "is_opportunity_cost": true}, {"nama": "UI/UX Design assets", "keterangan": "Figma Pro, icon pack, font license", "catatan": null, "tag": "Tools", "satuan": "paket", "volume": 1, "harga_satuan": 2500000, "total": 2500000, "is_opportunity_cost": false}, {"nama": "QA testing & device testing", "keterangan": "Mobile, tablet, cross-browser", "catatan": null, "tag": "QA", "satuan": "bulan", "volume": 3, "harga_satuan": 1000000, "total": 3000000, "is_opportunity_cost": false}]}, {"kategori": "B. Infrastruktur & Cloud", "items": [{"nama": "Supabase Pro", "keterangan": "DB, Auth, Storage, Realtime", "catatan": "$25/bln × 6 bln", "tag": "Cloud", "satuan": "bulan", "volume": 6, "harga_satuan": 400000, "total": 2400000, "is_opportunity_cost": false}, {"nama": "Vercel Pro", "keterangan": "Hosting Next.js, edge functions", "catatan": "$20/bln × 6 bln", "tag": "Cloud", "satuan": "bulan", "volume": 6, "harga_satuan": 320000, "total": 1920000, "is_opportunity_cost": false}, {"nama": "Domain + SSL", "keterangan": "brewlink.id — Niagahoster/Dewaweb", "catatan": null, "tag": "Cloud", "satuan": "tahun", "volume": 1, "harga_satuan": 350000, "total": 350000, "is_opportunity_cost": false}]}, {"kategori": "C. Integrasi Third-Party", "items": [{"nama": "Midtrans — MDR payment", "keterangan": "1.5–2% per transaksi, dibebankan ke buyer", "catatan": "Biaya registrasi merchant Rp 0 (gratis)", "tag": "Payment", "satuan": "setup", "volume": 1, "harga_satuan": 0, "total": 0, "is_opportunity_cost": false}, {"nama": "Binderbyte API (kurir tracker)", "keterangan": "JNE, JNT, SiCepat, Anteraja", "catatan": "Plan Starter Rp 100k/bln", "tag": "API", "satuan": "bulan", "volume": 6, "harga_satuan": 100000, "total": 600000, "is_opportunity_cost": false}, {"nama": "WhatsApp Business API", "keterangan": "Notifikasi stok kritis & order update", "catatan": "Fonnte / Zenziva ~Rp 100k/bln", "tag": "API", "satuan": "bulan", "volume": 6, "harga_satuan": 100000, "total": 600000, "is_opportunity_cost": false}, {"nama": "Email transactional", "keterangan": "Resend.com — order confirm, undangan staff", "catatan": "Free tier cukup untuk 3k email/bln", "tag": "API", "satuan": "bulan", "volume": 6, "harga_satuan": 0, "total": 0, "is_opportunity_cost": false}]}, {"kategori": "D. Legalitas & Administrasi", "items": [{"nama": "Pendirian PT / CV TeknoMaven", "keterangan": "Notaris, NIB, NPWP badan", "catatan": null, "tag": "Legal", "satuan": "paket", "volume": 1, "harga_satuan": 5000000, "total": 5000000, "is_opportunity_cost": false}, {"nama": "Pendaftaran merek BrewLink", "keterangan": "DJKI — kelas 35 (marketplace) + kelas 42", "catatan": null, "tag": "Legal", "satuan": "kelas", "volume": 2, "harga_satuan": 2000000, "total": 4000000, "is_opportunity_cost": false}]}, {"kategori": "E. Marketing & Community Building", "items": [{"nama": "Event kopi lokal Pontianak", "keterangan": "2 event × sponsor/booth untuk onboarding roastery", "catatan": null, "tag": "Marketing", "satuan": "event", "volume": 2, "harga_satuan": 5000000, "total": 10000000, "is_opportunity_cost": false}, {"nama": "Konten sosmed & branding kit", "keterangan": "Logo finalisasi, template Canva, feed IG", "catatan": null, "tag": "Marketing", "satuan": "paket", "volume": 1, "harga_satuan": 5000000, "total": 5000000, "is_opportunity_cost": false}, {"nama": "Incentive early adopter", "keterangan": "Gratis Pro 3 bln untuk 20 roastery pertama", "catatan": "20 × Rp 150k × 3 bln = Rp 9jt foregone revenue", "tag": "Marketing", "satuan": "roastery", "volume": 20, "harga_satuan": 0, "total": 0, "is_opportunity_cost": true}]}, {"kategori": "F. Operasional Tim", "items": [{"nama": "Community lead / ops", "keterangan": "Onboarding roastery, kurasi konten, support", "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 6, "harga_satuan": 6000000, "total": 36000000, "is_opportunity_cost": false}, {"nama": "Q Grader advisor", "keterangan": "Validasi cupping score, konsultasi produk", "catatan": "Part-time, 4 hari/bln", "tag": "SDM", "satuan": "bulan", "volume": 6, "harga_satuan": 2000000, "total": 12000000, "is_opportunity_cost": false}, {"nama": "Operasional & misc", "keterangan": "Transport, meeting, ATK, hosting test", "catatan": null, "tag": "Ops", "satuan": "bulan", "volume": 6, "harga_satuan": 1105000, "total": 6630000, "is_opportunity_cost": false}]}]}, {"id": 2, "nama": "Fase 2 — Ekspansi Kalimantan", "periode": "Bln 7–12", "deskripsi": "Balikpapan · Samarinda · Banjarmasin · Knowledge Hub live", "ikon": "🚀", "total": 143000000, "pos": [{"kategori": "A. Development Lanjutan", "items": [{"nama": "Sprint 8–14", "keterangan": "Knowledge hub, matchmaking v2, admin panel, theme preset", "catatan": null, "tag": "Dev Time", "satuan": "minggu", "volume": 14, "harga_satuan": 0, "total": 0, "is_opportunity_cost": true}, {"nama": "Mobile-first optimization", "keterangan": "PWA, performance, offline mode untuk POS", "catatan": null, "tag": "Dev", "satuan": "paket", "volume": 1, "harga_satuan": 5000000, "total": 5000000, "is_opportunity_cost": false}]}, {"kategori": "B. Infrastruktur (Scaled)", "items": [{"nama": "Supabase Pro (scale up)", "keterangan": "$25–50/bln sesuai usage", "catatan": null, "tag": "Cloud", "satuan": "bulan", "volume": 6, "harga_satuan": 600000, "total": 3600000, "is_opportunity_cost": false}, {"nama": "Vercel Pro + Bandwidth", "keterangan": null, "catatan": null, "tag": "Cloud", "satuan": "bulan", "volume": 6, "harga_satuan": 400000, "total": 2400000, "is_opportunity_cost": false}, {"nama": "Binderbyte API (upgrade)", "keterangan": "Volume lebih tinggi", "catatan": null, "tag": "API", "satuan": "bulan", "volume": 6, "harga_satuan": 300000, "total": 1800000, "is_opportunity_cost": false}]}, {"kategori": "C. Tim Ekspansi", "items": [{"nama": "Community lead (lanjut)", "keterangan": null, "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 6, "harga_satuan": 6000000, "total": 36000000, "is_opportunity_cost": false}, {"nama": "Freelance content creator", "keterangan": "Origin story, knowledge hub, sosmed", "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 6, "harga_satuan": 3000000, "total": 18000000, "is_opportunity_cost": false}, {"nama": "Customer support part-time", "keterangan": "Penanganan dispute, onboarding mitra baru", "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 6, "harga_satuan": 2500000, "total": 15000000, "is_opportunity_cost": false}]}, {"kategori": "D. Marketing Ekspansi", "items": [{"nama": "Event & roadshow 3 kota", "keterangan": "Balikpapan, Samarinda, Banjarmasin", "catatan": null, "tag": "Marketing", "satuan": "kota", "volume": 3, "harga_satuan": 10000000, "total": 30000000, "is_opportunity_cost": false}, {"nama": "Digital ads (Meta + Google)", "keterangan": "Targeting coffee shop owner B2B", "catatan": null, "tag": "Marketing", "satuan": "bulan", "volume": 4, "harga_satuan": 5000000, "total": 20000000, "is_opportunity_cost": false}, {"nama": "Operasional & perjalanan dinas", "keterangan": null, "catatan": null, "tag": "Ops", "satuan": "bulan", "volume": 6, "harga_satuan": 1866667, "total": 11200000, "is_opportunity_cost": false}]}]}, {"id": 3, "nama": "Fase 3 — Ekspansi Nasional", "periode": "Tahun 2", "deskripsi": "Sulawesi · Jawa · Sumatera · Series A preparation", "ikon": "🌏", "total": 380000000, "pos": [{"kategori": "A. Engineering Team", "items": [{"nama": "Backend engineer", "keterangan": "Skalabilitas, keamanan, API publik", "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 12, "harga_satuan": 8000000, "total": 96000000, "is_opportunity_cost": false}, {"nama": "Frontend / mobile dev", "keterangan": "React Native atau Next.js native app", "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 12, "harga_satuan": 6000000, "total": 72000000, "is_opportunity_cost": false}]}, {"kategori": "B. Infrastruktur Skala Nasional", "items": [{"nama": "Supabase Scale / AWS RDS", "keterangan": "Multi-region, read replica, backup", "catatan": null, "tag": "Cloud", "satuan": "bulan", "volume": 12, "harga_satuan": 2000000, "total": 24000000, "is_opportunity_cost": false}, {"nama": "CDN + monitoring (Datadog)", "keterangan": null, "catatan": null, "tag": "Cloud", "satuan": "bulan", "volume": 12, "harga_satuan": 1000000, "total": 12000000, "is_opportunity_cost": false}]}, {"kategori": "C. Tim Operasional Nasional", "items": [{"nama": "Head of Growth", "keterangan": null, "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 12, "harga_satuan": 7000000, "total": 84000000, "is_opportunity_cost": false}, {"nama": "City reps (3 kota baru)", "keterangan": "Sulawesi, Jawa, Sumatera", "catatan": null, "tag": "SDM", "satuan": "bulan", "volume": 12, "harga_satuan": 3000000, "total": 36000000, "is_opportunity_cost": false}]}, {"kategori": "D. Marketing Nasional + Legal", "items": [{"nama": "Campaign nasional + PR", "keterangan": null, "catatan": null, "tag": "Marketing", "satuan": "tahun", "volume": 1, "harga_satuan": 40000000, "total": 40000000, "is_opportunity_cost": false}, {"nama": "Partnership AEKI & event nasional", "keterangan": null, "catatan": null, "tag": "Marketing", "satuan": "tahun", "volume": 1, "harga_satuan": 16000000, "total": 16000000, "is_opportunity_cost": false}]}]}]};
+
+/* ── RAB TAG CONFIG ── */
+const TAG_STYLE = {
+  "Dev Time":  ["rgba(59,130,246,.12)","#93c5fd"],
+  "Dev":       ["rgba(59,130,246,.12)","#93c5fd"],
+  "QA":        ["rgba(59,130,246,.12)","#93c5fd"],
+  "Tools":     ["rgba(139,92,246,.12)","#c4b5fd"],
+  "Cloud":     ["rgba(22,168,122,.12)","#6ee7b7"],
+  "Payment":   ["rgba(232,150,10,.12)","#fcd34d"],
+  "API":       ["rgba(232,150,10,.12)","#fcd34d"],
+  "SDM":       ["rgba(96,165,250,.12)","#93c5fd"],
+  "Marketing": ["rgba(139,92,246,.12)","#c4b5fd"],
+  "Ops":       ["rgba(232,150,10,.12)","#fcd34d"],
+  "Legal":     ["rgba(239,68,68,.12)","#fca5a5"],
+};
+
+function idr(n) {
+  if (n === 0) return 'Rp 0';
+  if (n >= 1000000000) return 'Rp ' + (n/1000000000).toFixed(1) + 'M';
+  if (n >= 1000000)    return 'Rp ' + (n/1000000).toFixed(0) + 'jt';
+  return 'Rp ' + n.toLocaleString('id');
+}
+
+/* ── RENDER SUMMARY CARDS ── */
+function renderRabSummary() {
+  const el = document.getElementById('rabSummaryCards');
+  if (!el) return;
+  const phases = RAB_DATA.fase;
+  const grand  = RAB_DATA.meta.total_24_bulan;
+  const allCells = [...phases.map((f,i) => `
+    <div class="rab-sum-cell">
+      <div class="rab-sum-v" id="rsc-${i}">&mdash;</div>
+      <div class="rab-sum-l">${f.nama}</div>
+      <div class="rab-sum-s">${f.periode}</div>
+    </div>`),
+    `<div class="rab-sum-cell" style="border-top:2px solid var(--acc)">
+      <div class="rab-sum-v" id="rsc-3" style="color:var(--acc-l)">&mdash;</div>
+      <div class="rab-sum-l">Total ${phases.length * 6 > 12 ? 24 : 12} Bulan</div>
+      <div class="rab-sum-s">Kebutuhan Modal</div>
+    </div>`
+  ];
+  el.innerHTML = allCells.join('');
+
+  const targets = [...phases.map(f => f.total), grand];
+  const rabSumObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      targets.forEach((target, i) => {
+        const cel = document.getElementById('rsc-' + i);
+        if (!cel || cel._done) return;
+        cel._done = true;
+        const dur = 1400, t0 = performance.now();
+        const step = now => {
+          const p = Math.min((now-t0)/dur, 1);
+          const ease = 1 - Math.pow(1-p, 3);
+          cel.textContent = idr(Math.round(target * ease));
+          if (p < 1) requestAnimationFrame(step);
+        };
+        requestAnimationFrame(step);
+      });
+      rabSumObs.disconnect();
+    });
+  }, {threshold: .2});
+  rabSumObs.observe(el);
+}
+
+/* ── RENDER PHASE ACCORDIONS ── */
+function renderRabPhases() {
+  const el = document.getElementById('rabPhases');
+  if (!el) return;
+  el.innerHTML = RAB_DATA.fase.map((fase, fi) => {
+    const rows = fase.pos.map(pos => {
+      const itemRows = pos.items.map(item => {
+        const [bg, fg] = TAG_STYLE[item.tag] || ['rgba(255,255,255,.08)','#ccc'];
+        const totalDisp = item.total === 0
+          ? `<span style="color:var(--text3)">Rp 0${item.is_opportunity_cost ? ' *' : ''}</span>`
+          : `<span style="color:var(--text)">${idr(item.total)}</span>`;
+        const hsatuan = item.harga_satuan > 0
+          ? `<div style="font-size:10px;color:var(--text3);margin-top:2px">${idr(item.harga_satuan)}/${item.satuan}</div>`
+          : '';
+        return `<tr>
+          <td>
+            <div style="font-weight:500;color:var(--text)">${item.nama}</div>
+            ${item.keterangan ? `<div class="rab-note">${item.keterangan}</div>` : ''}
+            ${item.catatan   ? `<div class="rab-note" style="color:var(--text3)">${item.catatan}</div>` : ''}
+          </td>
+          <td><span class="rab-cat" style="background:${bg};color:${fg}">${item.tag}</span></td>
+          <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">${item.satuan}</td>
+          <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">${item.volume}</td>
+          <td style="text-align:right;font-family:'DM Mono',monospace">
+            ${totalDisp}
+            ${hsatuan}
+          </td>
+        </tr>`;
+      }).join('');
+      return `
+        <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">${pos.kategori}</td></tr>
+        ${itemRows}`;
+    }).join('');
+
+    const subtotal = `<tr style="background:rgba(255,255,255,.03)">
+      <td colspan="4" style="padding:12px 10px;font-weight:700;color:var(--text)">TOTAL ${fase.nama.toUpperCase()}</td>
+      <td style="text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--acc-l)">${idr(fase.total)}</td>
+    </tr>`;
+
+    return `<div class="rab-phase reveal${fi > 0 ? ' d'+fi : ''}">
+      <div class="rab-phase-hd" onclick="toggleRab(this)">
+        <div class="rab-phase-left">
+          <div class="rab-phase-icon">${fase.ikon}</div>
+          <div>
+            <div class="rab-phase-name">${fase.nama} (${fase.periode})</div>
+            <div class="rab-phase-sub">${fase.deskripsi}</div>
+          </div>
+        </div>
+        <div class="rab-phase-right">
+          <div class="rab-total">${idr(fase.total)}</div>
+          <div class="rab-chevron">&#9660;</div>
+        </div>
+      </div>
+      <div class="rab-body">
+        <table class="rab-table">
+          <thead><tr>
+            <th style="width:35%">Item</th>
+            <th>Keterangan</th>
+            <th style="text-align:right">Sat.</th>
+            <th style="text-align:right">Vol.</th>
+            <th style="text-align:right">Biaya</th>
+          </tr></thead>
+          <tbody>${rows}${subtotal}</tbody>
+        </table>
+        ${fi === 0 ? '<div style="margin-top:10px;font-size:11px;color:var(--text3);line-height:1.6">* Opportunity cost developer in-house TeknoMaven tidak dimasukkan sebagai cash-out.</div>' : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── RENDER COMPOSITION BARS ── */
+function renderRabComposition() {
+  const el = document.getElementById('rabComposition');
+  if (!el) return;
+  const data = RAB_DATA.komposisi_24_bulan;
+  const grand = RAB_DATA.meta.total_24_bulan;
+  const bars = data.map(d => `
+    <div class="rab-bar-item" style="margin-bottom:10px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:10px;height:10px;border-radius:2px;background:${d.warna};flex-shrink:0"></div>
+        <span style="font-size:12px;color:var(--text2);flex:1">${d.kategori}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);flex-shrink:0">${d.persen}%</span>
+        <span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text);min-width:60px;text-align:right;flex-shrink:0">${idr(d.total)}</span>
+      </div>
+      <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:5px">
+        <div style="width:0%;height:100%;background:${d.warna};border-radius:3px;transition:width 1.2s cubic-bezier(.16,1,.3,1)" data-w="${d.persen}%"></div>
+      </div>
+    </div>`).join('');
+
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+      <div>
+        <div class="sl" style="margin-bottom:4px">Komposisi Anggaran (24 Bulan)</div>
+        <div style="font-size:22px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif">
+          Total: <span style="color:var(--acc-l)">${idr(grand)}</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:var(--text2);text-align:right;line-height:1.8">
+        Break-even estimasi bln 3–4<br>
+        Net profit mulai bln 5<br>
+        Net profit bln 12: ~Rp 40jt/bln
+      </div>
+    </div>
+    <div id="compBars">${bars}</div>
+    <div style="margin-top:16px;font-size:11px;color:var(--text3);line-height:1.7;padding-top:14px;border-top:1px solid var(--border)">
+      ${RAB_DATA.meta.catatan} Kurs USD = Rp ${RAB_DATA.meta.kurs_usd.toLocaleString('id')}.
+    </div>`;
+
+  const compObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      e.target.querySelectorAll('[data-w]').forEach(bar => {
+        setTimeout(() => bar.style.width = bar.dataset.w, 80);
+      });
+      compObs.unobserve(e.target);
+    });
+  }, {threshold: .2});
+  const cb = document.getElementById('compBars');
+  if (cb) compObs.observe(cb);
+}
+
 /* ── RAB ACCORDION ── */
 function toggleRab(hd) {
   const body = hd.nextElementSibling;
@@ -1296,72 +1203,11 @@ function toggleRab(hd) {
   chev.classList.toggle('open', !isOpen);
 }
 
-/* ── RAB BARS ── */
-function renderRabBars() {
-  document.querySelectorAll('.rab-bar-item').forEach(el => {
-    const pct = el.dataset.pct;
-    const label = el.dataset.label;
-    const val = el.dataset.val;
-    const color = el.dataset.color;
-    el.innerHTML = `
-      <div style="display:flex;align-items:center;gap:10px">
-        <div style="width:10px;height:10px;border-radius:2px;background:${color};flex-shrink:0"></div>
-        <span style="font-size:12px;color:var(--text2);flex:1">${label}</span>
-        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);flex-shrink:0">${pct}%</span>
-        <span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text);min-width:60px;text-align:right;flex-shrink:0">${val}</span>
-      </div>
-      <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:5px">
-        <div style="width:0%;height:100%;background:${color};border-radius:3px;transition:width 1.2s cubic-bezier(.16,1,.3,1)" data-target-width="${pct}%"></div>
-      </div>`;
-  });
+/* ── INIT RAB ── */
+renderRabSummary();
+renderRabPhases();
+renderRabComposition();
 
-  const barObs = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (e.isIntersecting) {
-        e.target.querySelectorAll('[data-target-width]').forEach(bar => {
-          setTimeout(() => bar.style.width = bar.dataset.targetWidth, 100);
-        });
-        barObs.unobserve(e.target);
-      }
-    });
-  }, {threshold: .3});
-  const rabBars = document.getElementById('rabBars');
-  if (rabBars) barObs.observe(rabBars);
-}
-
-/* ── RAB COUNTER ANIMATION ── */
-function animRabCount(el) {
-  const target = el.dataset.target;
-  const idx = parseInt(el.dataset.count);
-  const labels = ['Rp 89jt', 'Rp 143jt', 'Rp 380jt', 'Rp 612jt'];
-  const dur = 1400;
-  const t0 = performance.now();
-  const step = now => {
-    const p = Math.min((now - t0) / dur, 1);
-    const ease = 1 - Math.pow(1 - p, 3);
-    const values = [89500000, 143000000, 380000000, 612500000];
-    const v = Math.round(values[idx] * ease);
-    const jt = v / 1000000;
-    el.textContent = 'Rp ' + (jt < 100 ? jt.toFixed(0) : jt.toFixed(0)) + 'jt';
-    if (p < 1) requestAnimationFrame(step);
-    else el.textContent = labels[idx];
-  };
-  requestAnimationFrame(step);
-}
-
-/* observe rab summary cells */
-const rabSumObs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const cells = e.target.querySelectorAll('[data-count]');
-      cells.forEach(c => { if (!c._rabCounted) { c._rabCounted = true; animRabCount(c); }});
-    }
-  });
-}, {threshold: .2});
-const rabSumEl = document.querySelector('.rab-summary');
-if (rabSumEl) rabSumObs.observe(rabSumEl);
-
-renderRabBars();
 
 </script>
 </body>
