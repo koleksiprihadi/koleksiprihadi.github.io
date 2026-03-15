@@ -1,0 +1,1368 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BrewLink — Menghubungkan Kopi Indonesia</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#09080a;--ink2:#111015;--ink3:#1a1820;
+  --card:#1f1d26;--card2:#262431;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --text:#e8e4f0;--text2:#7a7490;--text3:#4e4a5c;
+  --amber:#e8960a;--amber-l:#f0a830;--amber-d:#9a620a;--amber-g:rgba(232,150,10,.12);
+  --teal:#16a87a;--teal-l:#20c890;--teal-g:rgba(22,168,122,.1);
+  --purple:#8b5cf6;--purple-l:#a78bfa;--purple-g:rgba(139,92,246,.1);
+  --blue:#3b82f6;--blue-l:#60a5fa;--blue-g:rgba(59,130,246,.1);
+  --red:#ef4444;
+  /* audience accent */
+  --acc:var(--amber);--acc-l:var(--amber-l);--acc-g:var(--amber-g);
+}
+body[data-mode="investor"]{--acc:var(--teal);--acc-l:var(--teal-l);--acc-g:var(--teal-g)}
+body[data-mode="mitra"]{--acc:var(--purple);--acc-l:var(--purple-l);--acc-g:var(--purple-g)}
+body[data-mode="tim"]{--acc:var(--blue);--acc-l:var(--blue-l);--acc-g:var(--blue-g)}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--ink);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--ink2)}
+::-webkit-scrollbar-thumb{background:var(--acc);border-radius:2px}
+
+/* ── MODE BANNER ── */
+.mode-banner{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  padding:10px 24px;gap:8px;
+  background:var(--ink2);border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+.mode-label{font-size:11px;color:var(--text2);letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.mode-pills{display:flex;gap:4px}
+.mpill{
+  padding:5px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;
+  border:1px solid var(--border2);background:transparent;color:var(--text2);
+  font-family:'DM Sans',sans-serif;transition:all .2s;letter-spacing:.02em;
+}
+.mpill:hover{color:var(--text);border-color:var(--border2)}
+.mpill.active{background:var(--acc);color:var(--ink);border-color:transparent}
+.mode-desc{font-size:11px;color:var(--text2);font-style:italic;margin-left:8px}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:41px;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 48px;transition:all .4s;border-bottom:1px solid transparent;
+}
+nav.scrolled{background:rgba(9,8,10,.92);backdrop-filter:blur(16px);border-bottom-color:var(--border);padding:12px 48px}
+.nav-brand{font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:var(--acc-l);display:flex;align-items:center;gap:8px}
+.nav-links{display:flex;gap:28px;list-style:none}
+.nav-links a{font-size:13px;font-weight:500;color:var(--text2);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{padding:7px 18px;border-radius:30px;border:1px solid var(--acc);color:var(--acc-l);font-size:13px;font-weight:600;cursor:pointer;background:transparent;transition:all .2s;font-family:'DM Sans',sans-serif}
+.nav-cta:hover{background:var(--acc);color:var(--ink)}
+.audience-badge{
+  padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;
+  background:var(--acc-g);color:var(--acc-l);
+  border:1px solid var(--acc);letter-spacing:.04em;text-transform:uppercase;
+  transition:all .3s;
+}
+
+/* ── LAYOUT ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:140px 48px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 60% at 20% 40%,rgba(232,150,10,.06),transparent 60%),radial-gradient(ellipse 60% 80% at 80% 60%,rgba(22,168,122,.04),transparent 60%)}
+.hero-ring{position:absolute;border-radius:50%;border:1px solid;pointer-events:none;animation:puls 8s ease-in-out infinite}
+.hero-ring:nth-child(1){width:600px;height:600px;top:50%;left:50%;transform:translate(-50%,-55%);border-color:rgba(232,150,10,.05)}
+.hero-ring:nth-child(2){width:920px;height:920px;top:50%;left:50%;transform:translate(-50%,-55%);border-color:rgba(232,150,10,.03);animation-delay:2s}
+@keyframes puls{0%,100%{opacity:.5;transform:translate(-50%,-55%) scale(1)}50%{opacity:1;transform:translate(-50%,-55%) scale(1.015)}}
+
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;border-radius:30px;border:1px solid var(--acc);background:var(--acc-g);font-size:11px;font-weight:700;color:var(--acc-l);letter-spacing:.08em;text-transform:uppercase;margin-bottom:28px;position:relative;z-index:1;animation:fu .8s ease both}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--acc-l);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(46px,7.5vw,90px);font-weight:900;line-height:1.0;color:var(--text);position:relative;z-index:1;animation:fu .8s .15s ease both;letter-spacing:-2px}
+.hero-title em{font-style:italic;color:var(--acc-l)}
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--text2);max-width:560px;line-height:1.7;margin:24px auto 0;position:relative;z-index:1;font-weight:300;animation:fu .8s .3s ease both}
+.hero-actions{display:flex;gap:12px;margin-top:40px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;animation:fu .8s .45s ease both}
+.btn-p{padding:13px 30px;border-radius:40px;background:var(--acc);color:var(--ink);font-size:14px;font-weight:700;border:none;cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif}
+.btn-p:hover{filter:brightness(1.1);transform:translateY(-2px);box-shadow:0 12px 32px rgba(232,150,10,.25)}
+.btn-s{padding:13px 30px;border-radius:40px;background:transparent;color:var(--text);font-size:14px;font-weight:500;border:1px solid var(--border2);cursor:pointer;transition:all .25s;font-family:'DM Sans',sans-serif}
+.btn-s:hover{border-color:var(--acc);color:var(--acc-l)}
+
+.scroll-ind{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:1;animation:fu .8s .9s ease both}
+.scroll-ind span{font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase}
+.scroll-line{width:1px;height:36px;background:linear-gradient(to bottom,var(--acc),transparent);overflow:hidden;position:relative}
+.scroll-line::after{content:'';position:absolute;top:-8px;width:100%;height:8px;background:var(--acc);animation:sd 1.8s ease-in-out infinite}
+@keyframes sd{to{transform:translateY(48px);opacity:0}}
+@keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTIONS ── */
+.sec{padding:96px 48px;max-width:1160px;margin:0 auto}
+.sec-full{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--ink2)}
+.sec-full .sec{padding:96px 48px}
+.sl{font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--acc);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sl::before{content:'';width:20px;height:1px;background:var(--acc)}
+.st{font-family:'Playfair Display',serif;font-size:clamp(30px,4.5vw,48px);font-weight:700;color:var(--text);line-height:1.15;letter-spacing:-.5px}
+.st em{font-style:italic;color:var(--acc-l)}
+.ss{font-size:15px;color:var(--text2);max-width:520px;line-height:1.7;margin-top:14px;font-weight:300}
+.reveal{opacity:0;transform:translateY(28px);transition:all .7s cubic-bezier(.16,1,.3,1)}
+.reveal.vis{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+/* ── CARDS ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px}
+.card2{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:14px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border)}
+
+/* ── SOURCE CITATION ── */
+.src{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;color:var(--text3);cursor:pointer;
+  padding:2px 6px;border-radius:4px;border:1px solid transparent;
+  transition:all .2s;vertical-align:middle;margin-left:4px;
+  font-family:'DM Mono',monospace;
+}
+.src:hover{border-color:var(--border2);color:var(--text2);background:var(--card)}
+.src-sup{font-size:9px;color:var(--acc);font-weight:700;vertical-align:super;margin-left:1px}
+.sources-panel{
+  max-width:1160px;margin:0 auto;padding:32px 48px;
+  border-top:1px solid var(--border);
+}
+.sources-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.source-item{display:flex;gap:10px;padding:10px 12px;border-radius:8px;background:var(--card);border:1px solid var(--border)}
+.source-num{font-size:10px;font-weight:700;color:var(--acc);font-family:'DM Mono',monospace;flex-shrink:0;width:20px;margin-top:1px}
+.source-body{}
+.source-name{font-size:12px;font-weight:600;color:var(--text)}
+.source-detail{font-size:11px;color:var(--text2);margin-top:2px;line-height:1.5}
+
+/* ── STAT CELLS ── */
+.stat-wrap{overflow:hidden;border-radius:14px;border:1px solid var(--border)}
+.stat-cell{background:var(--card);padding:36px 28px;text-align:center}
+.stat-n{font-family:'Playfair Display',serif;font-size:clamp(32px,3.5vw,48px);font-weight:900;color:var(--acc-l);line-height:1;margin-bottom:6px}
+.stat-l{font-size:13px;color:var(--text2);line-height:1.5}
+.stat-s{font-size:11px;color:var(--acc);margin-top:6px;font-weight:600;letter-spacing:.03em}
+.stat-src{font-size:10px;color:var(--text3);margin-top:4px;font-family:'DM Mono',monospace}
+
+/* ── AUDIENCE SECTIONS ── */
+.aud-section{display:none}
+.aud-section.vis{display:block}
+
+/* INVESTOR specific */
+.fin-row{display:flex;align-items:center;gap:0;overflow:hidden;border-radius:10px;border:1px solid var(--border)}
+.fin-cell{flex:1;padding:20px;background:var(--card);border-right:1px solid var(--border);text-align:center}
+.fin-cell:last-child{border:none}
+.fin-v{font-family:'DM Mono',monospace;font-size:18px;font-weight:500;color:var(--teal-l);margin-bottom:4px}
+.fin-l{font-size:11px;color:var(--text2)}
+
+/* TIM specific */
+.sprint-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.sprint-item:last-child{border:none}
+.sprint-n{width:72px;font-size:11px;font-weight:700;color:var(--acc);flex-shrink:0;font-family:'DM Mono',monospace;padding-top:2px}
+.sprint-body{flex:1}
+.sprint-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px}
+.sprint-tasks{font-size:12px;color:var(--text2);line-height:1.6}
+.sprint-status{flex-shrink:0;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;height:fit-content;letter-spacing:.04em}
+.s-done{background:rgba(22,168,122,.12);color:var(--teal-l);border:1px solid rgba(22,168,122,.25)}
+.s-now{background:var(--acc-g);color:var(--acc-l);border:1px solid var(--acc)}
+.s-plan{background:var(--card2);color:var(--text3);border:1px solid var(--border)}
+
+/* MITRA specific */
+.mitra-flow{display:flex;gap:0;margin-top:8px}
+.mf-step{flex:1;padding:20px;background:var(--card);border-right:1px solid var(--border);position:relative}
+.mf-step:last-child{border:none}
+.mf-num{font-size:28px;font-weight:900;font-family:'Playfair Display',serif;color:var(--acc);opacity:.2;line-height:1;margin-bottom:6px}
+.mf-title{font-size:13px;font-weight:600;color:var(--text);margin-bottom:4px}
+.mf-body{font-size:12px;color:var(--text2);line-height:1.5}
+
+/* ── PROBLEM STRIP ── */
+.prob-grid{display:grid;grid-template-columns:repeat(3,1fr)}
+.prob-item{padding:52px 40px;border-right:1px solid var(--border)}
+.prob-item:last-child{border:none}
+.prob-num{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:var(--acc);opacity:.18;line-height:1;margin-bottom:10px}
+.prob-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px}
+.prob-body{font-size:13px;color:var(--text2);line-height:1.7}
+
+/* ── VALUE CARDS ── */
+.val-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:30px;position:relative;overflow:hidden;transition:all .3s}
+.val-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.val-card:hover{transform:translateY(-4px);border-color:var(--border2)}
+.val-card:hover::after{transform:scaleX(1)}
+.val-icon{font-size:32px;margin-bottom:14px}
+.val-role{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:14px}
+.val-title{font-size:18px;font-weight:600;color:var(--text);margin-bottom:10px}
+.val-list{list-style:none;display:flex;flex-direction:column;gap:7px}
+.val-list li{font-size:13px;color:var(--text2);padding-left:14px;position:relative;line-height:1.5}
+.val-list li::before{content:'';position:absolute;left:0;top:7px;width:5px;height:5px;border-radius:50%;background:var(--acc);opacity:.5}
+
+/* ── FEATURES ── */
+.feat-layout{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start;margin-top:52px}
+.feat-item{padding:18px 22px;border-radius:10px;cursor:pointer;transition:all .2s;border:1px solid transparent;margin-bottom:4px}
+.feat-item:hover,.feat-item.act{background:var(--card2);border-color:var(--border)}
+.feat-item.act{border-color:rgba(232,150,10,.2)}
+.fi-hd{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.fi-ic{font-size:18px;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--acc-g);flex-shrink:0}
+.fi-nm{font-size:14px;font-weight:600;color:var(--text)}
+.fi-de{font-size:12px;color:var(--text2);line-height:1.6;padding-left:44px}
+.feat-preview{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;min-height:380px;position:sticky;top:120px}
+.fp{display:none;animation:fu .35s ease both}
+.fp.act{display:block}
+
+/* ── REVENUE ── */
+.rev-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px;transition:all .3s}
+.rev-card:hover{border-color:var(--border2);transform:translateY(-2px)}
+.rev-icon{font-size:26px;margin-bottom:14px}
+.rev-tag{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--acc);margin-bottom:6px}
+.rev-val{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--text);margin-bottom:8px}
+.rev-body{font-size:12px;color:var(--text2);line-height:1.6}
+
+/* ── ROADMAP ── */
+.rm-track{display:flex;overflow:hidden;border-radius:14px;border:1px solid var(--border)}
+.rm-phase{flex:1;padding:32px 24px;background:var(--card);border-right:1px solid var(--border);transition:background .3s}
+.rm-phase:last-child{border:none}
+.rm-phase:hover{background:var(--card2)}
+.rp-num{font-family:'Playfair Display',serif;font-size:44px;font-weight:900;color:var(--acc);opacity:.15;line-height:1;margin-bottom:6px}
+.rp-tag{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--acc);margin-bottom:6px}
+.rp-title{font-size:15px;font-weight:600;color:var(--text);margin-bottom:10px}
+.rp-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+.rp-list li{font-size:11px;color:var(--text2);padding-left:12px;position:relative;line-height:1.5}
+.rp-list li::before{content:'—';position:absolute;left:0;color:var(--acc);opacity:.4}
+
+/* ── MOAT CARDS ── */
+.moat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px}
+.moat-icon{font-size:28px;margin-bottom:12px}
+.moat-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:8px}
+.moat-body{font-size:13px;color:var(--text2);line-height:1.6}
+
+/* ── CTA ── */
+.cta-wrap{text-align:center;padding:112px 48px;background:var(--ink2);border-top:1px solid var(--border);position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:300px;background:radial-gradient(ellipse,var(--acc-g),transparent 70%);pointer-events:none}
+.cta-title{font-family:'Playfair Display',serif;font-size:clamp(34px,5vw,58px);font-weight:900;color:var(--text);line-height:1.1;letter-spacing:-.5px;max-width:680px;margin:0 auto 18px;position:relative;z-index:1}
+.cta-sub{font-size:16px;color:var(--text2);max-width:460px;margin:0 auto 44px;line-height:1.7;font-weight:300;position:relative;z-index:1}
+.cta-cards{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1}
+.cta-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px 24px;text-align:left;flex:1;min-width:180px;max-width:220px;cursor:pointer;transition:all .3s}
+.cta-card:hover{border-color:var(--acc);transform:translateY(-3px)}
+.cc-icon{font-size:22px;margin-bottom:10px}
+.cc-role{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--acc);margin-bottom:4px}
+.cc-title{font-size:14px;font-weight:600;color:var(--text);margin-bottom:5px}
+.cc-desc{font-size:11px;color:var(--text2);line-height:1.5}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);border-top:1px solid var(--border);padding:36px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px}
+.f-brand{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--acc-l)}
+.f-note{font-size:12px;color:var(--text3)}
+.f-links{display:flex;gap:20px}
+.f-links a{font-size:12px;color:var(--text2);text-decoration:none;transition:color .2s}
+.f-links a:hover{color:var(--text)}
+
+/* ── TOAST ── */
+#toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--acc);color:var(--ink);padding:11px 20px;border-radius:30px;font-size:13px;font-weight:600;transition:transform .3s;z-index:999;white-space:nowrap;pointer-events:none;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  nav{padding:14px 20px;top:41px}
+  .nav-links{display:none}
+  .sec{padding:64px 20px}
+  .sec-full .sec{padding:64px 20px}
+  .prob-grid,.g2,.g3,.feat-layout,.rm-track{grid-template-columns:1fr}
+  .prob-item,.rm-phase{border-right:none;border-bottom:1px solid var(--border)}
+  .g4{grid-template-columns:1fr 1fr}
+  .cta-wrap{padding:72px 20px}
+  .sources-grid{grid-template-columns:1fr}
+  .hero{padding:120px 20px 60px}
+  .sources-panel{padding:28px 20px}
+  .mode-banner{flex-wrap:wrap;gap:6px}
+  .mode-desc{display:none}
+}
+
+/* ── RAB STYLES ── */
+.rab-phase{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:16px}
+.rab-phase-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .2s;gap:12px}
+.rab-phase-hd:hover{background:var(--card2)}
+.rab-phase-hd.open{background:var(--card2)}
+.rab-phase-left{display:flex;align-items:center;gap:14px}
+.rab-phase-icon{font-size:20px;width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:var(--acc-g);flex-shrink:0}
+.rab-phase-name{font-size:15px;font-weight:600;color:var(--text)}
+.rab-phase-sub{font-size:11px;color:var(--text2);margin-top:2px}
+.rab-phase-right{display:flex;align-items:center;gap:16px;flex-shrink:0}
+.rab-total{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--acc-l)}
+.rab-chevron{font-size:12px;color:var(--text2);transition:transform .25s}
+.rab-chevron.open{transform:rotate(180deg)}
+.rab-body{display:none;padding:20px 24px}
+.rab-body.open{display:block}
+.rab-table{width:100%;border-collapse:collapse;font-size:13px}
+.rab-table th{text-align:left;padding:8px 10px;font-size:11px;font-weight:500;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;border-bottom:1px solid var(--border)}
+.rab-table td{padding:9px 10px;border-bottom:1px solid var(--border);vertical-align:middle}
+.rab-table tr:last-child td{border:none}
+.rab-table tr:hover td{background:rgba(255,255,255,.02)}
+.rab-cat{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px}
+.rab-note{font-size:11px;color:var(--text2);margin-top:2px}
+.rab-zero{color:var(--text3)}
+.rab-summary{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-top:32px}
+.rab-sum-cell{background:var(--card);padding:24px 20px;text-align:center}
+.rab-sum-v{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,32px);font-weight:900;color:var(--acc-l);line-height:1;margin-bottom:5px}
+.rab-sum-l{font-size:12px;color:var(--text2);line-height:1.4}
+.rab-sum-s{font-size:10px;color:var(--acc);margin-top:5px;font-weight:600}
+.rab-bar-wrap{height:6px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:8px}
+.rab-bar{height:100%;border-radius:3px;background:var(--acc);transition:width 1.2s cubic-bezier(.16,1,.3,1)}
+.rab-legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}
+.rab-leg-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text2)}
+.rab-leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+@media(max-width:900px){.rab-summary{grid-template-columns:1fr 1fr}}
+
+</style>
+</head>
+<body data-mode="umum">
+
+<!-- ══ MODE BANNER ══ -->
+<div class="mode-banner" id="modeBanner">
+  <span class="mode-label">Lihat sebagai</span>
+  <div class="mode-pills">
+    <button class="mpill active" data-mode="umum" onclick="setMode('umum',this)">Umum</button>
+    <button class="mpill" data-mode="investor" onclick="setMode('investor',this)">Investor</button>
+    <button class="mpill" data-mode="tim" onclick="setMode('tim',this)">Tim</button>
+    <button class="mpill" data-mode="mitra" onclick="setMode('mitra',this)">Mitra Bisnis</button>
+  </div>
+  <span class="mode-desc" id="modeDesc">Pandangan umum tentang BrewLink</span>
+</div>
+
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <div class="nav-brand">☕ BrewLink</div>
+  <ul class="nav-links">
+    <li><a href="#masalah">Masalah</a></li>
+    <li><a href="#solusi">Solusi</a></li>
+    <li><a href="#pasar">Pasar</a></li>
+    <li><a href="#produk">Produk</a></li>
+    <li><a href="#revenue">Revenue</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="audience-badge" id="audBadge">Umum</div>
+    <button class="nav-cta" onclick="scrollTo('cta')">Bergabung</button>
+  </div>
+</nav>
+
+<!-- ══════════ HERO ══════════ -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-ring"></div><div class="hero-ring"></div>
+
+  <div class="hero-eyebrow" id="heroEyebrow">B2B Coffee Marketplace — Indonesia</div>
+
+  <h1 class="hero-title" id="heroTitle">
+    Menghubungkan<br><em>Kopi Indonesia</em><br>dari Sumber ke Cangkir
+  </h1>
+  <p class="hero-sub" id="heroSub">Platform pertama di Indonesia yang menghubungkan roastery spesialti dengan coffee shop — lengkap dengan custom roast, gramasi otomatis, dan trust system berbasis data.</p>
+
+  <div class="hero-actions">
+    <button class="btn-p" onclick="scrollTo('solusi')">Lihat Platform</button>
+    <button class="btn-s" onclick="scrollTo('pasar')">Peluang Pasar →</button>
+  </div>
+
+  <div class="scroll-ind">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</div>
+
+<!-- ══════════ PROBLEM ══════════ -->
+<div class="sec-full" id="masalah">
+  <div class="sec" style="padding-top:0;padding-bottom:0;max-width:none">
+    <div class="prob-grid">
+      <div class="prob-item reveal">
+        <div class="prob-num">01</div>
+        <div class="prob-title">Pasar yang terpencar</div>
+        <div class="prob-body">Coffee shop bergantung pada koneksi personal dan WhatsApp untuk menemukan roastery. Tidak ada standar, tidak ada data, tidak ada transparansi harga.<span class="src" title="BPS Survei Usaha Mikro Kecil 2023">[1]</span></div>
+      </div>
+      <div class="prob-item reveal d1">
+        <div class="prob-num">02</div>
+        <div class="prob-title">Kualitas tidak terukur</div>
+        <div class="prob-body">Tidak ada sistem cupping score terpusat di Indonesia. Coffee shop tidak tahu apakah bean yang dipesan cocok untuk metode brewing mereka.<span class="src" title="SCA Indonesia Coffee Survey 2022">[2]</span></div>
+      </div>
+      <div class="prob-item reveal d2">
+        <div class="prob-num">03</div>
+        <div class="prob-title">Operasional yang manual</div>
+        <div class="prob-body">Gramasi ditulis di sticky note. Stok dipantau manual. Tidak ada sistem yang menghitung otomatis berapa cups tersisa dari stok yang ada.<span class="src" title="Field research Pontianak 2024 (n=45 coffee shop)">[3]</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SOLUSI ══════════ -->
+<section class="sec" id="solusi">
+  <div class="reveal">
+    <div class="sl">Solusi</div>
+    <h2 class="st">Satu platform untuk<br><em>seluruh ekosistem kopi</em></h2>
+    <p class="ss">BrewLink bukan sekadar marketplace. Ini sistem operasional harian untuk setiap pihak dalam rantai nilai kopi spesialti.</p>
+  </div>
+  <div class="g3" style="margin-top:48px">
+    <div class="val-card reveal d1">
+      <div class="val-icon">🔥</div>
+      <div class="val-role" style="background:rgba(232,150,10,.1);color:var(--amber-l)">Roastery · Seller</div>
+      <div class="val-title">Jangkau lebih banyak pembeli</div>
+      <ul class="val-list">
+        <li>Terima custom order dengan spesifikasi roast detail</li>
+        <li>Konsultasi langsung via realtime chat</li>
+        <li>Trust score membangun reputasi digital</li>
+        <li>Analytics demand & tren produk</li>
+        <li>Origin story untuk edukasi buyer</li>
+      </ul>
+    </div>
+    <div class="val-card reveal d2">
+      <div class="val-icon">🏪</div>
+      <div class="val-role" style="background:rgba(22,168,122,.1);color:var(--teal-l)">Coffee Shop · Buyer</div>
+      <div class="val-title">Operasional jadi otomatis</div>
+      <ul class="val-list">
+        <li>Custom order: roast profile & grind spec</li>
+        <li>Gramasi multi-bean & POS terintegrasi</li>
+        <li>Stok potong otomatis per transaksi</li>
+        <li>Matchmaking berbasis cupping score & budget</li>
+        <li>Akses origin story bean yang pernah dipesan</li>
+      </ul>
+    </div>
+    <div class="val-card reveal d3">
+      <div class="val-icon">👨‍🍳</div>
+      <div class="val-role" style="background:rgba(139,92,246,.1);color:var(--purple-l)">Barista · Community</div>
+      <div class="val-title">Komunitas & pengakuan</div>
+      <ul class="val-list">
+        <li>Knowledge hub: brewing guide & teknik</li>
+        <li>Tulis cupping notes & origin story</li>
+        <li>Profil profesional dengan portofolio</li>
+        <li>Konten eksklusif dari roastery partner</li>
+        <li>Sertifikasi digital berbasis kontribusi</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ PASAR ══════════ -->
+<div class="sec-full" id="pasar">
+  <div class="sec">
+    <div class="reveal">
+      <div class="sl">Peluang Pasar</div>
+      <h2 class="st">Pasar besar yang<br><em>belum tersentuh teknologi</em></h2>
+      <p class="ss">Industri kopi spesialti Indonesia tumbuh 15% per tahun, tapi transaksi B2B-nya masih 90% lewat WhatsApp.</p>
+    </div>
+
+    <div class="stat-wrap g4" style="margin-top:48px;border-radius:14px">
+      <div class="stat-cell reveal">
+        <div class="stat-n" data-count="4.2" data-suf="T">—</div>
+        <div class="stat-l">Nilai pasar kopi<br>spesialti Indonesia</div>
+        <div class="stat-s">Tumbuh 15%/tahun</div>
+        <div class="stat-src">[4] ICO 2024</div>
+      </div>
+      <div class="stat-cell reveal d1">
+        <div class="stat-n" data-count="35000" data-pre=">">—</div>
+        <div class="stat-l">Coffee shop aktif<br>di Indonesia</div>
+        <div class="stat-s">Mayoritas independent</div>
+        <div class="stat-src">[5] Kemenperin 2023</div>
+      </div>
+      <div class="stat-cell reveal d2">
+        <div class="stat-n" data-count="2000" data-pre=">">—</div>
+        <div class="stat-l">Specialty roastery<br>aktif di 30+ kota</div>
+        <div class="stat-s">Belum terhubung digital</div>
+        <div class="stat-src">[6] AEKI 2023</div>
+      </div>
+      <div class="stat-cell reveal d3">
+        <div class="stat-n" data-count="90" data-suf="%">—</div>
+        <div class="stat-l">Transaksi B2B kopi<br>masih via WhatsApp</div>
+        <div class="stat-s">Peluang digitalisasi</div>
+        <div class="stat-src">[3] Field research 2024</div>
+      </div>
+    </div>
+
+    <!-- ── INVESTOR VIEW: TAM SAM SOM ── -->
+    <div class="aud-section" id="aud-investor-market" style="margin-top:32px">
+      <div class="card reveal">
+        <div class="sl" style="margin-bottom:12px">TAM / SAM / SOM</div>
+        <div class="g3">
+          <div class="card2" style="text-align:center;padding:24px">
+            <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">TAM — Total Addressable Market</div>
+            <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--teal-l);line-height:1">Rp 4.2T</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.5">Seluruh pasar kopi spesialti B2B Indonesia<span class="src">[4]</span></div>
+          </div>
+          <div class="card2" style="text-align:center;padding:24px">
+            <div style="font-size:10px;color:var(--text2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">SAM — Serviceable Market</div>
+            <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--teal-l);line-height:1">Rp 840M</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.5">Independent coffee shop skala kecil–menengah (20% TAM)<span class="src">[5]</span></div>
+          </div>
+          <div class="card2" style="text-align:center;padding:24px;border:1px solid var(--teal)44">
+            <div style="font-size:10px;color:var(--teal-l);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">SOM — Target Year 1–2</div>
+            <div style="font-family:'Playfair Display',serif;font-size:36px;font-weight:900;color:var(--teal-l);line-height:1">Rp 12M</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:8px;line-height:1.5">Kalimantan (1.4% SAM) → ekspansi nasional<span class="src">[3]</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ PRODUK ══════════ -->
+<section class="sec" id="produk">
+  <div class="reveal">
+    <div class="sl">Fitur Unggulan</div>
+    <h2 class="st">Dibangun untuk<br><em>kebutuhan nyata</em></h2>
+  </div>
+
+  <div class="feat-layout">
+    <div id="featList">
+      <div class="feat-item act" onclick="selFeat(0,this)">
+        <div class="fi-hd"><div class="fi-ic">⚗️</div><div class="fi-nm">Custom Order & Blend</div></div>
+        <div class="fi-de">Pesan biji atau bubuk dengan spesifikasi roast profile. Blend multi-bean dengan persentase kustom — satu input total kg, sistem breakdown otomatis.</div>
+      </div>
+      <div class="feat-item" onclick="selFeat(1,this)">
+        <div class="fi-hd"><div class="fi-ic">☕</div><div class="fi-nm">Gramasi & POS Otomatis</div></div>
+        <div class="fi-de">Set gramasi per menu, hot/cold berbeda. Stok terpotong otomatis setiap transaksi kasir. Dibatasi oleh bean yang paling cepat habis.</div>
+      </div>
+      <div class="feat-item" onclick="selFeat(2,this)">
+        <div class="fi-hd"><div class="fi-ic">🎯</div><div class="fi-nm">Matchmaking Cerdas</div></div>
+        <div class="fi-de">Request berdasarkan cupping score minimum, flavor notes, budget, dan metode brewing. Engine SQL — tidak perlu ML, akurat dari data.</div>
+      </div>
+      <div class="feat-item" onclick="selFeat(3,this)">
+        <div class="fi-hd"><div class="fi-ic">💬</div><div class="fi-nm">Realtime Consultation</div></div>
+        <div class="fi-de">Chat langsung dengan roastery dalam konteks order. Supabase Realtime — pesan terkirim instan, tidak perlu refresh.</div>
+      </div>
+      <div class="feat-item" onclick="selFeat(4,this)">
+        <div class="fi-hd"><div class="fi-ic">⭐</div><div class="fi-nm">Trust & Review System</div></div>
+        <div class="fi-de">Rating multi-dimensi setelah setiap order. Cupping score dari barista profesional. Reputasi digital yang tidak bisa dibeli, hanya dibangun.</div>
+      </div>
+    </div>
+
+    <div class="feat-preview">
+      <!-- FP 0 -->
+      <div class="fp act" id="fp-0">
+        <div style="font-size:11px;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:18px">Custom Order</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card2">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Komposisi Blend (10 kg total)</div>
+            <div style="height:8px;border-radius:4px;overflow:hidden;display:flex;margin-bottom:10px">
+              <div style="width:60%;background:#e8960a;opacity:.9"></div>
+              <div style="width:30%;background:#16a87a;opacity:.9"></div>
+              <div style="width:10%;background:#3b82f6;opacity:.9"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text2);display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#e8960a;display:inline-block"></span>Kintamani Natural</span><span style="font-family:'DM Mono',monospace;color:var(--amber-l)">60% — 6.00 kg</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text2);display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#16a87a;display:inline-block"></span>Toraja Sulawesi</span><span style="font-family:'DM Mono',monospace;color:var(--teal-l)">30% — 3.00 kg</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:12px"><span style="color:var(--text2);display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:#3b82f6;display:inline-block"></span>Gayo Aceh</span><span style="font-family:'DM Mono',monospace;color:var(--blue-l)">10% — 1.00 kg</span></div>
+            </div>
+          </div>
+          <div class="card2" style="display:flex;justify-content:space-between;align-items:center">
+            <div><div style="font-size:10px;color:var(--text2)">Roast Profile</div><div style="font-size:14px;font-weight:600;color:var(--text);margin-top:2px">☕ Medium — 215–225°C</div></div>
+            <div style="text-align:right"><div style="font-size:10px;color:var(--text2)">Est. Total</div><div style="font-family:'DM Mono',monospace;font-size:16px;color:var(--acc-l);margin-top:2px">Rp 2.68jt</div></div>
+          </div>
+          <div class="card2" style="display:flex;justify-content:space-between">
+            <div style="text-align:center;flex:1"><div style="font-size:10px;color:var(--text2)">Format</div><div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px">Bubuk</div></div>
+            <div style="width:1px;background:var(--border)"></div>
+            <div style="text-align:center;flex:1"><div style="font-size:10px;color:var(--text2)">Grind</div><div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px">Espresso</div></div>
+            <div style="width:1px;background:var(--border)"></div>
+            <div style="text-align:center;flex:1"><div style="font-size:10px;color:var(--text2)">Pack</div><div style="font-size:13px;font-weight:600;color:var(--text);margin-top:3px">500gr×20</div></div>
+          </div>
+        </div>
+      </div>
+      <!-- FP 1 -->
+      <div class="fp" id="fp-1">
+        <div style="font-size:11px;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:18px">Gramasi & Stok</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card2">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div style="font-size:13px;font-weight:600;color:var(--text)">Signature Blend Espresso</div>
+              <span style="font-size:10px;padding:2px 8px;border-radius:10px;background:rgba(22,168,122,.12);color:var(--teal-l);font-weight:700">AKTIF</span>
+            </div>
+            <div style="display:flex;gap:8px">
+              <div style="flex:1;background:var(--card);border-radius:7px;padding:10px;text-align:center">
+                <div style="font-size:10px;color:var(--amber)">🔥 Hot</div>
+                <div style="font-family:'DM Mono',monospace;font-size:15px;color:var(--text);margin-top:3px">18 gr</div>
+                <div style="font-size:10px;color:var(--text2)">Rp 4.752/cup</div>
+              </div>
+              <div style="flex:1;background:var(--card);border-radius:7px;padding:10px;text-align:center">
+                <div style="font-size:10px;color:#60a5fa">❄️ Cold</div>
+                <div style="font-family:'DM Mono',monospace;font-size:15px;color:var(--text);margin-top:3px">36 gr</div>
+                <div style="font-size:10px;color:var(--text2)">Rp 9.504/cup</div>
+              </div>
+              <div style="flex:1;background:var(--card);border-radius:7px;padding:10px;text-align:center">
+                <div style="font-size:10px;color:var(--teal-l)">Est. Cups</div>
+                <div style="font-family:'DM Mono',monospace;font-size:15px;color:var(--teal-l);margin-top:3px">255</div>
+                <div style="font-size:10px;color:var(--text2)">dari stok</div>
+              </div>
+            </div>
+          </div>
+          <div class="card2" style="border-color:rgba(239,68,68,.2);display:flex;align-items:center;gap:10px">
+            <span style="font-size:18px">🚨</span>
+            <div style="flex:1">
+              <div style="font-size:12px;font-weight:600;color:#f87171">Kintamani Natural hampir habis</div>
+              <div style="font-size:11px;color:var(--text2);margin-top:2px">1.2kg — est. habis besok. 3 menu terdampak.</div>
+            </div>
+            <button style="padding:5px 11px;border-radius:20px;background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);color:#f87171;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">Order →</button>
+          </div>
+        </div>
+      </div>
+      <!-- FP 2 -->
+      <div class="fp" id="fp-2">
+        <div style="font-size:11px;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:18px">Matchmaking</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card2">
+            <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Kriteria pencarian</div>
+            <div style="display:flex;flex-wrap:wrap;gap:5px">
+              <span style="padding:3px 9px;border-radius:20px;background:var(--acc-g);border:1px solid var(--acc);color:var(--acc-l);font-size:11px">☕ Espresso</span>
+              <span style="padding:3px 9px;border-radius:20px;background:var(--acc-g);border:1px solid var(--acc);color:var(--acc-l);font-size:11px">Score ≥ 85</span>
+              <span style="padding:3px 9px;border-radius:20px;background:var(--acc-g);border:1px solid var(--acc);color:var(--acc-l);font-size:11px">🍫 Chocolate</span>
+              <span style="padding:3px 9px;border-radius:20px;background:var(--acc-g);border:1px solid var(--acc);color:var(--acc-l);font-size:11px">≤Rp 280k/kg</span>
+            </div>
+          </div>
+          <div style="font-size:11px;color:var(--text2);padding:0 2px">3 roastery cocok</div>
+          <div class="card2" style="border-color:rgba(22,168,122,.2);display:flex;align-items:center;gap:10px">
+            <div style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#9a620a,#e8960a);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--ink);flex-shrink:0">GA</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--text)">Gunung Agung Roastery</div>
+              <div style="font-size:11px;color:var(--text2)">Kintamani Natural · <span style="color:var(--acc-l)">87.5 score</span> · Rp 264k/kg</div>
+            </div>
+            <span style="color:var(--amber);font-size:12px">★★★★★</span>
+          </div>
+          <div class="card2" style="display:flex;align-items:center;gap:10px">
+            <div style="width:34px;height:34px;border-radius:8px;background:linear-gradient(135deg,#0f6e56,#16a87a);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff;flex-shrink:0">CR</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--text)">Celebes Roastery</div>
+              <div style="font-size:11px;color:var(--text2)">Toraja Sulawesi · <span style="color:var(--acc-l)">85.0 score</span> · Rp 264k/kg</div>
+            </div>
+            <span style="color:var(--amber);font-size:12px">★★★★</span>
+          </div>
+        </div>
+      </div>
+      <!-- FP 3 -->
+      <div class="fp" id="fp-3">
+        <div style="font-size:11px;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:18px">Realtime Chat</div>
+        <div class="card2" style="display:flex;flex-direction:column;gap:10px">
+          <div style="align-self:flex-start;background:var(--card);border:1px solid var(--border);border-radius:10px;border-bottom-left-radius:2px;padding:10px 13px;max-width:90%">
+            <div style="font-size:12px;color:var(--text);line-height:1.5">Untuk Kintamani Natural ini saya rekomendasikan <strong style="color:var(--acc-l)">City Roast 210–215°C</strong>. Fruit note tetap ada, body cukup untuk milk-based. 👍</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:5px">Wayan · Gunung Agung · 14:32</div>
+          </div>
+          <div style="align-self:flex-end;background:var(--acc);border-radius:10px;border-bottom-right-radius:2px;padding:10px 13px;max-width:80%">
+            <div style="font-size:12px;color:var(--ink);line-height:1.5">Bisa kirim sampel 200gr dulu sebelum full batch?</div>
+            <div style="font-size:10px;color:rgba(9,8,10,.45);margin-top:5px">Kamu · 14:45</div>
+          </div>
+          <div style="align-self:flex-start;background:var(--card);border:1px solid var(--border);border-radius:10px;border-bottom-left-radius:2px;padding:10px 13px;max-width:90%">
+            <div style="font-size:12px;color:var(--text);line-height:1.5">Tentu! Sampel gratis sebelum full batch. Rest minimal <strong style="color:var(--acc-l)">7–10 hari</strong> untuk Natural Process. ☕</div>
+            <div style="font-size:10px;color:var(--text2);margin-top:5px">Wayan · 15:01</div>
+          </div>
+        </div>
+      </div>
+      <!-- FP 4 -->
+      <div class="fp" id="fp-4">
+        <div style="font-size:11px;color:var(--acc);letter-spacing:.08em;text-transform:uppercase;font-weight:600;margin-bottom:18px">Trust Score</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="card2" style="text-align:center;padding:20px">
+            <div style="font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:var(--acc-l);line-height:1">4.9</div>
+            <div style="color:var(--amber);font-size:16px;margin:5px 0">★★★★★</div>
+            <div style="font-size:12px;color:var(--text2)">Gunung Agung Roastery · 128 ulasan</div>
+          </div>
+          <div class="card2">
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="color:var(--text2);width:100px;flex-shrink:0">Kualitas Produk</span><div style="flex:1;height:4px;background:var(--card);border-radius:2px;overflow:hidden"><div style="width:96%;height:100%;background:var(--acc)"></div></div><span style="font-family:'DM Mono',monospace;color:var(--acc);flex-shrink:0">4.8</span></div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="color:var(--text2);width:100px;flex-shrink:0">Akurasi Roast</span><div style="flex:1;height:4px;background:var(--card);border-radius:2px;overflow:hidden"><div style="width:98%;height:100%;background:var(--acc)"></div></div><span style="font-family:'DM Mono',monospace;color:var(--acc);flex-shrink:0">4.9</span></div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="color:var(--text2);width:100px;flex-shrink:0">Komunikasi</span><div style="flex:1;height:4px;background:var(--card);border-radius:2px;overflow:hidden"><div style="width:100%;height:100%;background:var(--acc)"></div></div><span style="font-family:'DM Mono',monospace;color:var(--acc);flex-shrink:0">5.0</span></div>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12px"><span style="color:var(--text2);width:100px;flex-shrink:0">Tepat Waktu</span><div style="flex:1;height:4px;background:var(--card);border-radius:2px;overflow:hidden"><div style="width:92%;height:100%;background:var(--acc)"></div></div><span style="font-family:'DM Mono',monospace;color:var(--acc);flex-shrink:0">4.6</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ REVENUE ══════════ -->
+<div class="sec-full" id="revenue">
+  <div class="sec">
+    <div class="reveal">
+      <div class="sl">Model Revenue</div>
+      <h2 class="st">Lima stream yang<br><em>saling menguatkan</em></h2>
+    </div>
+
+    <div class="g3" style="margin-top:48px;grid-template-columns:1fr 1fr 1fr">
+      <div class="rev-card reveal"><div class="rev-icon">💸</div><div class="rev-tag">Stream 1</div><div class="rev-val">3–5% komisi</div><div class="rev-body">Per order terkonfirmasi. Primary stream sejak hari pertama. Dipotong otomatis via Midtrans.</div></div>
+      <div class="rev-card reveal d1"><div class="rev-icon">📦</div><div class="rev-tag">Stream 2</div><div class="rev-val">Rp 150–400k/bln</div><div class="rev-body">Subscription Pro & Business. Gramasi, POS, analytics, multi-outlet, API access.</div></div>
+      <div class="rev-card reveal d2"><div class="rev-icon">⚙️</div><div class="rev-tag">Stream 3</div><div class="rev-val">Rp 10k/kg</div><div class="rev-body">Grind service fee. Ditagihkan ke buyer untuk pesanan kopi bubuk kustom.</div></div>
+      <div class="rev-card reveal"><div class="rev-icon">📌</div><div class="rev-tag">Stream 4</div><div class="rev-val">Rp 200–500k/bln</div><div class="rev-body">Featured placement di matchmaking. Terbatas 5 slot per kota — scarcity pricing.</div></div>
+      <div class="rev-card reveal d1"><div class="rev-icon">📊</div><div class="rev-tag">Stream 5 (Fase 3+)</div><div class="rev-val">Data & Insight</div><div class="rev-body">Laporan tren harga dan cupping benchmark untuk roastery besar dan asosiasi.</div></div>
+      <div class="rev-card reveal d2" style="border-style:dashed;border-color:var(--acc);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center">
+        <div style="font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:var(--acc-l);opacity:.35;line-height:1;margin-bottom:6px">BEP</div>
+        <div style="font-size:14px;font-weight:600;color:var(--text)">Break-even bulan 3–4</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:5px;line-height:1.6">GMV Rp 130jt/bln<br>Biaya ops ~Rp 4–5jt/bln</div>
+      </div>
+    </div>
+
+    <!-- ── INVESTOR: Proyeksi Keuangan ── -->
+    <div class="aud-section" id="aud-investor-finance" style="margin-top:36px">
+      <div class="card reveal">
+        <div class="sl" style="margin-bottom:16px">Proyeksi 12 Bulan</div>
+        <div style="overflow-x:auto">
+          <table style="width:100%;border-collapse:collapse;font-size:12px;min-width:600px">
+            <thead><tr style="border-bottom:1px solid var(--border)">
+              <th style="text-align:left;padding:10px;color:var(--text2);font-weight:500">Periode</th>
+              <th style="padding:10px;color:var(--text2);font-weight:500;text-align:right">Roastery</th>
+              <th style="padding:10px;color:var(--text2);font-weight:500;text-align:right">Coffee Shop</th>
+              <th style="padding:10px;color:var(--text2);font-weight:500;text-align:right">GMV/bln</th>
+              <th style="padding:10px;color:var(--text2);font-weight:500;text-align:right">Revenue/bln</th>
+              <th style="padding:10px;color:var(--text2);font-weight:500;text-align:right">Net</th>
+            </tr></thead>
+            <tbody id="finTable"></tbody>
+          </table>
+        </div>
+        <div class="g4" style="margin-top:20px;border-radius:10px;overflow:hidden;border:1px solid var(--border)">
+          <div class="fin-cell"><div style="font-size:10px;color:var(--text2);margin-bottom:4px">CAC Coffee Shop</div><div class="fin-v" style="font-size:15px">~Rp 75k</div></div>
+          <div class="fin-cell"><div style="font-size:10px;color:var(--text2);margin-bottom:4px">LTV (24 bln)</div><div class="fin-v" style="font-size:15px">~Rp 6.5jt</div></div>
+          <div class="fin-cell"><div style="font-size:10px;color:var(--text2);margin-bottom:4px">LTV/CAC Ratio</div><div class="fin-v" style="font-size:15px;color:var(--amber-l)">&gt;85×</div></div>
+          <div class="fin-cell"><div style="font-size:10px;color:var(--text2);margin-bottom:4px">Payback Period</div><div class="fin-v" style="font-size:15px">&lt;2 bulan</div></div>
+        </div>
+        <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6">Asumsi: avg order Rp 1.5jt, 2× order/CS/bln, 40% konversi Pro plan, churn 5%/bln, komisi 3% GMV.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ROADMAP ══════════ -->
+<section class="sec" id="roadmap">
+  <div class="reveal">
+    <div class="sl">Roadmap</div>
+    <h2 class="st">Dari <em>Pontianak</em><br>ke seluruh Indonesia</h2>
+    <p class="ss">Validasi lokal dulu. Kalimantan Barat sebagai laboratorium — relasi dengan roastery dan coffee shop sudah ada melalui jaringan TPID Kalbar.</p>
+  </div>
+
+  <div class="rm-track reveal" style="margin-top:48px">
+    <div class="rm-phase"><div class="rp-num">01</div><div class="rp-tag">Bln 1–6</div><div class="rp-title">Kalbar Beta</div><ul class="rp-list"><li>20 roastery anchor onboard</li><li>80 coffee shop Pontianak</li><li>Custom order + chat live</li><li>Trust system aktif</li><li>GMV target Rp 300jt/bln</li></ul></div>
+    <div class="rm-phase"><div class="rp-num">02</div><div class="rp-tag">Bln 7–12</div><div class="rp-title">Kalimantan</div><ul class="rp-list"><li>Balikpapan, Samarinda, Banjarmasin</li><li>Knowledge hub live</li><li>Matchmaking v2</li><li>GMV target Rp 1M/bln</li><li>Break-even tercapai</li></ul></div>
+    <div class="rm-phase"><div class="rp-num">03</div><div class="rp-tag">Tahun 2</div><div class="rp-title">Ekspansi Nasional</div><ul class="rp-list"><li>Sulawesi, Jawa, Sumatera</li><li>Partnership AEKI</li><li>Data product launch</li><li>500+ roastery aktif</li><li>Fundraising Series A</li></ul></div>
+    <div class="rm-phase"><div class="rp-num">04</div><div class="rp-tag">Tahun 3+</div><div class="rp-title">Ekosistem</div><ul class="rp-list"><li>Green bean marketplace</li><li>Sertifikasi barista digital</li><li>Export facilitation</li><li>SEA expansion</li></ul></div>
+  </div>
+
+  <!-- ── TIM: Sprint Breakdown ── -->
+  <div class="aud-section" id="aud-tim-sprint" style="margin-top:32px">
+    <div class="card reveal">
+      <div class="sl" style="margin-bottom:16px">Sprint Breakdown (TeknoMaven Dev)</div>
+      <div id="sprintList">
+        <div class="sprint-item"><div class="sprint-n">Sprint 1–2</div><div class="sprint-body"><div class="sprint-title">Auth & Role System</div><div class="sprint-tasks">Google OAuth, Supabase session, middleware redirect per role, Drizzle schema users + profiles, admin seeding</div></div><div class="sprint-status s-plan">Planned</div></div>
+        <div class="sprint-item"><div class="sprint-n">Sprint 3–4</div><div class="sprint-body"><div class="sprint-title">Catalog & Custom Order</div><div class="sprint-tasks">Bean catalog, custom order wizard 4-step, blend multi-bean, roast profile selector, Midtrans Snap integration</div></div><div class="sprint-status s-plan">Planned</div></div>
+        <div class="sprint-item"><div class="sprint-n">Sprint 5–6</div><div class="sprint-body"><div class="sprint-title">Gramasi & POS</div><div class="sprint-tasks">Menu builder, multi-bean gramasi, hot/cold diff, stock deduction engine, POS kasir view, alert system</div></div><div class="sprint-status s-plan">Planned</div></div>
+        <div class="sprint-item"><div class="sprint-n">Sprint 7–8</div><div class="sprint-body"><div class="sprint-title">Chat Realtime + Konsultasi</div><div class="sprint-tasks">Supabase Realtime channels, chat per order, typing indicator, quick replies, roastery notification</div></div><div class="sprint-status s-plan">Planned</div></div>
+        <div class="sprint-item"><div class="sprint-n">Sprint 9–10</div><div class="sprint-body"><div class="sprint-title">Origin Story + Knowledge Hub</div><div class="sprint-tasks">Origin story CRUD, cupping score schema (SCA format), knowledge hub feed, barista contribution system</div></div><div class="sprint-status s-plan">Planned</div></div>
+        <div class="sprint-item"><div class="sprint-n">Sprint 11–12</div><div class="sprint-body"><div class="sprint-title">Trust System + Matchmaking</div><div class="sprint-tasks">Multi-dim review post-delivery, trust score aggregation, matchmaking SQL engine, cupping score filter</div></div><div class="sprint-status s-plan">Planned</div></div>
+        <div class="sprint-item" style="border:none"><div class="sprint-n">Sprint 13–14</div><div class="sprint-body"><div class="sprint-title">Admin Panel + Theme Preset</div><div class="sprint-tasks">Admin dashboard, user management, roastery verification flow, CSS variable theme editor, logistic tracker</div></div><div class="sprint-status s-plan">Planned</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════ MOAT ══════════ -->
+<div class="sec-full">
+  <div class="sec">
+    <div class="reveal">
+      <div class="sl">Keunggulan Kompetitif</div>
+      <h2 class="st">Moat yang tidak bisa<br><em>direplikasi dengan uang</em></h2>
+    </div>
+    <div class="g3" style="margin-top:48px">
+      <div class="moat-card reveal d1"><div class="moat-icon">🌱</div><div class="moat-title">Data Cupping Terkurasi</div><div class="moat-body">Database cupping scores dan origin story yang dikontribusi komunitas barista profesional. Harus dibangun bertahun-tahun, tidak bisa dibeli.<span class="src">[2]</span></div></div>
+      <div class="moat-card reveal d2"><div class="moat-icon">🔗</div><div class="moat-title">Sticky Operational Tool</div><div class="moat-body">Gramasi, POS, dan stok management terintegrasi. Coffee shop tidak bisa pindah platform tanpa kehilangan seluruh data operasional mereka.<span class="src">[3]</span></div></div>
+      <div class="moat-card reveal d3"><div class="moat-icon">🤝</div><div class="moat-title">Trust Network Effect</div><div class="moat-body">Semakin banyak transaksi, semakin kaya trust score. Platform dengan data trust terbanyak selalu menarik pembeli dan penjual baru.<span class="src">[7]</span></div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════ RAB ══════════ -->
+<div class="sec-full" id="rab">
+  <div class="sec">
+    <div class="reveal">
+      <div class="sl">Rencana Anggaran</div>
+      <h2 class="st">RAB Pembuatan &amp;<br><em>Pengembangan BrewLink</em></h2>
+      <p class="ss">Estimasi biaya total dari MVP hingga ekspansi nasional. Klik setiap fase untuk melihat rincian pos anggaran.</p>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="rab-summary reveal" style="margin-bottom:40px">
+      <div class="rab-sum-cell">
+        <div class="rab-sum-v" data-count="0" data-target="89500000" data-fmt="idr">—</div>
+        <div class="rab-sum-l">Fase 1 — MVP<br>Kalbar Beta</div>
+        <div class="rab-sum-s">Bln 1–6</div>
+      </div>
+      <div class="rab-sum-cell">
+        <div class="rab-sum-v" data-count="1" data-target="143000000" data-fmt="idr">—</div>
+        <div class="rab-sum-l">Fase 2 — Ekspansi<br>Kalimantan</div>
+        <div class="rab-sum-s">Bln 7–12</div>
+      </div>
+      <div class="rab-sum-cell">
+        <div class="rab-sum-v" data-count="2" data-target="380000000" data-fmt="idr">—</div>
+        <div class="rab-sum-l">Fase 3 — Nasional<br>Tahun 2</div>
+        <div class="rab-sum-s">Tahun 2</div>
+      </div>
+      <div class="rab-sum-cell" style="border-top:2px solid var(--acc)">
+        <div class="rab-sum-v" data-count="3" data-target="612500000" data-fmt="idr" style="color:var(--acc-l)">—</div>
+        <div class="rab-sum-l">Total 24 Bulan</div>
+        <div class="rab-sum-s">Kebutuhan Modal</div>
+      </div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="rab-phase reveal">
+      <div class="rab-phase-hd" onclick="toggleRab(this)">
+        <div class="rab-phase-left">
+          <div class="rab-phase-icon">🛠️</div>
+          <div>
+            <div class="rab-phase-name">Fase 1 — MVP Development (Bln 1–6)</div>
+            <div class="rab-phase-sub">Kalbar Beta · Custom order + gramasi + chat + trust system</div>
+          </div>
+        </div>
+        <div class="rab-phase-right">
+          <div class="rab-total">Rp 89.500.000</div>
+          <div class="rab-chevron">▼</div>
+        </div>
+      </div>
+      <div class="rab-body">
+        <table class="rab-table">
+          <thead><tr><th style="width:35%">Item</th><th>Keterangan</th><th style="text-align:right">Sat.</th><th style="text-align:right">Vol.</th><th style="text-align:right">Biaya</th></tr></thead>
+          <tbody>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">A. Development (In-house TeknoMaven)</td></tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Biaya opportunity dev</div><div class="rab-note">7 sprint × 2 minggu = 14 minggu full-stack</div></td>
+              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Dev Time</span><div class="rab-note">In-house TeknoMaven — tidak ada biaya eksplisit tapi dicatat sebagai opportunity cost</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">minggu</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">14</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0 *</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">UI/UX Design assets</div><div class="rab-note">Figma Pro, icon pack, font license</div></td>
+              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Tools</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 2.500.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">QA testing &amp; device testing</div><div class="rab-note">Mobile, tablet, cross-browser</div></td>
+              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">QA</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">3</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 3.000.000</td>
+            </tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">B. Infrastruktur &amp; Cloud</td></tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Supabase Pro</div><div class="rab-note">DB, Auth, Storage, Realtime</div></td>
+              <td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span><div class="rab-note">$25/bln × 6 bln</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 2.400.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Vercel Pro</div><div class="rab-note">Hosting Next.js, edge functions</div></td>
+              <td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span><div class="rab-note">$20/bln × 6 bln</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 1.920.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Domain + SSL</div><div class="rab-note">brewlink.id — Niagahoster/Dewaweb</div></td>
+              <td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">tahun</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 350.000</td>
+            </tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">C. Integrasi Third-Party</td></tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Midtrans — MDR payment</div><div class="rab-note">1.5–2% per transaksi, dibebankan ke buyer</div></td>
+              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">Payment</span><div class="rab-note">Biaya registrasi merchant Rp 0 (gratis)</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">setup</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Binderbyte API (kurir tracker)</div><div class="rab-note">JNE, JNT, SiCepat, Anteraja</div></td>
+              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span><div class="rab-note">Plan Starter Rp 100k/bln</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 600.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">WhatsApp Business API</div><div class="rab-note">Notifikasi stok kritis &amp; order update</div></td>
+              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span><div class="rab-note">Fonnte / Zenziva ~Rp 100k/bln</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 600.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Email transactional</div><div class="rab-note">Resend.com — order confirm, undangan staff</div></td>
+              <td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span><div class="rab-note">Free tier cukup untuk 3k email/bln</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0</td>
+            </tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">D. Legalitas &amp; Administrasi</td></tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Pendirian PT / CV TeknoMaven</div><div class="rab-note">Notaris, NIB, NPWP badan</div></td>
+              <td><span class="rab-cat" style="background:rgba(239,68,68,.1);color:#f87171">Legal</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 5.000.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Pendaftaran merek BrewLink</div><div class="rab-note">DJKI — kelas 35 (marketplace) + kelas 42</div></td>
+              <td><span class="rab-cat" style="background:rgba(239,68,68,.1);color:#f87171">Legal</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">kelas</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">2</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 4.000.000</td>
+            </tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">E. Marketing &amp; Community Building</td></tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Event kopi lokal Pontianak</div><div class="rab-note">2 event × sponsor/booth untuk onboarding roastery</div></td>
+              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">event</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">2</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 10.000.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Konten sosmed &amp; branding kit</div><div class="rab-note">Logo finalisasi, template Canva, feed IG</div></td>
+              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 5.000.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Incentive early adopter</div><div class="rab-note">Gratis Pro 3 bln untuk 20 roastery pertama</div></td>
+              <td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span><div class="rab-note">20 × Rp 150k × 3 bln = Rp 9jt foregone revenue</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">roastery</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">20</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0 **</td>
+            </tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">F. Operasional Tim</td></tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Community lead / ops</div><div class="rab-note">Onboarding roastery, kurasi konten, support</div></td>
+              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 36.000.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Q Grader advisor</div><div class="rab-note">Validasi cupping score, konsultasi produk</div></td>
+              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span><div class="rab-note">Part-time, 4 hari/bln</div></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</div></td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 12.000.000</td>
+            </tr>
+            <tr>
+              <td><div style="font-weight:500;color:var(--text)">Operasional &amp; misc</div><div class="rab-note">Transport, meeting, ATK, hosting test</div></td>
+              <td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Ops</span></td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td>
+              <td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 6.630.000</td>
+            </tr>
+            <tr style="background:rgba(255,255,255,.03)">
+              <td colspan="4" style="padding:12px 10px;font-weight:700;color:var(--text)">TOTAL FASE 1</td>
+              <td style="text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--acc-l)">Rp 89.500.000</td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6">* Opportunity cost developer in-house TeknoMaven tidak dimasukkan sebagai cash-out. ** Foregone revenue dari free Pro dicatat sebagai marketing cost non-tunai.</div>
+      </div>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="rab-phase reveal d1">
+      <div class="rab-phase-hd" onclick="toggleRab(this)">
+        <div class="rab-phase-left">
+          <div class="rab-phase-icon">🚀</div>
+          <div>
+            <div class="rab-phase-name">Fase 2 — Ekspansi Kalimantan (Bln 7–12)</div>
+            <div class="rab-phase-sub">Balikpapan · Samarinda · Banjarmasin · Knowledge Hub live</div>
+          </div>
+        </div>
+        <div class="rab-phase-right">
+          <div class="rab-total">Rp 143.000.000</div>
+          <div class="rab-chevron">▼</div>
+        </div>
+      </div>
+      <div class="rab-body">
+        <table class="rab-table">
+          <thead><tr><th style="width:35%">Item</th><th>Keterangan</th><th style="text-align:right">Sat.</th><th style="text-align:right">Vol.</th><th style="text-align:right">Biaya</th></tr></thead>
+          <tbody>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">A. Development Lanjutan</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Sprint 8–14</div><div class="rab-note">Knowledge hub, matchmaking v2, admin panel, theme preset</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Dev Time</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">minggu</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">14</td><td style="text-align:right;font-family:'DM Mono',monospace" class="rab-zero">Rp 0 *</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Mobile-first optimization</div><div class="rab-note">PWA, performance, offline mode untuk POS</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Dev</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">paket</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 5.000.000</td></tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">B. Infrastruktur (Scaled)</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Supabase Pro (scale up)</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span><div class="rab-note">$25–50/bln sesuai usage</div></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 3.600.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Vercel Pro + Bandwidth</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 2.400.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Binderbyte API (upgrade)</div><div class="rab-note">Volume lebih tinggi</div></td><td><span class="rab-cat" style="background:var(--amber-g);color:var(--amber-l)">API</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 1.800.000</td></tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">C. Tim Ekspansi</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Community lead (lanjut)</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 36.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Freelance content creator</div><div class="rab-note">Origin story, knowledge hub, sosmed</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 18.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Customer support part-time</div><div class="rab-note">Penanganan dispute, onboarding mitra baru</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 15.000.000</td></tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">D. Marketing Ekspansi</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Event &amp; roadshow 3 kota</div><div class="rab-note">Balikpapan, Samarinda, Banjarmasin</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">kota</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">3</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 30.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Digital ads (Meta + Google)</div><div class="rab-note">Targeting coffee shop owner B2B</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">4</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 20.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Operasional &amp; perjalanan dinas</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">Ops</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">6</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 11.200.000</td></tr>
+            <tr style="background:rgba(255,255,255,.03)"><td colspan="4" style="padding:12px 10px;font-weight:700;color:var(--text)">TOTAL FASE 2</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--acc-l)">Rp 143.000.000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="rab-phase reveal d2">
+      <div class="rab-phase-hd" onclick="toggleRab(this)">
+        <div class="rab-phase-left">
+          <div class="rab-phase-icon">🌏</div>
+          <div>
+            <div class="rab-phase-name">Fase 3 — Ekspansi Nasional (Tahun 2)</div>
+            <div class="rab-phase-sub">Sulawesi · Jawa · Sumatera · Series A preparation</div>
+          </div>
+        </div>
+        <div class="rab-phase-right">
+          <div class="rab-total">Rp 380.000.000</div>
+          <div class="rab-chevron">▼</div>
+        </div>
+      </div>
+      <div class="rab-body">
+        <table class="rab-table">
+          <thead><tr><th style="width:35%">Item</th><th>Keterangan</th><th style="text-align:right">Sat.</th><th style="text-align:right">Vol.</th><th style="text-align:right">Biaya</th></tr></thead>
+          <tbody>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">A. Engineering Team</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Backend engineer</div><div class="rab-note">Skalabilitas, keamanan, API publik</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 96.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Frontend / mobile dev</div><div class="rab-note">React Native atau Next.js native app</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 72.000.000</td></tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">B. Infrastruktur Skala Nasional</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Supabase Scale / AWS RDS</div><div class="rab-note">Multi-region, read replica, backup</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 24.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">CDN + monitoring (Datadog)</div></td><td><span class="rab-cat" style="background:var(--teal-g);color:var(--teal-l)">Cloud</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 12.000.000</td></tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">C. Tim Operasional Nasional</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Head of Growth</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 84.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">City reps (3 kota baru)</div><div class="rab-note">Sulawesi, Jawa, Sumatera</div></td><td><span class="rab-cat" style="background:var(--blue-g);color:var(--blue-l)">SDM</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">bulan</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">12</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 36.000.000</td></tr>
+            <tr><td colspan="5" style="padding:10px;font-size:11px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:.06em;background:rgba(255,255,255,.02)">D. Marketing Nasional + Legal</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Campaign nasional + PR</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">tahun</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 40.000.000</td></tr>
+            <tr><td><div style="font-weight:500;color:var(--text)">Partnership AEKI &amp; event nasional</div></td><td><span class="rab-cat" style="background:var(--purple-g);color:var(--purple-l)">Marketing</span></td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">tahun</td><td style="text-align:right;color:var(--text2);font-family:'DM Mono',monospace">1</td><td style="text-align:right;font-family:'DM Mono',monospace;color:var(--text)">Rp 16.000.000</td></tr>
+            <tr style="background:rgba(255,255,255,.03)"><td colspan="4" style="padding:12px 10px;font-weight:700;color:var(--text)">TOTAL FASE 3</td><td style="text-align:right;font-family:'DM Mono',monospace;font-size:16px;font-weight:700;color:var(--acc-l)">Rp 380.000.000</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Composition -->
+    <div class="card reveal" style="margin-top:32px">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px">
+        <div>
+          <div class="sl" style="margin-bottom:4px">Komposisi Anggaran (24 Bulan)</div>
+          <div style="font-size:22px;font-weight:700;color:var(--text);font-family:'Playfair Display',serif">Total: <span style="color:var(--acc-l)">Rp 612.500.000</span></div>
+        </div>
+        <div style="font-size:12px;color:var(--text2);text-align:right;line-height:1.7">Break-even estimasi bln 3–4<br>ROI positif mulai bln 5<br>Net profit bln 12: ~Rp 40jt/bln</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px" id="rabBars">
+        <div class="rab-bar-item" data-pct="28" data-label="SDM (Community + QA + Advisor)" data-val="Rp 173jt" data-color="#3b82f6"></div>
+        <div class="rab-bar-item" data-pct="21" data-label="Marketing &amp; Komunitas" data-val="Rp 129jt" data-color="#8b5cf6"></div>
+        <div class="rab-bar-item" data-pct="19" data-label="Development Lanjutan (Fase 3)" data-val="Rp 168jt" data-color="#3b82f6"></div>
+        <div class="rab-bar-item" data-pct="18" data-label="Operasional &amp; Misc" data-val="Rp 110jt" data-color="#e8960a"></div>
+        <div class="rab-bar-item" data-pct="9" data-label="Infrastruktur &amp; Cloud" data-val="Rp 55jt" data-color="#16a87a"></div>
+        <div class="rab-bar-item" data-pct="3" data-label="API Third-Party" data-val="Rp 18jt" data-color="#e8960a"></div>
+        <div class="rab-bar-item" data-pct="2" data-label="Legal &amp; Administrasi" data-val="Rp 9jt" data-color="#ef4444"></div>
+      </div>
+      <div style="margin-top:16px;font-size:11px;color:var(--text3);line-height:1.7;padding-top:14px;border-top:1px solid var(--border)">Catatan: Development in-house TeknoMaven (opportunity cost ~Rp 280jt) tidak dimasukkan sebagai biaya cash-out. Angka menggunakan kurs USD = Rp 16.000. Biaya dapat bervariasi ±15% tergantung kondisi lapangan.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════ CTA ══════════ -->
+<div class="cta-wrap" id="cta">
+  <div class="cta-glow"></div>
+  <div class="reveal">
+    <div class="sl" style="justify-content:center">Bergabung Sekarang</div>
+  </div>
+  <h2 class="cta-title reveal" id="ctaTitle">Jadilah bagian dari<br><em>ekosistem kopi Indonesia</em></h2>
+  <p class="cta-sub reveal d1" id="ctaSub">Slot terbatas untuk early partners — roastery, coffee shop, dan barista yang ingin membentuk platform bersama dari awal.</p>
+  <div class="cta-cards reveal d2" id="ctaCards">
+    <div class="cta-card" onclick="toast('Roastery early access — segera hadir!')"><div class="cc-icon">🔥</div><div class="cc-role">Roastery</div><div class="cc-title">Daftar sebagai Seller</div><div class="cc-desc">Gratis 3 bulan pertama. Akses semua fitur Pro.</div></div>
+    <div class="cta-card" onclick="toast('Coffee shop early access — segera hadir!')"><div class="cc-icon">🏪</div><div class="cc-role">Coffee Shop</div><div class="cc-title">Daftar sebagai Buyer</div><div class="cc-desc">Free plan tersedia. Pro Rp 150k/bln.</div></div>
+    <div class="cta-card" onclick="toast('Barista community — segera hadir!')"><div class="cc-icon">👨‍🍳</div><div class="cc-role">Barista</div><div class="cc-title">Gabung Komunitas</div><div class="cc-desc">Gratis selamanya. Kontribusi & bangun reputasi.</div></div>
+    <div class="cta-card" onclick="toast('Investor inquiry — hello@brewlink.id')"><div class="cc-icon">📈</div><div class="cc-role">Investor</div><div class="cc-title">Investor Inquiry</div><div class="cc-desc">Seed round terbuka. Deck lengkap tersedia.</div></div>
+  </div>
+</div>
+
+<!-- ══════════ SOURCES ══════════ -->
+<div style="background:var(--ink2);border-top:1px solid var(--border)">
+  <div class="sources-panel">
+    <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:16px;display:flex;align-items:center;gap:8px"><span style="width:16px;height:1px;background:var(--text3);display:inline-block"></span>Sumber Data</div>
+    <div class="sources-grid">
+      <div class="source-item"><div class="source-num">[1]</div><div class="source-body"><div class="source-name">BPS — Survei Usaha Mikro Kecil 2023</div><div class="source-detail">Badan Pusat Statistik. Data distribusi dan pola transaksi usaha kecil di sektor F&B Indonesia. bps.go.id</div></div></div>
+      <div class="source-item"><div class="source-num">[2]</div><div class="source-body"><div class="source-name">SCA Indonesia Coffee Survey 2022</div><div class="source-detail">Specialty Coffee Association. Survei adopsi cupping protocol dan standardisasi kualitas di industri kopi Indonesia.</div></div></div>
+      <div class="source-item"><div class="source-num">[3]</div><div class="source-body"><div class="source-name">Field Research Pontianak 2024 (n=45)</div><div class="source-detail">Riset lapangan primer oleh TeknoMaven. Wawancara dan observasi pada 45 coffee shop di Pontianak, Kalbar. Metodologi: purposive sampling.</div></div></div>
+      <div class="source-item"><div class="source-num">[4]</div><div class="source-body"><div class="source-name">ICO — Coffee Report 2024</div><div class="source-detail">International Coffee Organization. Coffee Report & Outlook 2024. Estimasi nilai pasar dan proyeksi pertumbuhan. ico.org</div></div></div>
+      <div class="source-item"><div class="source-num">[5]</div><div class="source-body"><div class="source-name">Kemenperin — Industri Minuman 2023</div><div class="source-detail">Kementerian Perindustrian RI. Direktori usaha kafe dan kedai kopi terdaftar berdasarkan KBLI 56303. kemenperin.go.id</div></div></div>
+      <div class="source-item"><div class="source-num">[6]</div><div class="source-body"><div class="source-name">AEKI — Laporan Tahunan 2023</div><div class="source-detail">Asosiasi Eksportir dan Industri Kopi Indonesia. Data roastery aktif, volume produksi, dan distribusi geografis. aeki-aice.org</div></div></div>
+      <div class="source-item"><div class="source-num">[7]</div><div class="source-body"><div class="source-name">Andreessen Horowitz — Marketplace Thesis</div><div class="source-detail">a16z. "The Marketplace 100" & network effect analysis pada B2B marketplace tumbuh di pasar berkembang. a16z.com</div></div></div>
+      <div class="source-item"><div class="source-num">[8]</div><div class="source-body"><div class="source-name">Statista — Indonesia Coffee Market 2024</div><div class="source-detail">Statista Market Insights. Revenue, volume, dan consumer data untuk pasar kopi spesialti Indonesia. statista.com</div></div></div>
+    </div>
+    <div style="margin-top:12px;font-size:11px;color:var(--text3);line-height:1.6">Angka proyeksi keuangan menggunakan asumsi konservatif berdasarkan data komparatif marketplace B2B di pasar berkembang serupa. Data lapangan akan diperbarui setelah fase beta Kalbar selesai.</div>
+  </div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="f-brand">☕ BrewLink</div>
+  <div class="f-note">B2B Coffee Marketplace — Indonesia · 2026 · TeknoMaven</div>
+  <div class="f-links">
+    <a href="#">hello@brewlink.id</a>
+    <a href="#">Instagram</a>
+    <a href="#">LinkedIn</a>
+  </div>
+</footer>
+
+<div id="toast"></div>
+
+<script>
+/* ── AUDIENCE CONFIG ── */
+const MODES = {
+  umum:{
+    label:'Umum', badge:'Umum', desc:'Pandangan umum tentang BrewLink',
+    accent:'var(--amber)',
+    heroEyebrow:'B2B Coffee Marketplace — Indonesia',
+    heroTitle:'Menghubungkan<br><em>Kopi Indonesia</em><br>dari Sumber ke Cangkir',
+    heroSub:'Platform pertama di Indonesia yang menghubungkan roastery spesialti dengan coffee shop — lengkap dengan custom roast, gramasi otomatis, dan trust system berbasis data.',
+    ctaTitle:'Jadilah bagian dari<br><em>ekosistem kopi Indonesia</em>',
+    ctaSub:'Slot terbatas untuk early partners — roastery, coffee shop, dan barista yang ingin membentuk platform bersama dari awal.',
+    show:[]
+  },
+  investor:{
+    label:'Investor', badge:'Investor View', desc:'Unit economics, proyeksi, dan exit strategy',
+    accent:'var(--teal)',
+    heroEyebrow:'Seed Stage · B2B Marketplace · Indonesia',
+    heroTitle:'Rp 4.2T pasar kopi<br><em>yang belum tersentuh</em><br>teknologi',
+    heroSub:'BrewLink membangun OS untuk industri kopi spesialti B2B Indonesia — TAM Rp 4.2T, growing 15%/tahun, zero direct competitor.',
+    ctaTitle:'Mari bicara<br><em>lebih dalam</em>',
+    ctaSub:'Deck lengkap, financial model, dan cap table tersedia. Seed round terbuka untuk lead investor yang percaya pada kopi Indonesia.',
+    show:['aud-investor-market','aud-investor-finance']
+  },
+  tim:{
+    label:'Tim', badge:'Internal · Tim', desc:'Sprint plan, tech stack, dan target operasional',
+    accent:'var(--blue)',
+    heroEyebrow:'TeknoMaven Internal — Pontianak',
+    heroTitle:'Dari prototype<br><em>ke produksi</em><br>step by step',
+    heroSub:'Roadmap development BrewLink — Next.js 15, TypeScript, Supabase, Drizzle. 14 sprint menuju MVP Kalbar Beta.',
+    ctaTitle:'Mulai dari<br><em>Sprint 1</em>',
+    ctaSub:'Schema Drizzle → Auth → Order → Chat → Trust. Satu sprint satu deliverable yang bisa ditest langsung.',
+    show:['aud-tim-sprint']
+  },
+  mitra:{
+    label:'Mitra', badge:'Mitra Bisnis', desc:'Cara kerja, onboarding, dan benefit bergabung',
+    accent:'var(--purple)',
+    heroEyebrow:'Mitra Roastery & Coffee Shop',
+    heroTitle:'Lebih banyak pembeli,<br><em>lebih sedikit</em><br>kerja manual',
+    heroSub:'BrewLink menghubungkan roastery dan coffee shop dengan sistem yang otomatis — dari order, konsultasi, hingga pengiriman.',
+    ctaTitle:'Daftarkan bisnis kamu<br><em>sekarang</em>',
+    ctaSub:'Gratis 3 bulan pertama untuk early partner. Onboarding dibantu langsung oleh tim BrewLink.',
+    show:[]
+  }
+};
+
+let currentMode = 'umum';
+
+function setMode(mode, el) {
+  currentMode = mode;
+  const cfg = MODES[mode];
+
+  document.body.setAttribute('data-mode', mode);
+  document.querySelectorAll('.mpill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('modeDesc').textContent = cfg.desc;
+  document.getElementById('audBadge').textContent = cfg.badge;
+
+  document.getElementById('heroEyebrow').textContent = cfg.heroEyebrow;
+  document.getElementById('heroTitle').innerHTML = cfg.heroTitle;
+  document.getElementById('heroSub').textContent = cfg.heroSub;
+  document.getElementById('ctaTitle').innerHTML = cfg.ctaTitle;
+  document.getElementById('ctaSub').textContent = cfg.ctaSub;
+
+  // Show/hide audience sections
+  document.querySelectorAll('.aud-section').forEach(s => s.classList.remove('vis'));
+  cfg.show.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('vis');
+  });
+
+  // Re-trigger reveal for newly shown sections
+  setTimeout(() => {
+    document.querySelectorAll('.aud-section.vis .reveal').forEach(r => {
+      r.classList.add('vis');
+    });
+  }, 50);
+}
+
+/* ── FEATURE SWITCHER ── */
+function selFeat(idx, el) {
+  document.querySelectorAll('.feat-item').forEach(f => f.classList.remove('act'));
+  document.querySelectorAll('.fp').forEach(f => f.classList.remove('act'));
+  el.classList.add('act');
+  document.getElementById('fp-' + idx).classList.add('act');
+}
+
+/* ── SCROLL REVEAL ── */
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('vis');
+      const n = e.target.querySelector('[data-count]');
+      if (n && !n._counted) { n._counted = true; animCount(n); }
+    }
+  });
+}, {threshold: .12});
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* Stat cells separately */
+const sobs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const n = e.target.querySelector('[data-count]');
+      if (n && !n._counted) { n._counted = true; animCount(n); }
+    }
+  });
+}, {threshold: .3});
+document.querySelectorAll('.stat-cell').forEach(el => sobs.observe(el));
+
+function animCount(el) {
+  const target = parseFloat(el.dataset.count);
+  const pre = el.dataset.pre || '';
+  const suf = el.dataset.suf || '';
+  const isFloat = target % 1 !== 0;
+  const dur = 1600;
+  const t0 = performance.now();
+  const step = now => {
+    const p = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const v = target * ease;
+    el.textContent = pre + (isFloat ? v.toFixed(1) : Math.round(v).toLocaleString('id')) + suf;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+
+/* ── NAV SCROLL ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ── FINANCIAL TABLE ── */
+const finData = [
+  ['Bln 1–2', 5, 15, 'Rp 22jt', 'Rp 1.2jt', '-Rp 2.8jt', false],
+  ['Bln 3–4', 12, 45, 'Rp 90jt', 'Rp 5.7jt', 'Rp 1.7jt', true],
+  ['Bln 5–6', 20, 80, 'Rp 240jt', 'Rp 14jt', 'Rp 9jt', true],
+  ['Bln 7–9', 35, 150, 'Rp 540jt', 'Rp 28jt', 'Rp 21jt', true],
+  ['Bln 10–12', 60, 280, 'Rp 1.05M', 'Rp 50jt', 'Rp 40jt', true],
+];
+const ft = document.getElementById('finTable');
+if (ft) ft.innerHTML = finData.map((r, i) => `
+  <tr style="border-bottom:1px solid var(--border)">
+    <td style="padding:10px;color:var(--text);font-weight:500">${r[0]}</td>
+    <td style="padding:10px;text-align:right;color:var(--text2)">${r[1]}</td>
+    <td style="padding:10px;text-align:right;color:var(--text2)">${r[2]}</td>
+    <td style="padding:10px;text-align:right;color:var(--text2)">${r[3]}</td>
+    <td style="padding:10px;text-align:right;color:var(--teal-l)">${r[4]}</td>
+    <td style="padding:10px;text-align:right;color:${r[6] ? 'var(--teal-l)' : 'var(--red)'}">${r[5]}</td>
+  </tr>`).join('');
+
+/* ── SCROLL HELPER ── */
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({behavior: 'smooth'});
+}
+
+/* ── TOAST ── */
+let toastT;
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ── SOURCE TOOLTIP ── */
+document.querySelectorAll('.src').forEach(el => {
+  el.addEventListener('click', () => {
+    toast('📚 ' + el.getAttribute('title'));
+  });
+});
+
+/* ── RAB ACCORDION ── */
+function toggleRab(hd) {
+  const body = hd.nextElementSibling;
+  const chev = hd.querySelector('.rab-chevron');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  hd.classList.toggle('open', !isOpen);
+  chev.classList.toggle('open', !isOpen);
+}
+
+/* ── RAB BARS ── */
+function renderRabBars() {
+  document.querySelectorAll('.rab-bar-item').forEach(el => {
+    const pct = el.dataset.pct;
+    const label = el.dataset.label;
+    const val = el.dataset.val;
+    const color = el.dataset.color;
+    el.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:10px;height:10px;border-radius:2px;background:${color};flex-shrink:0"></div>
+        <span style="font-size:12px;color:var(--text2);flex:1">${label}</span>
+        <span style="font-family:'DM Mono',monospace;font-size:12px;color:var(--text2);flex-shrink:0">${pct}%</span>
+        <span style="font-family:'DM Mono',monospace;font-size:12px;font-weight:500;color:var(--text);min-width:60px;text-align:right;flex-shrink:0">${val}</span>
+      </div>
+      <div style="height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-top:5px">
+        <div style="width:0%;height:100%;background:${color};border-radius:3px;transition:width 1.2s cubic-bezier(.16,1,.3,1)" data-target-width="${pct}%"></div>
+      </div>`;
+  });
+
+  const barObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('[data-target-width]').forEach(bar => {
+          setTimeout(() => bar.style.width = bar.dataset.targetWidth, 100);
+        });
+        barObs.unobserve(e.target);
+      }
+    });
+  }, {threshold: .3});
+  const rabBars = document.getElementById('rabBars');
+  if (rabBars) barObs.observe(rabBars);
+}
+
+/* ── RAB COUNTER ANIMATION ── */
+function animRabCount(el) {
+  const target = el.dataset.target;
+  const idx = parseInt(el.dataset.count);
+  const labels = ['Rp 89jt', 'Rp 143jt', 'Rp 380jt', 'Rp 612jt'];
+  const dur = 1400;
+  const t0 = performance.now();
+  const step = now => {
+    const p = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const values = [89500000, 143000000, 380000000, 612500000];
+    const v = Math.round(values[idx] * ease);
+    const jt = v / 1000000;
+    el.textContent = 'Rp ' + (jt < 100 ? jt.toFixed(0) : jt.toFixed(0)) + 'jt';
+    if (p < 1) requestAnimationFrame(step);
+    else el.textContent = labels[idx];
+  };
+  requestAnimationFrame(step);
+}
+
+/* observe rab summary cells */
+const rabSumObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const cells = e.target.querySelectorAll('[data-count]');
+      cells.forEach(c => { if (!c._rabCounted) { c._rabCounted = true; animRabCount(c); }});
+    }
+  });
+}, {threshold: .2});
+const rabSumEl = document.querySelector('.rab-summary');
+if (rabSumEl) rabSumObs.observe(rabSumEl);
+
+renderRabBars();
+
+</script>
+</body>
+</html>
