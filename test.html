@@ -1,0 +1,2185 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Saprahan Bank – Scan QRIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E6C97A;
+    --gold-pale: #F5E9C8;
+    --maroon: #6B1A2A;
+    --maroon-deep: #4A0F1C;
+    --maroon-mid: #8B2438;
+    --cream: #FDF8EF;
+    --dark: #1A0A10;
+    --text-main: #2D1520;
+    --text-muted: #8B6A74;
+    --white: #FFFFFF;
+    --success: #2D7A4F;
+    --shadow-card: 0 24px 64px rgba(107,26,42,0.18), 0 4px 16px rgba(107,26,42,0.10);
+  }
+
+- { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+font-family: ‘DM Sans’, sans-serif;
+background: var(–maroon-deep);
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+align-items: center;
+overflow-x: hidden;
+position: relative;
+}
+
+/* Background pattern */
+body::before {
+content: ‘’;
+position: fixed;
+inset: 0;
+background:
+radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.18) 0%, transparent 70%),
+radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139,36,56,0.4) 0%, transparent 60%);
+pointer-events: none;
+z-index: 0;
+}
+
+/* Batik-like decorative circles */
+.bg-motif {
+position: fixed;
+border-radius: 50%;
+border: 1px solid rgba(201,168,76,0.08);
+pointer-events: none;
+z-index: 0;
+}
+.bg-motif-1 { width: 500px; height: 500px; top: -200px; right: -150px; }
+.bg-motif-2 { width: 300px; height: 300px; bottom: -80px; left: -80px; border-color: rgba(201,168,76,0.12); }
+.bg-motif-3 { width: 200px; height: 200px; top: 40%; left: -60px; border-color: rgba(201,168,76,0.06); }
+
+/* ─── PHONE WRAPPER ─── */
+.phone-wrap {
+width: 100%;
+max-width: 400px;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+position: relative;
+z-index: 1;
+background: var(–cream);
+box-shadow: 0 0 80px rgba(0,0,0,0.6);
+}
+
+/* ─── SCREEN PAGES ─── */
+.screen {
+display: none;
+flex-direction: column;
+min-height: 100vh;
+position: relative;
+animation: fadeIn 0.35s ease;
+}
+.screen.active { display: flex; }
+@keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+
+/* ══════════════════════════════════
+SCREEN 1: HOME / DASHBOARD
+══════════════════════════════════ */
+#screen-home {
+background: var(–cream);
+}
+
+/* Top header */
+.home-header {
+background: linear-gradient(160deg, var(–maroon-deep) 0%, var(–maroon) 60%, var(–maroon-mid) 100%);
+padding: 52px 24px 80px;
+position: relative;
+overflow: hidden;
+}
+.home-header::after {
+content: ‘’;
+position: absolute;
+bottom: -2px; left: 0; right: 0;
+height: 32px;
+background: var(–cream);
+border-radius: 32px 32px 0 0;
+}
+/* decorative ornament in header */
+.header-ornament {
+position: absolute;
+top: -30px; right: -30px;
+width: 180px; height: 180px;
+border: 2px solid rgba(201,168,76,0.15);
+border-radius: 50%;
+}
+.header-ornament::before {
+content: ‘’;
+position: absolute;
+inset: 20px;
+border: 1px solid rgba(201,168,76,0.10);
+border-radius: 50%;
+}
+
+.header-top-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 28px;
+}
+.brand-mark {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.brand-logo {
+width: 38px; height: 38px;
+background: linear-gradient(135deg, var(–gold) 0%, var(–gold-light) 100%);
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 18px;
+color: var(–maroon-deep);
+font-weight: 700;
+box-shadow: 0 4px 12px rgba(201,168,76,0.4);
+}
+.brand-name {
+font-family: ‘Playfair Display’, serif;
+color: var(–white);
+font-size: 15px;
+line-height: 1;
+}
+.brand-name span {
+display: block;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 10px;
+font-weight: 300;
+color: rgba(255,255,255,0.6);
+letter-spacing: 2px;
+text-transform: uppercase;
+margin-top: 2px;
+}
+.notif-btn {
+width: 36px; height: 36px;
+border-radius: 50%;
+background: rgba(255,255,255,0.1);
+border: none;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+position: relative;
+}
+.notif-btn::after {
+content: ‘’;
+position: absolute;
+top: 7px; right: 7px;
+width: 8px; height: 8px;
+background: var(–gold);
+border-radius: 50%;
+border: 2px solid var(–maroon-deep);
+}
+
+.greet-text {
+font-size: 12px;
+color: rgba(255,255,255,0.55);
+font-weight: 400;
+letter-spacing: 0.5px;
+margin-bottom: 4px;
+}
+.greet-name {
+font-family: ‘Playfair Display’, serif;
+font-size: 22px;
+color: var(–white);
+margin-bottom: 24px;
+}
+
+/* Balance card inside header */
+.balance-card {
+background: rgba(255,255,255,0.08);
+border: 1px solid rgba(201,168,76,0.25);
+border-radius: 20px;
+padding: 18px 20px;
+backdrop-filter: blur(10px);
+position: relative;
+}
+.balance-label {
+font-size: 11px;
+color: rgba(255,255,255,0.5);
+letter-spacing: 1px;
+text-transform: uppercase;
+margin-bottom: 6px;
+}
+.balance-amount {
+font-family: ‘Playfair Display’, serif;
+font-size: 28px;
+color: var(–white);
+letter-spacing: -0.5px;
+}
+.balance-amount span { font-size: 16px; font-weight: 300; margin-right: 4px; }
+.balance-account {
+margin-top: 10px;
+font-size: 12px;
+color: rgba(255,255,255,0.4);
+letter-spacing: 2px;
+}
+.balance-eye {
+position: absolute;
+top: 18px; right: 18px;
+width: 28px; height: 28px;
+background: rgba(201,168,76,0.2);
+border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+cursor: pointer;
+border: none;
+}
+
+/* Quick actions */
+.quick-actions {
+padding: 28px 24px 16px;
+}
+.section-label {
+font-size: 11px;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–text-muted);
+font-weight: 600;
+margin-bottom: 16px;
+}
+.actions-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 12px;
+}
+.action-btn {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 8px;
+cursor: pointer;
+border: none;
+background: none;
+}
+.action-icon {
+width: 54px; height: 54px;
+border-radius: 16px;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.action-btn:active .action-icon { transform: scale(0.93); }
+.action-icon.primary {
+background: linear-gradient(135deg, var(–maroon) 0%, var(–maroon-deep) 100%);
+box-shadow: 0 8px 20px rgba(107,26,42,0.35);
+}
+.action-icon.gold {
+background: linear-gradient(135deg, var(–gold) 0%, #B8900A 100%);
+box-shadow: 0 8px 20px rgba(201,168,76,0.35);
+}
+.action-icon.light {
+background: var(–white);
+box-shadow: 0 4px 12px rgba(107,26,42,0.10);
+border: 1px solid rgba(107,26,42,0.08);
+}
+.action-icon svg { flex-shrink: 0; }
+.action-label {
+font-size: 10.5px;
+color: var(–text-main);
+font-weight: 500;
+text-align: center;
+line-height: 1.3;
+}
+
+/* Promo banner */
+.promo-section {
+padding: 8px 24px 20px;
+}
+.promo-banner {
+background: linear-gradient(120deg, var(–maroon-deep) 0%, var(–maroon) 100%);
+border-radius: 20px;
+padding: 18px 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+position: relative;
+overflow: hidden;
+cursor: pointer;
+}
+.promo-banner::before {
+content: ‘’;
+position: absolute;
+top: -20px; right: 40px;
+width: 100px; height: 100px;
+border: 1px solid rgba(201,168,76,0.15);
+border-radius: 50%;
+}
+.promo-text { z-index: 1; }
+.promo-badge {
+background: var(–gold);
+color: var(–maroon-deep);
+font-size: 9px;
+font-weight: 700;
+letter-spacing: 1px;
+padding: 3px 8px;
+border-radius: 20px;
+text-transform: uppercase;
+display: inline-block;
+margin-bottom: 6px;
+}
+.promo-title {
+font-family: ‘Playfair Display’, serif;
+color: var(–white);
+font-size: 15px;
+margin-bottom: 2px;
+}
+.promo-desc { font-size: 11px; color: rgba(255,255,255,0.5); }
+.promo-arrow {
+width: 32px; height: 32px;
+border-radius: 50%;
+background: rgba(201,168,76,0.2);
+display: flex; align-items: center; justify-content: center;
+z-index: 1;
+flex-shrink: 0;
+}
+
+/* Recent transactions */
+.recent-section {
+padding: 4px 24px 100px;
+}
+.recent-header {
+display: flex; align-items: center; justify-content: space-between;
+margin-bottom: 14px;
+}
+.see-all { font-size: 12px; color: var(–maroon); font-weight: 600; cursor: pointer; border: none; background: none; }
+.trx-item {
+display: flex;
+align-items: center;
+gap: 14px;
+padding: 12px 0;
+border-bottom: 1px solid rgba(107,26,42,0.07);
+}
+.trx-icon {
+width: 42px; height: 42px;
+border-radius: 14px;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0;
+}
+.trx-icon.in { background: rgba(45,122,79,0.12); }
+.trx-icon.out { background: rgba(107,26,42,0.08); }
+.trx-info { flex: 1; }
+.trx-name { font-size: 13px; font-weight: 500; color: var(–text-main); }
+.trx-date { font-size: 11px; color: var(–text-muted); margin-top: 2px; }
+.trx-amount { font-size: 14px; font-weight: 600; }
+.trx-amount.in { color: var(–success); }
+.trx-amount.out { color: var(–maroon); }
+
+/* ─── BOTTOM NAV ─── */
+.bottom-nav {
+position: fixed;
+bottom: 0;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+max-width: 400px;
+background: var(–white);
+border-top: 1px solid rgba(107,26,42,0.08);
+display: flex;
+align-items: center;
+justify-content: space-around;
+padding: 10px 0 24px;
+z-index: 100;
+box-shadow: 0 -8px 30px rgba(107,26,42,0.08);
+}
+.nav-item {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+cursor: pointer;
+border: none;
+background: none;
+padding: 4px 12px;
+position: relative;
+}
+.nav-label { font-size: 10px; font-weight: 500; color: var(–text-muted); }
+.nav-item.active .nav-label { color: var(–maroon); }
+.nav-qris-btn {
+width: 60px; height: 60px;
+border-radius: 50%;
+background: linear-gradient(135deg, var(–gold-light) 0%, var(–gold) 100%);
+border: 4px solid var(–white);
+display: flex; align-items: center; justify-content: center;
+box-shadow: 0 8px 24px rgba(201,168,76,0.5);
+cursor: pointer;
+transition: transform 0.15s, box-shadow 0.15s;
+margin-top: -28px;
+position: relative;
+z-index: 101;
+}
+.nav-qris-btn:active { transform: scale(0.93); box-shadow: 0 4px 14px rgba(201,168,76,0.4); }
+
+/* ══════════════════════════════════
+SCREEN 2: SCAN QRIS
+══════════════════════════════════ */
+#screen-scan {
+background: #0D0006;
+color: var(–white);
+}
+
+.scan-header {
+display: flex;
+align-items: center;
+padding: 52px 20px 16px;
+position: relative;
+z-index: 10;
+}
+.back-btn {
+width: 38px; height: 38px;
+border-radius: 50%;
+background: rgba(255,255,255,0.1);
+border: none;
+cursor: pointer;
+display: flex; align-items: center; justify-content: center;
+flex-shrink: 0;
+}
+.scan-title {
+flex: 1;
+text-align: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 18px;
+color: var(–white);
+}
+.scan-header-space { width: 38px; }
+
+/* Camera viewfinder area */
+.viewfinder-wrap {
+flex: 1;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+overflow: hidden;
+}
+
+/* Simulated camera BG */
+.camera-bg {
+position: absolute;
+inset: 0;
+background:
+linear-gradient(180deg, #0D0006 0%, #1A0510 40%, #0D0006 100%);
+overflow: hidden;
+}
+.camera-grain {
+position: absolute;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+opacity: 0.3;
+}
+/* Blurred shape suggesting background scene */
+.camera-scene {
+position: absolute;
+inset: 0;
+background:
+radial-gradient(ellipse 60% 40% at 30% 40%, rgba(80,20,40,0.6) 0%, transparent 60%),
+radial-gradient(ellipse 50% 60% at 70% 60%, rgba(40,10,20,0.8) 0%, transparent 50%);
+}
+
+/* The QR finder box */
+.qr-finder {
+position: relative;
+z-index: 5;
+width: 240px;
+height: 240px;
+}
+
+/* Corner brackets */
+.corner {
+position: absolute;
+width: 32px; height: 32px;
+border-color: var(–gold);
+border-style: solid;
+border-width: 0;
+}
+.corner-tl { top: 0; left: 0; border-top-width: 3px; border-left-width: 3px; border-radius: 4px 0 0 0; }
+.corner-tr { top: 0; right: 0; border-top-width: 3px; border-right-width: 3px; border-radius: 0 4px 0 0; }
+.corner-bl { bottom: 0; left: 0; border-bottom-width: 3px; border-left-width: 3px; border-radius: 0 0 0 4px; }
+.corner-br { bottom: 0; right: 0; border-bottom-width: 3px; border-right-width: 3px; border-radius: 0 0 4px 0; }
+
+/* Scan laser line */
+.scan-line {
+position: absolute;
+left: 10px; right: 10px;
+height: 2px;
+background: linear-gradient(90deg, transparent 0%, var(–gold-light) 30%, var(–gold) 50%, var(–gold-light) 70%, transparent 100%);
+border-radius: 2px;
+box-shadow: 0 0 12px var(–gold), 0 0 24px rgba(201,168,76,0.4);
+animation: scanMove 2s ease-in-out infinite;
+top: 10px;
+}
+@keyframes scanMove {
+0%   { top: 10px; opacity: 0.8; }
+50%  { top: calc(100% - 12px); opacity: 1; }
+100% { top: 10px; opacity: 0.8; }
+}
+
+/* QR inside finder (simulated) */
+.qr-inside {
+position: absolute;
+inset: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+opacity: 0;
+transition: opacity 0.4s;
+}
+.qr-inside.visible { opacity: 1; }
+
+/* Dark overlay outside finder */
+.vf-overlay {
+position: absolute;
+inset: 0;
+z-index: 4;
+pointer-events: none;
+}
+.vf-overlay::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: rgba(13,0,6,0.55);
+/* cut out center with clip-path is tricky; we’ll use box-shadow trick */
+box-shadow: 0 0 0 9999px rgba(13,0,6,0.55);
+clip-path: polygon(
+0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%,
+calc(50% - 120px) calc(50% - 120px),
+calc(50% - 120px) calc(50% + 120px),
+calc(50% + 120px) calc(50% + 120px),
+calc(50% + 120px) calc(50% - 120px),
+calc(50% - 120px) calc(50% - 120px)
+);
+}
+
+/* Hint text */
+.scan-hint {
+position: absolute;
+bottom: 60px;
+left: 0; right: 0;
+text-align: center;
+z-index: 10;
+padding: 0 24px;
+}
+.scan-hint p {
+font-size: 13px;
+color: rgba(255,255,255,0.6);
+margin-bottom: 4px;
+}
+.scan-hint strong {
+font-family: ‘Playfair Display’, serif;
+color: var(–gold-light);
+font-size: 15px;
+}
+
+/* Scan actions row */
+.scan-actions {
+position: absolute;
+bottom: 0; left: 0; right: 0;
+z-index: 10;
+display: flex;
+align-items: center;
+justify-content: space-around;
+padding: 16px 32px 36px;
+background: linear-gradient(to top, rgba(13,0,6,0.95) 0%, transparent 100%);
+}
+.scan-act-btn {
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 6px;
+background: none;
+border: none;
+cursor: pointer;
+color: rgba(255,255,255,0.7);
+font-size: 11px;
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 500;
+transition: color 0.2s;
+}
+.scan-act-btn:hover { color: var(–gold-light); }
+.scan-act-icon {
+width: 46px; height: 46px;
+border-radius: 50%;
+background: rgba(255,255,255,0.1);
+display: flex; align-items: center; justify-content: center;
+transition: background 0.2s;
+border: 1px solid rgba(255,255,255,0.08);
+}
+.scan-act-btn:hover .scan-act-icon { background: rgba(201,168,76,0.2); }
+
+/* Success overlay */
+.success-overlay {
+position: absolute;
+inset: 0;
+background: rgba(13,0,6,0.92);
+z-index: 20;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+opacity: 0;
+pointer-events: none;
+transition: opacity 0.4s;
+}
+.success-overlay.show { opacity: 1; pointer-events: all; }
+.success-ring {
+width: 90px; height: 90px;
+border-radius: 50%;
+border: 3px solid var(–gold);
+display: flex; align-items: center; justify-content: center;
+margin-bottom: 20px;
+animation: ringPulse 1.5s ease infinite;
+}
+@keyframes ringPulse {
+0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.4); }
+50% { box-shadow: 0 0 0 16px rgba(201,168,76,0); }
+}
+.success-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 22px;
+color: var(–white);
+margin-bottom: 8px;
+}
+.success-merchant {
+font-size: 14px;
+color: var(–gold-light);
+margin-bottom: 6px;
+font-weight: 500;
+}
+.success-nmid {
+font-size: 12px;
+color: rgba(255,255,255,0.4);
+letter-spacing: 1px;
+margin-bottom: 28px;
+}
+.success-continue-btn {
+background: linear-gradient(135deg, var(–gold-light) 0%, var(–gold) 100%);
+color: var(–maroon-deep);
+border: none;
+border-radius: 50px;
+padding: 14px 40px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+transition: transform 0.15s, box-shadow 0.15s;
+box-shadow: 0 8px 24px rgba(201,168,76,0.4);
+}
+.success-continue-btn:active { transform: scale(0.96); }
+
+/* ══════════════════════════════════
+SCREEN 3: INPUT NOMINAL
+══════════════════════════════════ */
+#screen-payment {
+background: var(–cream);
+}
+
+.payment-header {
+background: linear-gradient(160deg, var(–maroon-deep) 0%, var(–maroon) 100%);
+padding: 52px 24px 28px;
+position: relative;
+border-radius: 0 0 28px 28px;
+overflow: hidden;
+}
+.payment-header::before {
+content: ‘’;
+position: absolute;
+top: -40px; right: -40px;
+width: 160px; height: 160px;
+border: 1px solid rgba(201,168,76,0.12);
+border-radius: 50%;
+}
+
+.ph-back-row {
+display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
+}
+.ph-back { background: rgba(255,255,255,0.12); border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.ph-title { font-family: ‘Playfair Display’, serif; font-size: 17px; color: var(–white); }
+
+.merchant-card {
+background: rgba(255,255,255,0.1);
+border: 1px solid rgba(201,168,76,0.2);
+border-radius: 16px;
+padding: 16px 18px;
+display: flex;
+align-items: center;
+gap: 14px;
+backdrop-filter: blur(10px);
+}
+.merchant-avatar {
+width: 46px; height: 46px;
+border-radius: 12px;
+background: linear-gradient(135deg, var(–gold-light) 0%, var(–gold) 100%);
+display: flex; align-items: center; justify-content: center;
+font-family: ‘Playfair Display’, serif;
+font-size: 18px;
+color: var(–maroon-deep);
+font-weight: 700;
+flex-shrink: 0;
+}
+.merchant-name { font-size: 15px; font-weight: 600; color: var(–white); margin-bottom: 2px; }
+.merchant-nmid { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 1px; }
+
+/* Nominal input */
+.nominal-section {
+padding: 32px 24px 20px;
+text-align: center;
+border-bottom: 1px solid rgba(107,26,42,0.08);
+}
+.nominal-label {
+font-size: 12px;
+color: var(–text-muted);
+letter-spacing: 1px;
+text-transform: uppercase;
+margin-bottom: 14px;
+}
+.nominal-display {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+margin-bottom: 8px;
+position: relative;
+}
+.nominal-currency {
+font-family: ‘Playfair Display’, serif;
+font-size: 22px;
+color: var(–text-muted);
+margin-top: 4px;
+}
+.nominal-value {
+font-family: ‘Playfair Display’, serif;
+font-size: 44px;
+color: var(–text-main);
+letter-spacing: -1px;
+min-width: 60px;
+display: inline-block;
+}
+.nominal-cursor {
+display: inline-block;
+width: 2px; height: 44px;
+background: var(–maroon);
+animation: blink 1s step-end infinite;
+vertical-align: middle;
+margin-left: 2px;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.nominal-hint { font-size: 12px; color: var(–text-muted); }
+
+/* Quick amount buttons */
+.quick-amounts {
+padding: 20px 24px 0;
+}
+.qa-label {
+font-size: 11px;
+color: var(–text-muted);
+letter-spacing: 1px;
+text-transform: uppercase;
+margin-bottom: 12px;
+}
+.qa-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 10px;
+}
+.qa-chip {
+background: var(–white);
+border: 1.5px solid rgba(107,26,42,0.12);
+border-radius: 12px;
+padding: 10px 8px;
+font-size: 12px;
+font-weight: 600;
+color: var(–maroon);
+cursor: pointer;
+text-align: center;
+transition: all 0.15s;
+font-family: ‘DM Sans’, sans-serif;
+box-shadow: 0 2px 8px rgba(107,26,42,0.06);
+}
+.qa-chip:active, .qa-chip.selected {
+background: var(–maroon);
+color: var(–white);
+border-color: var(–maroon);
+}
+
+/* Notes field */
+.notes-field {
+margin: 20px 24px 0;
+background: var(–white);
+border: 1.5px solid rgba(107,26,42,0.10);
+border-radius: 14px;
+padding: 14px 16px;
+display: flex;
+align-items: center;
+gap: 10px;
+cursor: pointer;
+}
+.notes-text { font-size: 13px; color: var(–text-muted); flex: 1; }
+
+/* Numpad */
+.numpad-wrap {
+padding: 20px 16px 0;
+}
+.numpad {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 8px;
+}
+.num-key {
+height: 56px;
+border-radius: 14px;
+border: none;
+background: var(–white);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 20px;
+font-weight: 500;
+color: var(–text-main);
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+box-shadow: 0 2px 8px rgba(107,26,42,0.06);
+transition: all 0.1s;
+-webkit-tap-highlight-color: transparent;
+}
+.num-key:active { background: var(–gold-pale); transform: scale(0.96); }
+.num-key.del { background: rgba(107,26,42,0.06); }
+.num-key.empty { background: transparent; box-shadow: none; pointer-events: none; }
+
+/* Pay button */
+.pay-btn-wrap {
+padding: 20px 24px 36px;
+}
+.pay-btn {
+width: 100%;
+background: linear-gradient(135deg, var(–maroon-mid) 0%, var(–maroon-deep) 100%);
+color: var(–white);
+border: none;
+border-radius: 18px;
+height: 60px;
+font-family: ‘Playfair Display’, serif;
+font-size: 18px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 10px;
+box-shadow: 0 12px 32px rgba(107,26,42,0.35);
+transition: transform 0.15s, box-shadow 0.15s;
+}
+.pay-btn:active { transform: scale(0.98); box-shadow: 0 6px 18px rgba(107,26,42,0.25); }
+.pay-amount-badge {
+background: rgba(255,255,255,0.15);
+border-radius: 20px;
+padding: 4px 12px;
+font-size: 13px;
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 600;
+}
+
+/* ══════════════════════════════════
+SCREEN 4: SUKSES
+══════════════════════════════════ */
+#screen-success {
+background: var(–cream);
+align-items: center;
+justify-content: flex-start;
+padding: 0;
+}
+
+.success-header-bg {
+width: 100%;
+background: linear-gradient(160deg, var(–maroon-deep) 0%, var(–maroon) 100%);
+padding: 60px 24px 70px;
+display: flex;
+flex-direction: column;
+align-items: center;
+position: relative;
+overflow: hidden;
+}
+.success-header-bg::after {
+content: ‘’;
+position: absolute;
+bottom: -2px; left: 0; right: 0;
+height: 40px;
+background: var(–cream);
+border-radius: 40px 40px 0 0;
+}
+.sh-ornament {
+position: absolute;
+top: -60px; left: -60px;
+width: 200px; height: 200px;
+border: 1px solid rgba(201,168,76,0.1);
+border-radius: 50%;
+}
+.sh-ornament2 {
+position: absolute;
+bottom: 20px; right: -40px;
+width: 140px; height: 140px;
+border: 1px solid rgba(201,168,76,0.1);
+border-radius: 50%;
+}
+
+.success-check {
+width: 80px; height: 80px;
+border-radius: 50%;
+background: linear-gradient(135deg, var(–gold-light) 0%, var(–gold) 100%);
+display: flex; align-items: center; justify-content: center;
+box-shadow: 0 12px 32px rgba(201,168,76,0.5);
+margin-bottom: 18px;
+z-index: 1;
+animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes popIn { from{transform:scale(0);} to{transform:scale(1);} }
+.success-hdr-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 24px;
+color: var(–white);
+margin-bottom: 6px;
+z-index: 1;
+}
+.success-hdr-sub { font-size: 13px; color: rgba(255,255,255,0.5); z-index: 1; }
+
+/* Receipt card */
+.receipt-card {
+width: calc(100% - 48px);
+background: var(–white);
+border-radius: 24px;
+box-shadow: var(–shadow-card);
+padding: 28px 24px;
+margin-top: -20px;
+position: relative;
+z-index: 2;
+}
+.receipt-amount {
+text-align: center;
+margin-bottom: 24px;
+padding-bottom: 20px;
+border-bottom: 1.5px dashed rgba(107,26,42,0.12);
+position: relative;
+}
+.receipt-amount::before, .receipt-amount::after {
+content: ‘’;
+position: absolute;
+bottom: -10px;
+width: 20px; height: 20px;
+background: var(–cream);
+border-radius: 50%;
+box-shadow: inset 0 0 0 1.5px rgba(107,26,42,0.12);
+}
+.receipt-amount::before { left: -34px; }
+.receipt-amount::after { right: -34px; }
+.receipt-lbl { font-size: 11px; color: var(–text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+.receipt-big-amt {
+font-family: ‘Playfair Display’, serif;
+font-size: 36px;
+color: var(–text-main);
+letter-spacing: -1px;
+}
+.receipt-big-amt span { font-size: 20px; color: var(–text-muted); margin-right: 4px; }
+.receipt-row {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+margin-bottom: 14px;
+}
+.rr-key { font-size: 12px; color: var(–text-muted); }
+.rr-val { font-size: 13px; font-weight: 500; color: var(–text-main); text-align: right; max-width: 55%; }
+.receipt-status {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 6px;
+background: rgba(45,122,79,0.1);
+border-radius: 30px;
+padding: 8px 16px;
+margin-top: 16px;
+}
+.receipt-status span { font-size: 12px; font-weight: 600; color: var(–success); }
+
+/* QRIS logo row */
+.qris-logo-row {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+margin-top: 18px;
+padding-top: 16px;
+border-top: 1px solid rgba(107,26,42,0.08);
+}
+.qris-badge {
+background: linear-gradient(135deg, #E63946 0%, #C1121F 100%);
+color: white;
+font-size: 10px;
+font-weight: 800;
+letter-spacing: 1px;
+padding: 4px 10px;
+border-radius: 6px;
+}
+.qris-powered { font-size: 11px; color: var(–text-muted); }
+
+.success-actions {
+width: calc(100% - 48px);
+display: flex;
+gap: 12px;
+margin-top: 20px;
+padding-bottom: 40px;
+}
+.sa-btn {
+flex: 1;
+height: 52px;
+border-radius: 16px;
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px;
+font-weight: 600;
+cursor: pointer;
+border: none;
+transition: all 0.15s;
+}
+.sa-btn.outline {
+background: var(–white);
+border: 1.5px solid rgba(107,26,42,0.15);
+color: var(–maroon);
+box-shadow: 0 2px 8px rgba(107,26,42,0.06);
+}
+.sa-btn.filled {
+background: linear-gradient(135deg, var(–maroon-mid) 0%, var(–maroon-deep) 100%);
+color: var(–white);
+box-shadow: 0 8px 24px rgba(107,26,42,0.3);
+}
+.sa-btn:active { transform: scale(0.97); }
+
+/* ─── STATUS BAR ─── */
+.status-bar {
+position: absolute;
+top: 0; left: 0; right: 0;
+height: 20px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 0 20px;
+z-index: 200;
+}
+.sb-time { font-size: 11px; font-weight: 600; color: var(–white); }
+.sb-icons { display: flex; gap: 4px; align-items: center; }
+.sb-icons svg { opacity: 0.85; }
+.status-bar.dark .sb-time { color: var(–text-main); }
+.status-bar.dark .sb-icons svg { color: var(–text-main); opacity: 1; }
+
+/* QRIS brand watermark */
+.qris-watermark {
+position: absolute;
+bottom: 80px; left: 0; right: 0;
+text-align: center;
+z-index: 3;
+}
+.qris-brand-row {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: rgba(255,255,255,0.08);
+border: 1px solid rgba(255,255,255,0.1);
+border-radius: 20px;
+padding: 6px 14px;
+}
+.qris-brand-row .qb { font-size: 10px; font-weight: 800; color: white; background: #E63946; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; }
+.qris-brand-row span { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+/* Scrollable screens */
+.scroll-body { overflow-y: auto; flex: 1; }
+
+/* PIN modal */
+.pin-modal {
+position: fixed;
+inset: 0;
+z-index: 300;
+display: none;
+align-items: flex-end;
+background: rgba(0,0,0,0.6);
+backdrop-filter: blur(4px);
+}
+.pin-modal.show { display: flex; animation: fadeIn 0.2s ease; }
+.pin-sheet {
+width: 100%;
+max-width: 400px;
+margin: 0 auto;
+background: var(–white);
+border-radius: 28px 28px 0 0;
+padding: 28px 24px 48px;
+animation: slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1);
+}
+@keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+.pin-handle {
+width: 40px; height: 4px;
+background: rgba(107,26,42,0.15);
+border-radius: 2px;
+margin: 0 auto 24px;
+}
+.pin-title {
+font-family: ‘Playfair Display’, serif;
+font-size: 20px;
+color: var(–text-main);
+text-align: center;
+margin-bottom: 6px;
+}
+.pin-sub { font-size: 13px; color: var(–text-muted); text-align: center; margin-bottom: 24px; }
+.pin-dots {
+display: flex; gap: 14px; justify-content: center; margin-bottom: 32px;
+}
+.pin-dot {
+width: 14px; height: 14px;
+border-radius: 50%;
+border: 2px solid rgba(107,26,42,0.2);
+background: transparent;
+transition: all 0.15s;
+}
+.pin-dot.filled { background: var(–maroon); border-color: var(–maroon); }
+.pin-numpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+.pin-key {
+height: 60px;
+border-radius: 16px;
+border: none;
+background: rgba(107,26,42,0.04);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 22px;
+font-weight: 400;
+color: var(–text-main);
+cursor: pointer;
+transition: all 0.1s;
+}
+.pin-key:active { background: var(–gold-pale); transform: scale(0.94); }
+.pin-key.del-key { font-size: 16px; }
+.pin-key.empty-key { pointer-events: none; background: transparent; }
+.pin-cancel { width: 100%; margin-top: 14px; background: none; border: none; font-family: ‘DM Sans’, sans-serif; font-size: 14px; color: var(–text-muted); cursor: pointer; padding: 10px; }
+
+/* Responsive scrollbar */
+::-webkit-scrollbar { width: 0; }
+</style>
+
+</head>
+<body>
+
+<div class="bg-motif bg-motif-1"></div>
+<div class="bg-motif bg-motif-2"></div>
+<div class="bg-motif bg-motif-3"></div>
+
+<div class="phone-wrap">
+
+  <!-- ══ STATUS BAR ══ -->
+
+  <div class="status-bar" id="statusBarMain">
+    <span class="sb-time" id="clockMain">09:41</span>
+    <div class="sb-icons">
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" color="white">
+        <rect x="0" y="4" width="3" height="7" rx="0.5"/>
+        <rect x="4" y="2.5" width="3" height="8.5" rx="0.5"/>
+        <rect x="8" y="1" width="3" height="10" rx="0.5"/>
+        <rect x="12" y="0" width="3" height="11" rx="0.5"/>
+      </svg>
+      <svg width="14" height="11" viewBox="0 0 14 11" fill="currentColor" color="white">
+        <path d="M7 2.5C9 2.5 10.8 3.3 12.1 4.6L13.5 3.2C11.8 1.5 9.5 0.5 7 0.5C4.5 0.5 2.2 1.5 0.5 3.2L1.9 4.6C3.2 3.3 5 2.5 7 2.5Z"/>
+        <path d="M7 5.5C8.2 5.5 9.3 6 10.1 6.8L11.5 5.4C10.3 4.2 8.7 3.5 7 3.5C5.3 3.5 3.7 4.2 2.5 5.4L3.9 6.8C4.7 6 5.8 5.5 7 5.5Z"/>
+        <circle cx="7" cy="9" r="1.5"/>
+      </svg>
+      <svg width="24" height="11" viewBox="0 0 24 11" fill="currentColor" color="white">
+        <rect x="0" y="1" width="20" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none"/>
+        <rect x="20.5" y="3.5" width="2" height="4" rx="1"/>
+        <rect x="1.5" y="2.5" width="15" height="6" rx="1.5"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 1: HOME
+  ══════════════════════════════════ -->
+
+  <div class="screen active" id="screen-home">
+    <div class="home-header">
+      <div class="header-ornament"></div>
+      <div class="header-top-row">
+        <div class="brand-mark">
+          <div class="brand-logo">S</div>
+          <div class="brand-name">
+            Saprahan Bank
+            <span>Pontianak · Kalimantan Barat</span>
+          </div>
+        </div>
+        <button class="notif-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </button>
+      </div>
+      <div class="greet-text">Selamat Pagi 👋</div>
+      <div class="greet-name" id="greetName" onclick="startEditName()" title="Ketuk untuk ubah nama" style="cursor:pointer;display:flex;align-items:center;gap:8px;">
+        <span id="greetNameText">Budi Santoso</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </div>
+      <!-- Inline name editor (hidden by default) -->
+      <div id="nameEditWrap" style="display:none;margin-bottom:16px;">
+        <input id="nameEditInput" type="text" maxlength="30"
+          style="
+            background:rgba(255,255,255,0.15);
+            border:1.5px solid rgba(201,168,76,0.5);
+            border-radius:12px;
+            padding:10px 14px;
+            color:white;
+            font-family:'DM Sans',sans-serif;
+            font-size:16px;
+            width:100%;
+            outline:none;
+            letter-spacing:0.2px;
+          "
+          placeholder="Masukkan nama Anda"
+          onkeydown="if(event.key==='Enter')saveEditName()"
+        >
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button onclick="saveEditName()" style="
+            flex:1;background:linear-gradient(135deg,var(--gold-light),var(--gold));
+            color:var(--maroon-deep);border:none;border-radius:10px;
+            padding:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;
+          ">✓ Simpan</button>
+          <button onclick="cancelEditName()" style="
+            flex:1;background:rgba(255,255,255,0.1);
+            color:rgba(255,255,255,0.7);border:none;border-radius:10px;
+            padding:9px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;
+          ">Batal</button>
+        </div>
+      </div>
+      <div class="balance-card">
+        <div class="balance-label">Saldo Rekening</div>
+        <div class="balance-amount" id="balanceDisplay"><span>Rp</span><span id="balanceValue">12.450.000</span></div>
+        <div class="balance-account">•••• •••• •••• 7823</div>
+        <button class="balance-eye" id="balanceEyeBtn" onclick="toggleBalance()">
+          <svg id="eyeIconOpen" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="eyeIconClosed" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" style="display:none">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+```
+<div class="scroll-body">
+  <!-- Quick Actions -->
+  <div class="quick-actions">
+    <div class="section-label">Layanan Utama</div>
+    <div class="actions-grid">
+      <button class="action-btn" onclick="goToScan()">
+        <div class="action-icon gold">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+            <rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/>
+            <rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/>
+          </svg>
+        </div>
+        <span class="action-label">Scan QRIS</span>
+      </button>
+      <button class="action-btn">
+        <div class="action-icon primary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+          </svg>
+        </div>
+        <span class="action-label">Transfer</span>
+      </button>
+      <button class="action-btn">
+        <div class="action-icon light">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+          </svg>
+        </div>
+        <span class="action-label">Bayar</span>
+      </button>
+      <button class="action-btn">
+        <div class="action-icon light">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+          </svg>
+        </div>
+        <span class="action-label">Top Up</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Promo -->
+  <div class="promo-section">
+    <div class="promo-banner">
+      <div class="promo-text">
+        <div class="promo-badge">✦ Spesial</div>
+        <div class="promo-title">Cashback QRIS 10%</div>
+        <div class="promo-desc">Berlaku hingga 31 Mei 2025</div>
+      </div>
+      <div class="promo-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.8)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recent transactions -->
+  <div class="recent-section">
+    <div class="recent-header">
+      <div class="section-label" style="margin:0">Transaksi Terakhir</div>
+      <button class="see-all">Lihat Semua →</button>
+    </div>
+    <div class="trx-item">
+      <div class="trx-icon in">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+        </svg>
+      </div>
+      <div class="trx-info">
+        <div class="trx-name">Gaji Bulan Mei</div>
+        <div class="trx-date">28 Apr 2025 · Bank Transfer</div>
+      </div>
+      <div class="trx-amount in">+Rp 5.000.000</div>
+    </div>
+    <div class="trx-item">
+      <div class="trx-icon out">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+        </svg>
+      </div>
+      <div class="trx-info">
+        <div class="trx-name">Warung Saprahan</div>
+        <div class="trx-date">27 Apr 2025 · QRIS</div>
+      </div>
+      <div class="trx-amount out">−Rp 45.000</div>
+    </div>
+    <div class="trx-item">
+      <div class="trx-icon out">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+        </svg>
+      </div>
+      <div class="trx-info">
+        <div class="trx-name">PLN Prabayar</div>
+        <div class="trx-date">26 Apr 2025 · Tagihan</div>
+      </div>
+      <div class="trx-amount out">−Rp 200.000</div>
+    </div>
+    <div class="trx-item">
+      <div class="trx-icon in">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+        </svg>
+      </div>
+      <div class="trx-info">
+        <div class="trx-name">Transfer dari Ahmad</div>
+        <div class="trx-date">25 Apr 2025 · Bank Transfer</div>
+      </div>
+      <div class="trx-amount in">+Rp 150.000</div>
+    </div>
+  </div>
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <button class="nav-item active">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="#6B1A2A" stroke="none">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+    <span class="nav-label" style="color:var(--maroon)">Beranda</span>
+  </button>
+  <button class="nav-item" onclick="goToScan()">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6A74" stroke-width="2">
+      <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+    </svg>
+    <span class="nav-label">Bayar</span>
+  </button>
+  <button class="nav-qris-btn" onclick="goToScan()">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+      <rect x="7" y="7" width="4" height="4" rx="0.5"/><rect x="13" y="7" width="4" height="4" rx="0.5"/>
+      <rect x="7" y="13" width="4" height="4" rx="0.5"/><rect x="13" y="13" width="4" height="4" rx="0.5"/>
+    </svg>
+  </button>
+  <button class="nav-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6A74" stroke-width="2">
+      <line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+    </svg>
+    <span class="nav-label">Mutasi</span>
+  </button>
+  <button class="nav-item">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6A74" stroke-width="2">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+      <circle cx="12" cy="7" r="4"/>
+    </svg>
+    <span class="nav-label">Profil</span>
+  </button>
+</nav>
+```
+
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 2: SCAN QRIS
+  ══════════════════════════════════ -->
+
+  <div class="screen" id="screen-scan">
+    <div class="scan-header">
+      <button class="back-btn" onclick="goHome()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <span class="scan-title">Scan QRIS</span>
+      <div class="scan-header-space"></div>
+    </div>
+
+```
+<div class="viewfinder-wrap">
+  <!-- REAL camera video feed -->
+  <video id="cameraVideo" autoplay playsinline muted
+    style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;"></video>
+  <!-- Hidden canvas for jsQR frame processing -->
+  <canvas id="qrCanvas" style="display:none;"></canvas>
+
+  <!-- Fallback bg when camera not active -->
+  <div class="camera-bg" id="cameraBg">
+    <div class="camera-grain"></div>
+    <div class="camera-scene"></div>
+  </div>
+
+  <!-- Dark overlay cutout -->
+  <div class="vf-overlay"></div>
+
+  <!-- QR finder box -->
+  <div class="qr-finder" id="qrFinder">
+    <div class="corner corner-tl"></div>
+    <div class="corner corner-tr"></div>
+    <div class="corner corner-bl"></div>
+    <div class="corner corner-br"></div>
+    <div class="scan-line" id="scanLine"></div>
+  </div>
+
+  <!-- Camera permission / status message -->
+  <div id="cameraStatus" style="
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+    z-index:8; text-align:center; padding:0 32px; display:none;
+  ">
+    <div style="font-size:36px;margin-bottom:12px;">📷</div>
+    <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;" id="cameraStatusMsg">
+      Meminta izin kamera...
+    </p>
+    <button onclick="startCamera()" style="
+      margin-top:16px; background:rgba(201,168,76,0.9); color:#4A0F1C;
+      border:none; border-radius:30px; padding:10px 24px;
+      font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+      cursor:pointer; display:none;
+    " id="retryBtn">Coba Lagi</button>
+  </div>
+
+  <!-- Scan hint text -->
+  <div class="scan-hint">
+    <p id="scanHintText">Arahkan kamera ke kode QRIS</p>
+    <strong>✦ Saprahan Bank</strong>
+  </div>
+
+  <!-- QRIS branding -->
+  <div class="qris-watermark">
+    <div class="qris-brand-row">
+      <span class="qb">QRIS</span>
+      <span>Satu QR untuk semua pembayaran</span>
+    </div>
+  </div>
+
+  <!-- Scan action buttons -->
+  <div class="scan-actions">
+    <label class="scan-act-btn" style="cursor:pointer">
+      <div class="scan-act-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+      </div>
+      Unggah QR
+      <input type="file" accept="image/*" id="uploadQrInput" style="display:none" onchange="handleUploadQR(event)">
+    </label>
+    <button class="scan-act-btn" id="torchBtn">
+      <div class="scan-act-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 2l-6 12h6l-2 8 13-14h-7l3-6z"/>
+        </svg>
+      </div>
+      Flash
+    </button>
+    <button class="scan-act-btn" onclick="simulateScan()">
+      <div class="scan-act-icon" style="background:rgba(201,168,76,0.25);border-color:rgba(201,168,76,0.3)">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.9)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+      </div>
+      Demo Scan
+    </button>
+  </div>
+
+  <!-- Scan success overlay -->
+  <div class="success-overlay" id="scanSuccessOverlay">
+    <div class="success-ring">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </div>
+    <div class="success-title">QR Terdeteksi!</div>
+    <div class="success-merchant" id="qrMerchantName">Merchant QRIS</div>
+    <div class="success-nmid" id="qrNmid">Memproses data...</div>
+    <button class="success-continue-btn" onclick="goToPayment()">
+      Lanjutkan Pembayaran →
+    </button>
+    <button onclick="resetScan()" style="
+      margin-top:12px; background:none; border:none;
+      color:rgba(255,255,255,0.4); font-size:12px;
+      cursor:pointer; font-family:'DM Sans',sans-serif;
+    ">← Scan ulang</button>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 3: INPUT NOMINAL
+  ══════════════════════════════════ -->
+
+  <div class="screen" id="screen-payment">
+    <div class="payment-header">
+      <div class="ph-back-row">
+        <button class="ph-back" onclick="goToScan()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <span class="ph-title">Input Nominal</span>
+      </div>
+      <div class="merchant-card">
+        <div class="merchant-avatar">W</div>
+        <div>
+          <div class="merchant-name">Warung Saprahan Mbak Sri</div>
+          <div class="merchant-nmid">NMID: ID1024567890123 · Kota Pontianak</div>
+        </div>
+      </div>
+    </div>
+
+```
+<div class="scroll-body">
+  <!-- Amount display -->
+  <div class="nominal-section">
+    <div class="nominal-label">Jumlah Pembayaran</div>
+    <div class="nominal-display">
+      <span class="nominal-currency">Rp</span>
+      <span class="nominal-value" id="nominalDisplay">0</span>
+      <span class="nominal-cursor" id="nominalCursor"></span>
+    </div>
+    <div class="nominal-hint" id="nominalHint">Masukkan nominal pembayaran</div>
+  </div>
+
+  <!-- Quick amounts -->
+  <div class="quick-amounts">
+    <div class="qa-label">Nominal Cepat</div>
+    <div class="qa-grid">
+      <button class="qa-chip" onclick="setQuickAmount(10000)">Rp 10.000</button>
+      <button class="qa-chip" onclick="setQuickAmount(25000)">Rp 25.000</button>
+      <button class="qa-chip" onclick="setQuickAmount(50000)">Rp 50.000</button>
+      <button class="qa-chip" onclick="setQuickAmount(100000)">Rp 100.000</button>
+      <button class="qa-chip" onclick="setQuickAmount(200000)">Rp 200.000</button>
+      <button class="qa-chip" onclick="setQuickAmount(500000)">Rp 500.000</button>
+    </div>
+  </div>
+
+  <!-- Notes -->
+  <div class="notes-field">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+    </svg>
+    <span class="notes-text">Tambah catatan (opsional)</span>
+  </div>
+
+  <!-- Numpad -->
+  <div class="numpad-wrap">
+    <div class="numpad">
+      <button class="num-key" onclick="pressNum('1')">1</button>
+      <button class="num-key" onclick="pressNum('2')">2</button>
+      <button class="num-key" onclick="pressNum('3')">3</button>
+      <button class="num-key" onclick="pressNum('4')">4</button>
+      <button class="num-key" onclick="pressNum('5')">5</button>
+      <button class="num-key" onclick="pressNum('6')">6</button>
+      <button class="num-key" onclick="pressNum('7')">7</button>
+      <button class="num-key" onclick="pressNum('8')">8</button>
+      <button class="num-key" onclick="pressNum('9')">9</button>
+      <button class="num-key empty"></button>
+      <button class="num-key" onclick="pressNum('0')">0</button>
+      <button class="num-key del" onclick="pressNum('del')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+          <line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pay button -->
+  <div class="pay-btn-wrap">
+    <button class="pay-btn" id="payBtn" onclick="showPinModal()">
+      <span>Bayar Sekarang</span>
+      <span class="pay-amount-badge" id="payBtnAmt">Rp 0</span>
+    </button>
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 4: SUKSES
+  ══════════════════════════════════ -->
+
+  <div class="screen" id="screen-success">
+    <div class="success-header-bg">
+      <div class="sh-ornament"></div>
+      <div class="sh-ornament2"></div>
+      <!-- Ripple rings around check icon -->
+      <div style="position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:18px;z-index:1;">
+        <div style="position:absolute;width:130px;height:130px;border-radius:50%;border:2px solid rgba(201,168,76,0.15);animation:ringPulse 2s ease infinite 0.4s;"></div>
+        <div style="position:absolute;width:105px;height:105px;border-radius:50%;border:2px solid rgba(201,168,76,0.22);animation:ringPulse 2s ease infinite 0.2s;"></div>
+        <div class="success-check">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+      </div>
+      <div class="success-hdr-title">QRIS Terdeteksi!</div>
+      <div class="success-hdr-sub" id="successSubtitle">Struk pembayaran Anda</div>
+    </div>
+
+```
+<div style="display:flex;flex-direction:column;align-items:center;flex:1;overflow-y:auto;padding-bottom:40px">
+  <!-- Receipt -->
+  <div class="receipt-card">
+    <div class="receipt-amount">
+      <div class="receipt-lbl">Total Dibayar</div>
+      <div class="receipt-big-amt"><span>Rp</span><span id="receiptAmt">50.000</span></div>
+    </div>
+    <div class="receipt-row">
+      <span class="rr-key">Merchant</span>
+      <span class="rr-val" id="receiptMerchant">Warung Saprahan Mbak Sri</span>
+    </div>
+    <div class="receipt-row">
+      <span class="rr-key">NMID</span>
+      <span class="rr-val" id="receiptNmid">ID1024567890123</span>
+    </div>
+    <div class="receipt-row">
+      <span class="rr-key">Referensi</span>
+      <span class="rr-val" id="receiptRef">SBK20250428-001</span>
+    </div>
+    <div class="receipt-row">
+      <span class="rr-key">Waktu</span>
+      <span class="rr-val" id="receiptTime">28 Apr 2025, 09:41</span>
+    </div>
+    <div class="receipt-row">
+      <span class="rr-key">Metode</span>
+      <span class="rr-val">QRIS · Saprahan Bank</span>
+    </div>
+    <div class="receipt-status">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#2D7A4F">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+      </svg>
+      <span>Berhasil Dikirim ke Merchant</span>
+    </div>
+    <div class="qris-logo-row">
+      <span class="qris-badge">QRIS</span>
+      <span class="qris-powered">Powered by Bank Indonesia</span>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="success-actions">
+    <button class="sa-btn outline">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle">
+        <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+        <rect x="6" y="14" width="12" height="8"/>
+      </svg>
+      Struk
+    </button>
+    <button class="sa-btn filled" onclick="goHome()">
+      Kembali ke Beranda
+    </button>
+  </div>
+</div>
+```
+
+  </div>
+
+</div><!-- end phone-wrap -->
+
+<!-- ══ PIN MODAL ══ -->
+
+<div class="pin-modal" id="pinModal">
+  <div class="pin-sheet">
+    <div class="pin-handle"></div>
+    <div class="pin-title">Masukkan PIN</div>
+    <div class="pin-sub">Konfirmasi pembayaran Anda</div>
+    <div class="pin-dots" id="pinDots">
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd4"></div>
+      <div class="pin-dot" id="pd5"></div>
+      <div class="pin-dot" id="pd6"></div>
+    </div>
+    <div class="pin-numpad">
+      <button class="pin-key" onclick="enterPin('1')">1</button>
+      <button class="pin-key" onclick="enterPin('2')">2</button>
+      <button class="pin-key" onclick="enterPin('3')">3</button>
+      <button class="pin-key" onclick="enterPin('4')">4</button>
+      <button class="pin-key" onclick="enterPin('5')">5</button>
+      <button class="pin-key" onclick="enterPin('6')">6</button>
+      <button class="pin-key" onclick="enterPin('7')">7</button>
+      <button class="pin-key" onclick="enterPin('8')">8</button>
+      <button class="pin-key" onclick="enterPin('9')">9</button>
+      <button class="pin-key empty-key"></button>
+      <button class="pin-key" onclick="enterPin('0')">0</button>
+      <button class="pin-key del-key" onclick="deletePin()">⌫</button>
+    </div>
+    <button class="pin-cancel" onclick="closePinModal()">Batalkan</button>
+  </div>
+</div>
+
+<script>
+// ─── Load jsQR from CDN ───
+const jsQRScript = document.createElement('script');
+jsQRScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js';
+document.head.appendChild(jsQRScript);
+
+// ─── Clock ───
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  document.getElementById('clockMain').textContent = `${h}:${m}`;
+}
+updateClock();
+setInterval(updateClock, 10000);
+
+// ─── Screen switching ───
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const sb = document.getElementById('statusBarMain');
+  if (id === 'screen-scan') {
+    sb.classList.remove('dark');
+    sb.style.color = 'white';
+    startCamera();
+  } else {
+    sb.classList.add('dark');
+    sb.style.color = 'var(--text-main)';
+    if (id !== 'screen-scan') stopCamera();
+  }
+  document.querySelectorAll('.scroll-body').forEach(el => el.scrollTop = 0);
+}
+
+function goHome() {
+  stopCamera();
+  showScreen('screen-home');
+  pinEntry = '';
+  updatePinDots();
+  document.getElementById('pinModal').classList.remove('show');
+}
+function goToScan() {
+  document.getElementById('scanSuccessOverlay').classList.remove('show');
+  showScreen('screen-scan');
+}
+function goToPayment() {
+  stopCamera();
+  // Sync merchant info dari scan ke halaman payment
+  const merchant = document.getElementById('qrMerchantName').textContent;
+  const nmid = document.getElementById('qrNmid').textContent;
+  document.querySelector('.merchant-name').textContent = merchant;
+  document.querySelector('.merchant-nmid').textContent = nmid;
+  document.querySelector('.merchant-avatar').textContent = merchant.charAt(0).toUpperCase();
+  // Reset nominal
+  rawAmount = '';
+  updateDisplay();
+  showScreen('screen-payment');
+}
+function resetScan() {
+  document.getElementById('scanSuccessOverlay').classList.remove('show');
+  qrDetected = false;
+  startCamera();
+}
+
+// ─── Camera & QR Scanning ───
+let cameraStream = null;
+let qrAnimFrame = null;
+let qrDetected = false;
+let currentTrack = null;
+
+async function startCamera() {
+  qrDetected = false;
+  const video = document.getElementById('cameraVideo');
+  const status = document.getElementById('cameraStatus');
+  const statusMsg = document.getElementById('cameraStatusMsg');
+  const retryBtn = document.getElementById('retryBtn');
+  const cameraBg = document.getElementById('cameraBg');
+
+  // Stop any existing stream
+  stopCamera();
+
+  // Show status while requesting
+  status.style.display = 'block';
+  statusMsg.textContent = 'Meminta izin kamera...';
+  retryBtn.style.display = 'none';
+
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: 'environment' }, // kamera belakang
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: false
+    });
+
+    cameraStream = stream;
+    currentTrack = stream.getVideoTracks()[0];
+    video.srcObject = stream;
+    video.play();
+
+    // Hide bg, hide status when camera ready
+    video.onloadedmetadata = () => {
+      cameraBg.style.display = 'none';
+      status.style.display = 'none';
+      document.getElementById('scanHintText').textContent = 'Arahkan ke kode QRIS';
+      startQrLoop();
+    };
+  } catch(err) {
+    cameraBg.style.display = 'block';
+    status.style.display = 'block';
+    retryBtn.style.display = 'inline-block';
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      statusMsg.textContent = 'Izin kamera ditolak. Aktifkan izin kamera di pengaturan browser, lalu coba lagi.';
+    } else if (err.name === 'NotFoundError') {
+      statusMsg.textContent = 'Kamera tidak ditemukan di perangkat ini.';
+    } else {
+      statusMsg.textContent = 'Tidak dapat mengakses kamera: ' + err.message;
+    }
+  }
+}
+
+function stopCamera() {
+  if (qrAnimFrame) { cancelAnimationFrame(qrAnimFrame); qrAnimFrame = null; }
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+  const video = document.getElementById('cameraVideo');
+  video.srcObject = null;
+  document.getElementById('cameraBg').style.display = 'block';
+}
+
+function startQrLoop() {
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.getElementById('qrCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function tick() {
+    if (qrDetected || document.getElementById('screen-scan').style.display === 'none') return;
+    if (!document.getElementById('screen-scan').classList.contains('active')) return;
+
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      if (typeof jsQR !== 'undefined') {
+        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: 'dontInvert'
+        });
+        if (code) {
+          qrDetected = true;
+          handleQrResult(code.data);
+          return;
+        }
+      }
+    }
+    qrAnimFrame = requestAnimationFrame(tick);
+  }
+  qrAnimFrame = requestAnimationFrame(tick);
+}
+
+// Parse QRIS data or any QR string
+function handleQrResult(data) {
+  // Flash corners gold
+  document.querySelectorAll('.corner').forEach(c => {
+    c.style.borderColor = '#E6C97A';
+    c.style.transition = 'border-color 0.2s';
+  });
+
+  // Try parse QRIS merchant name (field 59 = merchant name)
+  let merchantName = 'Merchant QRIS';
+  let nmid = '';
+
+  // Simple QRIS TLV parser for display
+  try {
+    // field 59 is merchant name in QRIS
+    const f59 = extractQrisTlv(data, '59');
+    if (f59) merchantName = f59;
+    // field 00-26 area has NMID info
+    const f26 = extractQrisTlv(data, '26');
+    if (f26) {
+      const sub01 = extractQrisTlv(f26, '01');
+      if (sub01) nmid = 'NMID: ' + sub01;
+    }
+    if (!nmid) nmid = 'Data: ' + data.substring(0, 30) + (data.length > 30 ? '...' : '');
+  } catch(e) {
+    merchantName = 'Merchant QRIS';
+    nmid = data.substring(0, 40) + (data.length > 40 ? '...' : '');
+  }
+
+  document.getElementById('qrMerchantName').textContent = merchantName;
+  document.getElementById('qrNmid').textContent = nmid;
+
+  // Also update payment screen merchant info
+  document.querySelector('.merchant-name').textContent = merchantName;
+  document.querySelector('.merchant-nmid').textContent = nmid + ' · Terdeteksi via QRIS';
+  document.querySelector('.merchant-avatar').textContent = merchantName.charAt(0).toUpperCase();
+
+  setTimeout(() => {
+    document.getElementById('scanSuccessOverlay').classList.add('show');
+  }, 400);
+}
+
+function extractQrisTlv(data, id) {
+  let i = 0;
+  while (i < data.length - 4) {
+    const tag = data.substring(i, i + 2);
+    const len = parseInt(data.substring(i + 2, i + 4), 10);
+    if (isNaN(len)) break;
+    const val = data.substring(i + 4, i + 4 + len);
+    if (tag === id) return val;
+    i += 4 + len;
+  }
+  return null;
+}
+
+// ─── Simulate QR Scan (fallback / demo) ───
+function simulateScan() {
+  if (qrDetected) return;
+  qrDetected = true;
+  // Simulate a demo QRIS payload
+  const demoData = '00020101021226660014ID.CO.BRI.WWW011893600002030303803021ID1024567890123030314ID.QRIS.WWW5204531253033605802ID5915Warung Saprahan Mbak Sri6007Pontianak63041234';
+  handleQrResult(demoData);
+}
+
+// ─── Upload QR from image ───
+function handleUploadQR(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.getElementById('qrCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      if (typeof jsQR !== 'undefined') {
+        const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'attemptBoth' });
+        if (code) {
+          qrDetected = true;
+          handleQrResult(code.data);
+        } else {
+          alert('QR Code tidak terdeteksi di gambar ini. Coba foto yang lebih jelas.');
+        }
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  // Reset input
+  event.target.value = '';
+}
+
+// ─── Numpad logic ───
+let rawAmount = '';
+function pressNum(key) {
+  if (key === 'del') {
+    rawAmount = rawAmount.slice(0, -1);
+  } else {
+    if (rawAmount.length >= 9) return; // max 999.999.999
+    if (rawAmount === '' && key === '0') return;
+    rawAmount += key;
+  }
+  updateDisplay();
+}
+function setQuickAmount(amount) {
+  rawAmount = amount.toString();
+  updateDisplay();
+  // Deselect all, select matching
+  document.querySelectorAll('.qa-chip').forEach(chip => {
+    chip.classList.remove('selected');
+    if (chip.onclick && chip.onclick.toString().includes(amount)) chip.classList.add('selected');
+  });
+}
+function formatRp(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+function updateDisplay() {
+  const num = parseInt(rawAmount || '0');
+  document.getElementById('nominalDisplay').textContent = num === 0 ? '0' : formatRp(num);
+  document.getElementById('payBtnAmt').textContent = num === 0 ? 'Rp 0' : 'Rp ' + formatRp(num);
+  const hint = document.getElementById('nominalHint');
+  if (num > 0) {
+    hint.textContent = 'Saldo cukup untuk transaksi ini';
+    hint.style.color = 'var(--success)';
+  } else {
+    hint.textContent = 'Masukkan nominal pembayaran';
+    hint.style.color = 'var(--text-muted)';
+  }
+  // Deselect quick amounts if manual input
+  document.querySelectorAll('.qa-chip').forEach(chip => chip.classList.remove('selected'));
+}
+
+// ─── PIN Modal ───
+let pinEntry = '';
+function showPinModal() {
+  const num = parseInt(rawAmount || '0');
+  if (num <= 0) {
+    // Shake the display
+    const d = document.getElementById('nominalDisplay');
+    d.style.animation = 'none';
+    d.style.transition = 'color 0.2s';
+    d.style.color = 'var(--maroon)';
+    setTimeout(() => d.style.color = '', 600);
+    return;
+  }
+  pinEntry = '';
+  updatePinDots();
+  document.getElementById('pinModal').classList.add('show');
+}
+function closePinModal() {
+  document.getElementById('pinModal').classList.remove('show');
+  pinEntry = '';
+  updatePinDots();
+}
+function enterPin(digit) {
+  if (pinEntry.length >= 6) return;
+  pinEntry += digit;
+  updatePinDots();
+  if (pinEntry.length === 6) {
+    setTimeout(processPayment, 300);
+  }
+}
+function deletePin() {
+  pinEntry = pinEntry.slice(0, -1);
+  updatePinDots();
+}
+function updatePinDots() {
+  for (let i = 1; i <= 6; i++) {
+    const dot = document.getElementById('pd' + i);
+    dot.classList.toggle('filled', i <= pinEntry.length);
+  }
+}
+function processPayment() {
+  document.getElementById('pinModal').classList.remove('show');
+  // Set receipt data
+  const num = parseInt(rawAmount || '0');
+  document.getElementById('receiptAmt').textContent = formatRp(num);
+  const now = new Date();
+  const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+  const timeStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}, ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  document.getElementById('receiptTime').textContent = timeStr;
+  const ref = 'SBK' + now.getFullYear().toString().slice(-2) + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0') + '-' + Math.floor(Math.random()*900+100);
+  document.getElementById('receiptRef').textContent = ref;
+  // Reset amount
+  rawAmount = '';
+  updateDisplay();
+  showScreen('screen-success');
+}
+
+// ─── Name Edit ───
+function startEditName() {
+  const input = document.getElementById('nameEditInput');
+  input.value = document.getElementById('greetNameText').textContent;
+  document.getElementById('greetName').style.display = 'none';
+  document.getElementById('nameEditWrap').style.display = 'block';
+  setTimeout(() => input.focus(), 50);
+}
+function saveEditName() {
+  const val = document.getElementById('nameEditInput').value.trim();
+  if (val) {
+    document.getElementById('greetNameText').textContent = val;
+    // Update struk juga kalau ada
+    document.getElementById('greetName').style.display = 'flex';
+    document.getElementById('nameEditWrap').style.display = 'none';
+  }
+}
+function cancelEditName() {
+  document.getElementById('greetName').style.display = 'flex';
+  document.getElementById('nameEditWrap').style.display = 'none';
+}
+
+// ─── Balance Toggle ───
+let balanceVisible = true;
+function toggleBalance() {
+  balanceVisible = !balanceVisible;
+  const valEl = document.getElementById('balanceValue');
+  document.getElementById('eyeIconOpen').style.display = balanceVisible ? 'block' : 'none';
+  document.getElementById('eyeIconClosed').style.display = balanceVisible ? 'none' : 'block';
+  valEl.textContent = balanceVisible ? '12.450.000' : '***.***.***';
+  valEl.style.letterSpacing = balanceVisible ? '' : '3px';
+  valEl.style.fontSize = balanceVisible ? '' : '22px';
+}
+
+
+document.getElementById('statusBarMain').classList.add('dark');
+
+// ─── Torch button (real flashlight via ImageCapture API) ───
+let torchOn = false;
+document.getElementById('torchBtn').addEventListener('click', async function() {
+  torchOn = !torchOn;
+  const icon = this.querySelector('.scan-act-icon');
+  if (currentTrack) {
+    try {
+      await currentTrack.applyConstraints({ advanced: [{ torch: torchOn }] });
+    } catch(e) { /* torch not supported */ }
+  }
+  if (torchOn) {
+    icon.style.background = 'rgba(201,168,76,0.3)';
+    icon.style.borderColor = 'rgba(201,168,76,0.5)';
+  } else {
+    icon.style.background = 'rgba(255,255,255,0.1)';
+    icon.style.borderColor = 'rgba(255,255,255,0.08)';
+  }
+});
+</script>
+
+</body>
+</html>
