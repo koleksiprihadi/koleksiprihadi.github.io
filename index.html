@@ -2,2127 +2,2149 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BrewLink — B2B Coffee Platform</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Saprahan Bank – Scan QRIS</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0e0a06;
-    --bg2: #160f07;
-    --bg3: #1e150a;
-    --card: #231810;
-    --card2: #2a1e12;
-    --amber: #d4830a;
-    --amber-light: #f0a830;
-    --amber-pale: #ffd27040;
-    --cream: #f5e6cc;
-    --cream2: #e8d0a8;
-    --muted: #7a6040;
-    --border: #3a2a18;
-    --border2: #4a3828;
-    --green: #4caf78;
-    --red: #e05050;
-    --blue: #5090e0;
-    --text: #f0dfc0;
-    --text2: #c8a870;
+    --gold: #C9A84C;
+    --gold-light: #E6C97A;
+    --gold-pale: #F5E9C8;
+    --maroon: #6B1A2A;
+    --maroon-deep: #4A0F1C;
+    --maroon-mid: #8B2438;
+    --cream: #FDF8EF;
+    --dark: #1A0A10;
+    --text-main: #2D1520;
+    --text-muted: #8B6A74;
+    --white: #FFFFFF;
+    --success: #2D7A4F;
+    --shadow-card: 0 24px 64px rgba(107,26,42,0.18), 0 4px 16px rgba(107,26,42,0.10);
   }
-  * { margin:0; padding:0; box-sizing:border-box; }
-  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; display:flex; overflow-x:hidden; }
 
-  /* SIDEBAR */
-  .sidebar {
-    width:260px; min-width:260px; background:var(--bg2); border-right:1px solid var(--border);
-    display:flex; flex-direction:column; height:100vh; overflow-y:auto; position:relative; z-index:10;
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--maroon-deep);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
   }
-  .logo {
-    padding:28px 24px 20px; border-bottom:1px solid var(--border);
+
+  /* Background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 40% at 80% 100%, rgba(139,36,56,0.4) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
   }
-  .logo-mark { font-family:'Playfair Display',serif; font-size:26px; font-weight:900; color:var(--amber-light); line-height:1; }
-  .logo-sub { font-size:11px; color:var(--muted); letter-spacing:2px; text-transform:uppercase; margin-top:4px; }
-  .nav-section { padding:16px 16px 8px; }
-  .nav-label { font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; padding:0 8px; margin-bottom:8px; }
-  .nav-item {
-    display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:8px; cursor:pointer;
-    transition:all 0.2s; font-size:13.5px; color:var(--text2); margin-bottom:2px;
+
+  /* Batik-like decorative circles */
+  .bg-motif {
+    position: fixed;
+    border-radius: 50%;
+    border: 1px solid rgba(201,168,76,0.08);
+    pointer-events: none;
+    z-index: 0;
   }
-  .nav-item:hover { background:var(--card); color:var(--cream); }
-  .nav-item.active { background:var(--amber); color:#0e0a06; font-weight:600; }
-  .nav-item .icon { font-size:16px; width:20px; text-align:center; }
-  .nav-badge { margin-left:auto; background:var(--amber); color:#0e0a06; font-size:10px; font-weight:700; padding:1px 7px; border-radius:20px; }
-  .sidebar-footer { margin-top:auto; padding:16px; border-top:1px solid var(--border); }
-  .user-card { display:flex; align-items:center; gap:10px; }
-  .user-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,var(--amber),#8b4513); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; color:#fff; }
-  .user-info .name { font-size:13px; font-weight:600; color:var(--cream); }
-  .user-info .role { font-size:11px; color:var(--muted); }
+  .bg-motif-1 { width: 500px; height: 500px; top: -200px; right: -150px; }
+  .bg-motif-2 { width: 300px; height: 300px; bottom: -80px; left: -80px; border-color: rgba(201,168,76,0.12); }
+  .bg-motif-3 { width: 200px; height: 200px; top: 40%; left: -60px; border-color: rgba(201,168,76,0.06); }
 
-  /* MAIN */
-  .main { flex:1; height:100vh; overflow-y:auto; overflow-x:hidden; }
-  .section { display:none; padding:40px; min-height:100vh; }
-  .section.active { display:block; animation:fadeIn 0.4s ease; }
-  @keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-
-  .page-header { margin-bottom:32px; }
-  .page-header h1 { font-family:'Playfair Display',serif; font-size:36px; font-weight:700; color:var(--cream); line-height:1.2; }
-  .page-header p { color:var(--muted); margin-top:8px; font-size:15px; }
-
-  /* CARDS */
-  .card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:24px; }
-  .card2 { background:var(--card2); border:1px solid var(--border2); border-radius:10px; padding:18px; }
-  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
-
-  /* FORM */
-  label { font-size:12px; color:var(--text2); letter-spacing:0.5px; display:block; margin-bottom:6px; }
-  input, select, textarea {
-    width:100%; padding:10px 14px; background:var(--bg3); border:1px solid var(--border2);
-    border-radius:8px; color:var(--cream); font-family:'DM Sans',sans-serif; font-size:14px;
-    outline:none; transition:border-color 0.2s;
+  /* ─── PHONE WRAPPER ─── */
+  .phone-wrap {
+    width: 100%;
+    max-width: 400px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    z-index: 1;
+    background: var(--cream);
+    box-shadow: 0 0 80px rgba(0,0,0,0.6);
   }
-  input:focus, select:focus, textarea:focus { border-color:var(--amber); }
-  textarea { resize:vertical; min-height:80px; }
-  select option { background:var(--bg3); }
-  .form-group { margin-bottom:16px; }
 
-  /* BUTTONS */
-  .btn {
-    padding:10px 20px; border-radius:8px; font-family:'DM Sans',sans-serif; font-size:14px;
-    font-weight:600; cursor:pointer; border:none; transition:all 0.2s; display:inline-flex; align-items:center; gap:8px;
+  /* ─── SCREEN PAGES ─── */
+  .screen {
+    display: none;
+    flex-direction: column;
+    min-height: 100vh;
+    position: relative;
+    animation: fadeIn 0.35s ease;
   }
-  .btn-primary { background:var(--amber); color:#0e0a06; }
-  .btn-primary:hover { background:var(--amber-light); transform:translateY(-1px); }
-  .btn-outline { background:transparent; border:1px solid var(--border2); color:var(--text2); }
-  .btn-outline:hover { border-color:var(--amber); color:var(--amber); }
-  .btn-ghost { background:var(--card2); color:var(--text2); }
-  .btn-ghost:hover { background:var(--border2); }
-  .btn-sm { padding:6px 14px; font-size:12px; }
-  .btn-green { background:var(--green); color:#fff; }
-  .btn-red { background:var(--red); color:#fff; }
+  .screen.active { display: flex; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
 
-  /* BADGE */
-  .badge { display:inline-flex; align-items:center; gap:5px; padding:3px 10px; border-radius:20px; font-size:11px; font-weight:600; }
-  .badge-amber { background:var(--amber-pale); color:var(--amber-light); border:1px solid var(--amber)44; }
-  .badge-green { background:#4caf7820; color:var(--green); border:1px solid var(--green)44; }
-  .badge-red { background:#e0505020; color:var(--red); border:1px solid var(--red)44; }
-  .badge-blue { background:#5090e020; color:var(--blue); border:1px solid var(--blue)44; }
-
-  /* DIVIDER */
-  .divider { border:none; border-top:1px solid var(--border); margin:20px 0; }
-
-  /* STAT CARD */
-  .stat-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px; }
-  .stat-value { font-family:'Playfair Display',serif; font-size:28px; font-weight:700; color:var(--amber-light); }
-  .stat-label { font-size:12px; color:var(--muted); margin-top:4px; }
-  .stat-change { font-size:12px; margin-top:8px; }
-
-  /* SECTION TITLE */
-  .section-title { font-family:'Playfair Display',serif; font-size:18px; color:var(--cream2); margin-bottom:16px; display:flex; align-items:center; gap:8px; }
-  .section-title::after { content:''; flex:1; height:1px; background:var(--border); }
-
-  /* ===== FEATURE 1: ORIGIN STORY ===== */
-  .origin-map { height:220px; background:var(--bg3); border-radius:10px; position:relative; overflow:hidden; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
-  .map-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 30% 60%, #4caf7815 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, #d4830a15 0%, transparent 50%); }
-  .map-pin { position:absolute; cursor:pointer; transition:transform 0.2s; }
-  .map-pin:hover { transform:scale(1.2); }
-  .pin-dot { width:12px; height:12px; border-radius:50%; border:2px solid; }
-  .pin-label { font-size:10px; margin-top:3px; text-align:center; white-space:nowrap; }
-  .pin-roastery { border-color:var(--amber-light); background:var(--amber); }
-  .pin-farm { border-color:var(--green); background:var(--green)80; }
-  .origin-timeline { display:flex; gap:0; margin:20px 0; }
-  .timeline-step { flex:1; text-align:center; position:relative; }
-  .timeline-step::before { content:''; position:absolute; top:14px; left:50%; width:100%; height:2px; background:var(--border2); z-index:0; }
-  .timeline-step:last-child::before { display:none; }
-  .timeline-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; margin:0 auto 8px; position:relative; z-index:1; border:2px solid var(--border2); background:var(--card); }
-  .timeline-dot.done { background:var(--amber); border-color:var(--amber); color:#0e0a06; }
-  .timeline-dot.active { background:var(--card); border-color:var(--amber); color:var(--amber); }
-  .timeline-text { font-size:11px; color:var(--muted); }
-  .timeline-text b { display:block; color:var(--text2); font-size:12px; margin-bottom:2px; }
-  .flavor-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
-  .flavor-tag { padding:4px 12px; border-radius:20px; font-size:11px; background:var(--bg3); border:1px solid var(--border2); color:var(--text2); }
-
-  /* ===== FEATURE 2: SUBSCRIPTION ===== */
-  .subscription-meter { background:var(--bg3); border-radius:10px; padding:16px; border:1px solid var(--border); }
-  .meter-bar { height:10px; background:var(--border); border-radius:5px; margin:10px 0; overflow:hidden; }
-  .meter-fill { height:100%; border-radius:5px; background:linear-gradient(90deg,var(--amber),var(--amber-light)); transition:width 0.8s ease; }
-  .days-indicator { display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
-  .order-row { display:flex; align-items:center; gap:12px; padding:12px; border-radius:8px; background:var(--bg3); border:1px solid var(--border); margin-bottom:8px; }
-  .order-row .order-icon { font-size:20px; }
-  .order-row .order-info { flex:1; }
-  .order-row .order-title { font-size:14px; font-weight:600; color:var(--cream); }
-  .order-row .order-detail { font-size:12px; color:var(--muted); }
-  .order-row .order-status { font-size:12px; }
-  .schedule-viz { display:flex; gap:4px; margin-top:12px; }
-  .sched-dot { flex:1; height:8px; border-radius:2px; background:var(--border); }
-  .sched-dot.filled { background:var(--amber); }
-  .sched-dot.today { background:var(--amber-light); box-shadow:0 0 6px var(--amber); }
-
-  /* ===== FEATURE 3: CUPPING ROOM ===== */
-  .cupping-wheel { display:flex; justify-content:center; margin:16px 0; }
-  canvas#cuppingRadar { max-width:280px; }
-  .cupping-sliders { display:flex; flex-direction:column; gap:10px; }
-  .slider-row { display:flex; align-items:center; gap:12px; }
-  .slider-label { font-size:12px; color:var(--text2); width:80px; }
-  .slider-value { font-size:12px; color:var(--amber-light); font-family:'DM Mono',monospace; width:28px; text-align:right; }
-  input[type=range] {
-    flex:1; height:4px; border-radius:2px; background:var(--border2); border:none; padding:0;
-    appearance:none; cursor:pointer;
+  /* ══════════════════════════════════
+     SCREEN 1: HOME / DASHBOARD
+  ══════════════════════════════════ */
+  #screen-home {
+    background: var(--cream);
   }
-  input[type=range]::-webkit-slider-thumb { appearance:none; width:14px; height:14px; border-radius:50%; background:var(--amber); }
-  input[type=range]:focus { border-color:transparent; }
-  .cupping-score { text-align:center; padding:16px; background:var(--bg3); border-radius:10px; border:1px solid var(--border); }
-  .score-big { font-family:'Playfair Display',serif; font-size:56px; font-weight:700; color:var(--amber-light); line-height:1; }
-  .score-label { font-size:12px; color:var(--muted); margin-top:4px; }
-  .sample-cards { display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; }
-  .sample-card { min-width:140px; background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px; cursor:pointer; transition:border-color 0.2s; }
-  .sample-card.selected { border-color:var(--amber); }
-  .sample-card .sample-name { font-size:13px; font-weight:600; color:var(--cream); }
-  .sample-card .sample-origin { font-size:11px; color:var(--muted); }
-  .sample-card .sample-score { font-size:18px; font-weight:700; color:var(--amber-light); font-family:'Playfair Display',serif; margin-top:6px; }
 
-  /* ===== FEATURE 4: MATCHMAKING ===== */
-  .match-profile { border:1px solid var(--border); border-radius:10px; padding:16px; background:var(--bg3); }
-  .match-card { display:flex; align-items:center; gap:14px; padding:14px; border-radius:10px; background:var(--card); border:1px solid var(--border); margin-bottom:10px; cursor:pointer; transition:all 0.2s; }
-  .match-card:hover { border-color:var(--amber); transform:translateX(4px); }
-  .match-avatar { width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0; }
-  .match-info { flex:1; }
-  .match-name { font-size:14px; font-weight:600; color:var(--cream); }
-  .match-detail { font-size:12px; color:var(--muted); margin-top:2px; }
-  .match-pct { font-family:'Playfair Display',serif; font-size:22px; font-weight:700; flex-shrink:0; }
-  .match-bar { height:3px; background:var(--border); border-radius:2px; margin-top:6px; }
-  .match-bar-fill { height:100%; border-radius:2px; background:linear-gradient(90deg,var(--amber),var(--green)); }
-  .filter-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:16px; }
-  .filter-tag { padding:5px 12px; border-radius:20px; font-size:12px; background:var(--card); border:1px solid var(--border2); color:var(--text2); cursor:pointer; transition:all 0.2s; }
-  .filter-tag.active { background:var(--amber-pale); border-color:var(--amber); color:var(--amber-light); }
-  .matching-pulse { display:flex; align-items:center; gap:8px; padding:10px 14px; background:var(--amber-pale); border-radius:8px; border:1px solid var(--amber)44; font-size:13px; color:var(--amber-light); margin-bottom:16px; }
-  .pulse-dot { width:8px; height:8px; border-radius:50%; background:var(--amber); animation:pulse 1.5s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
-
-  /* ===== FEATURE 5: BI DASHBOARD ===== */
-  .chart-wrap { position:relative; height:180px; }
-  canvas { max-height:100%; }
-  .metric-row { display:flex; gap:12px; margin-bottom:20px; }
-  .metric-card { flex:1; background:var(--card); border:1px solid var(--border); border-radius:10px; padding:16px; }
-  .metric-val { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:var(--amber-light); }
-  .metric-lbl { font-size:11px; color:var(--muted); margin-top:2px; }
-  .metric-chg { font-size:12px; color:var(--green); margin-top:6px; }
-  .metric-chg.down { color:var(--red); }
-  .top-list { list-style:none; }
-  .top-list li { display:flex; align-items:center; gap:10px; padding:9px 0; border-bottom:1px solid var(--border); font-size:13px; }
-  .top-list li:last-child { border:none; }
-  .top-rank { width:24px; height:24px; border-radius:6px; background:var(--amber-pale); color:var(--amber-light); font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; }
-  .top-bar { flex:1; }
-  .top-bar-bg { height:4px; background:var(--border); border-radius:2px; margin-top:4px; }
-  .top-bar-fill { height:100%; background:var(--amber); border-radius:2px; }
-
-  /* ===== FEATURE 6: NEGOTIATION ROOM ===== */
-  .chat-container { height:280px; overflow-y:auto; background:var(--bg3); border-radius:10px; border:1px solid var(--border); padding:16px; display:flex; flex-direction:column; gap:10px; }
-  .msg { max-width:80%; }
-  .msg-sent { align-self:flex-end; }
-  .msg-recv { align-self:flex-start; }
-  .msg-bubble { padding:10px 14px; border-radius:10px; font-size:13px; line-height:1.5; }
-  .msg-sent .msg-bubble { background:var(--amber); color:#0e0a06; border-radius:10px 10px 2px 10px; }
-  .msg-recv .msg-bubble { background:var(--card2); border:1px solid var(--border2); border-radius:10px 10px 10px 2px; }
-  .msg-meta { font-size:10px; color:var(--muted); margin-top:3px; text-align:right; }
-  .msg-recv .msg-meta { text-align:left; }
-  .chat-input-row { display:flex; gap:8px; margin-top:12px; }
-  .chat-input-row input { flex:1; }
-  .offer-card { background:var(--card); border:2px solid var(--amber)44; border-radius:10px; padding:14px; }
-  .offer-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
-  .offer-title { font-size:13px; font-weight:600; color:var(--amber-light); }
-  .offer-row { display:flex; justify-content:space-between; font-size:13px; padding:4px 0; }
-  .offer-row span:last-child { font-weight:600; color:var(--cream); }
-  .offer-actions { display:flex; gap:8px; margin-top:12px; }
-  .rfq-row { display:flex; align-items:center; gap:12px; padding:12px; border-radius:8px; background:var(--bg3); border:1px solid var(--border); margin-bottom:8px; }
-  .rfq-title { font-size:13px; font-weight:600; color:var(--cream); flex:1; }
-  .rfq-bids { font-size:12px; color:var(--amber-light); }
-
-  /* ===== FEATURE 7: TRUST SYSTEM ===== */
-  .cert-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
-  .cert-card { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; position:relative; overflow:hidden; }
-  .cert-card.active { border-color:var(--amber); }
-  .cert-icon { font-size:28px; margin-bottom:8px; }
-  .cert-name { font-size:11px; font-weight:600; color:var(--text2); }
-  .cert-check { position:absolute; top:8px; right:8px; font-size:12px; }
-  .stars { color:var(--amber); letter-spacing:1px; font-size:14px; }
-  .roastery-profile { display:flex; gap:16px; align-items:flex-start; }
-  .roastery-logo { width:64px; height:64px; border-radius:12px; background:linear-gradient(135deg,#8b4513,#d4830a); display:flex; align-items:center; justify-content:center; font-size:28px; flex-shrink:0; }
-  .trust-bar { height:6px; background:var(--border); border-radius:3px; margin:4px 0; overflow:hidden; }
-  .trust-fill { height:100%; border-radius:3px; }
-  .trust-item { margin-bottom:8px; }
-  .trust-header { display:flex; justify-content:space-between; font-size:12px; color:var(--text2); margin-bottom:2px; }
-  .review-item { padding:12px; background:var(--bg3); border-radius:8px; border:1px solid var(--border); margin-bottom:8px; }
-  .review-header { display:flex; justify-content:space-between; margin-bottom:6px; }
-  .reviewer { font-size:13px; font-weight:600; color:var(--cream); }
-  .review-text { font-size:13px; color:var(--text2); line-height:1.5; }
-
-  /* ===== FEATURE 8: KNOWLEDGE HUB ===== */
-  .knowledge-tabs { display:flex; gap:4px; margin-bottom:20px; background:var(--bg3); padding:4px; border-radius:8px; }
-  .ktab { flex:1; padding:8px; text-align:center; font-size:13px; border-radius:6px; cursor:pointer; color:var(--muted); transition:all 0.2s; }
-  .ktab.active { background:var(--amber); color:#0e0a06; font-weight:600; }
-  .content-card { background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; cursor:pointer; transition:transform 0.2s; }
-  .content-card:hover { transform:translateY(-2px); }
-  .content-thumb { height:80px; display:flex; align-items:center; justify-content:center; font-size:36px; }
-  .content-body { padding:12px; }
-  .content-type { font-size:10px; letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin-bottom:4px; }
-  .content-title { font-size:13px; font-weight:600; color:var(--cream); line-height:1.3; }
-  .content-meta { font-size:11px; color:var(--muted); margin-top:8px; }
-  .consult-form { background:var(--bg3); border:1px solid var(--border); border-radius:10px; padding:16px; }
-
-  /* ===== FEATURE 9: PAYMENT ===== */
-  .payment-options { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px; }
-  .pay-option { flex:1; min-width:120px; border:2px solid var(--border); border-radius:10px; padding:14px; text-align:center; cursor:pointer; transition:all 0.2s; background:var(--bg3); }
-  .pay-option.selected { border-color:var(--amber); background:var(--amber-pale); }
-  .pay-option .pay-icon { font-size:24px; margin-bottom:6px; }
-  .pay-option .pay-name { font-size:13px; font-weight:600; color:var(--cream); }
-  .pay-option .pay-desc { font-size:11px; color:var(--muted); margin-top:2px; }
-  .calc-result { background:var(--bg3); border:1px solid var(--amber)44; border-radius:10px; padding:16px; }
-  .calc-row { display:flex; justify-content:space-between; padding:6px 0; font-size:13px; }
-  .calc-row.total { font-weight:700; color:var(--amber-light); border-top:1px solid var(--border); margin-top:8px; padding-top:12px; font-size:15px; }
-  .escrow-visual { display:flex; align-items:center; gap:0; margin:16px 0; }
-  .escrow-box { flex:1; padding:12px; text-align:center; border-radius:8px; font-size:12px; }
-  .escrow-box.buyer { background:#5090e020; border:1px solid var(--blue)44; }
-  .escrow-box.escrow { background:var(--amber-pale); border:1px solid var(--amber)44; }
-  .escrow-box.seller { background:#4caf7820; border:1px solid var(--green)44; }
-  .escrow-arrow { font-size:18px; color:var(--muted); padding:0 4px; }
-  .escrow-label { font-weight:600; font-size:14px; margin-bottom:4px; }
-
-  /* ===== FEATURE 10: LOGISTICS ===== */
-  .tracking-timeline { position:relative; padding-left:24px; }
-  .tracking-timeline::before { content:''; position:absolute; left:9px; top:0; bottom:0; width:2px; background:var(--border2); }
-  .track-step { position:relative; margin-bottom:20px; }
-  .track-dot { position:absolute; left:-24px; width:18px; height:18px; border-radius:50%; border:2px solid var(--border2); background:var(--card); display:flex; align-items:center; justify-content:center; font-size:8px; top:3px; }
-  .track-dot.done { background:var(--amber); border-color:var(--amber); }
-  .track-dot.active { background:var(--card); border-color:var(--amber); box-shadow:0 0 0 3px var(--amber-pale); }
-  .track-title { font-size:14px; font-weight:600; color:var(--cream); }
-  .track-title.muted { color:var(--muted); }
-  .track-desc { font-size:12px; color:var(--muted); margin-top:2px; }
-  .track-time { font-size:11px; color:var(--amber-light); font-family:'DM Mono',monospace; margin-top:2px; }
-  .sensor-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .sensor-card { background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:12px; }
-  .sensor-icon { font-size:20px; margin-bottom:6px; }
-  .sensor-val { font-family:'DM Mono',monospace; font-size:20px; font-weight:500; color:var(--amber-light); }
-  .sensor-lbl { font-size:11px; color:var(--muted); }
-  .sensor-ok { display:inline-block; margin-top:4px; font-size:10px; padding:2px 8px; border-radius:20px; background:#4caf7820; color:var(--green); border:1px solid var(--green)44; }
-  .freshness-bar { margin-top:16px; padding:14px; background:var(--bg3); border-radius:10px; border:1px solid var(--border); }
-  .fresh-header { display:flex; justify-content:space-between; margin-bottom:8px; font-size:13px; }
-  .fresh-fill { height:8px; border-radius:4px; background:linear-gradient(90deg,var(--red),var(--amber),var(--green)); position:relative; margin:8px 0 4px; }
-  .fresh-fill::after { content:''; position:absolute; top:-3px; width:4px; height:14px; background:#fff; border-radius:2px; box-shadow:0 0 6px rgba(255,255,255,0.5); }
-
-  /* SCROLLBAR */
-  ::-webkit-scrollbar { width:4px; height:4px; }
-  ::-webkit-scrollbar-track { background:transparent; }
-  ::-webkit-scrollbar-thumb { background:var(--border2); border-radius:2px; }
-
-  /* TOAST */
-  .toast { position:fixed; bottom:24px; right:24px; background:var(--amber); color:#0e0a06; padding:12px 20px; border-radius:8px; font-size:14px; font-weight:600; transform:translateY(80px); transition:transform 0.3s; z-index:200; max-width:calc(100vw - 32px); }
-  .toast.show { transform:translateY(0); }
-
-  /* ===== MOBILE TOP BAR ===== */
-  .mobile-topbar {
-    display:none; position:fixed; top:0; left:0; right:0; height:56px;
-    background:var(--bg2); border-bottom:1px solid var(--border);
-    align-items:center; padding:0 16px; z-index:50; gap:12px;
+  /* Top header */
+  .home-header {
+    background: linear-gradient(160deg, var(--maroon-deep) 0%, var(--maroon) 60%, var(--maroon-mid) 100%);
+    padding: 52px 24px 80px;
+    position: relative;
+    overflow: hidden;
   }
-  .mobile-topbar .logo-mark { font-size:20px; }
-  .mobile-topbar .logo-sub { font-size:9px; margin-top:2px; }
-  .hamburger {
-    width:36px; height:36px; border-radius:8px; background:var(--card);
-    border:1px solid var(--border2); display:flex; flex-direction:column;
-    align-items:center; justify-content:center; gap:5px; cursor:pointer;
-    flex-shrink:0;
+  .home-header::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 32px;
+    background: var(--cream);
+    border-radius: 32px 32px 0 0;
   }
-  .hamburger span { width:18px; height:2px; background:var(--text2); border-radius:2px; transition:all 0.3s; }
-  .hamburger.open span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
-  .hamburger.open span:nth-child(2) { opacity:0; }
-  .hamburger.open span:nth-child(3) { transform:translateY(-7px) rotate(-45deg); }
-  .mobile-page-title { flex:1; font-family:'Playfair Display',serif; font-size:16px; color:var(--cream); font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-
-  /* SIDEBAR OVERLAY */
-  .sidebar-overlay {
-    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7);
-    z-index:39; backdrop-filter:blur(2px);
+  /* decorative ornament in header */
+  .header-ornament {
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 180px; height: 180px;
+    border: 2px solid rgba(201,168,76,0.15);
+    border-radius: 50%;
   }
-  .sidebar-overlay.show { display:block; }
+  .header-ornament::before {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border: 1px solid rgba(201,168,76,0.10);
+    border-radius: 50%;
+  }
 
-  /* ===== BOTTOM NAV (mobile) ===== */
+  .header-top-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 28px;
+  }
+  .brand-mark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .brand-logo {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--maroon-deep);
+    font-weight: 700;
+    box-shadow: 0 4px 12px rgba(201,168,76,0.4);
+  }
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 15px;
+    line-height: 1;
+  }
+  .brand-name span {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+  .notif-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .notif-btn::after {
+    content: '';
+    position: absolute;
+    top: 7px; right: 7px;
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    border: 2px solid var(--maroon-deep);
+  }
+
+  .greet-text {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .greet-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 24px;
+  }
+
+  /* Balance card inside header */
+  .balance-card {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 20px;
+    padding: 18px 20px;
+    backdrop-filter: blur(10px);
+    position: relative;
+  }
+  .balance-label {
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .balance-amount {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+  .balance-amount span { font-size: 16px; font-weight: 300; margin-right: 4px; }
+  .balance-account {
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 2px;
+  }
+  .balance-eye {
+    position: absolute;
+    top: 18px; right: 18px;
+    width: 28px; height: 28px;
+    background: rgba(201,168,76,0.2);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    border: none;
+  }
+
+  /* Quick actions */
+  .quick-actions {
+    padding: 28px 24px 16px;
+  }
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  .action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border: none;
+    background: none;
+  }
+  .action-icon {
+    width: 54px; height: 54px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .action-btn:active .action-icon { transform: scale(0.93); }
+  .action-icon.primary {
+    background: linear-gradient(135deg, var(--maroon) 0%, var(--maroon-deep) 100%);
+    box-shadow: 0 8px 20px rgba(107,26,42,0.35);
+  }
+  .action-icon.gold {
+    background: linear-gradient(135deg, var(--gold) 0%, #B8900A 100%);
+    box-shadow: 0 8px 20px rgba(201,168,76,0.35);
+  }
+  .action-icon.light {
+    background: var(--white);
+    box-shadow: 0 4px 12px rgba(107,26,42,0.10);
+    border: 1px solid rgba(107,26,42,0.08);
+  }
+  .action-icon svg { flex-shrink: 0; }
+  .action-label {
+    font-size: 10.5px;
+    color: var(--text-main);
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Promo banner */
+  .promo-section {
+    padding: 8px 24px 20px;
+  }
+  .promo-banner {
+    background: linear-gradient(120deg, var(--maroon-deep) 0%, var(--maroon) 100%);
+    border-radius: 20px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .promo-banner::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: 40px;
+    width: 100px; height: 100px;
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 50%;
+  }
+  .promo-text { z-index: 1; }
+  .promo-badge {
+    background: var(--gold);
+    color: var(--maroon-deep);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    text-transform: uppercase;
+    display: inline-block;
+    margin-bottom: 6px;
+  }
+  .promo-title {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 15px;
+    margin-bottom: 2px;
+  }
+  .promo-desc { font-size: 11px; color: rgba(255,255,255,0.5); }
+  .promo-arrow {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.2);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 1;
+    flex-shrink: 0;
+  }
+
+  /* Recent transactions */
+  .recent-section {
+    padding: 4px 24px 100px;
+  }
+  .recent-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .see-all { font-size: 12px; color: var(--maroon); font-weight: 600; cursor: pointer; border: none; background: none; }
+  .trx-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(107,26,42,0.07);
+  }
+  .trx-icon {
+    width: 42px; height: 42px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .trx-icon.in { background: rgba(45,122,79,0.12); }
+  .trx-icon.out { background: rgba(107,26,42,0.08); }
+  .trx-info { flex: 1; }
+  .trx-name { font-size: 13px; font-weight: 500; color: var(--text-main); }
+  .trx-date { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .trx-amount { font-size: 14px; font-weight: 600; }
+  .trx-amount.in { color: var(--success); }
+  .trx-amount.out { color: var(--maroon); }
+
+  /* ─── BOTTOM NAV ─── */
   .bottom-nav {
-    display:none; position:fixed; bottom:0; left:0; right:0;
-    background:var(--bg2); border-top:1px solid var(--border);
-    padding:8px 4px; z-index:50; gap:0;
-    overflow-x:auto;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 400px;
+    background: var(--white);
+    border-top: 1px solid rgba(107,26,42,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0 24px;
+    z-index: 100;
+    box-shadow: 0 -8px 30px rgba(107,26,42,0.08);
   }
-  .bottom-nav::-webkit-scrollbar { display:none; }
-  .bnav-item {
-    display:flex; flex-direction:column; align-items:center; gap:3px;
-    padding:6px 10px; border-radius:8px; cursor:pointer; min-width:56px;
-    transition:all 0.2s; color:var(--muted); font-size:10px; flex-shrink:0;
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    padding: 4px 12px;
+    position: relative;
   }
-  .bnav-item .bnav-icon { font-size:18px; line-height:1; }
-  .bnav-item.active { color:var(--amber-light); background:var(--amber-pale); }
-
-  /* ===== RESPONSIVE BREAKPOINTS ===== */
-
-  /* Tablet: 768px - 1024px */
-  @media (max-width:1024px) {
-    .sidebar { width:220px; min-width:220px; }
-    .section { padding:28px 20px; }
-    .grid-3 { grid-template-columns:1fr 1fr; }
-    .cert-grid { grid-template-columns:1fr 1fr 1fr; }
-    .metric-row { flex-wrap:wrap; }
-    .metric-card { min-width:calc(50% - 6px); }
+  .nav-label { font-size: 10px; font-weight: 500; color: var(--text-muted); }
+  .nav-item.active .nav-label { color: var(--maroon); }
+  .nav-qris-btn {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+    border: 4px solid var(--white);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 8px 24px rgba(201,168,76,0.5);
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    margin-top: -28px;
+    position: relative;
+    z-index: 101;
   }
+  .nav-qris-btn:active { transform: scale(0.93); box-shadow: 0 4px 14px rgba(201,168,76,0.4); }
 
-  /* Mobile: < 768px */
-  @media (max-width:767px) {
-    body { overflow:auto; flex-direction:column; }
-
-    /* Hide desktop sidebar, show mobile elements */
-    .sidebar {
-      position:fixed; top:0; left:0; bottom:0; z-index:40;
-      transform:translateX(-100%); transition:transform 0.3s ease;
-      height:100vh; width:280px; min-width:280px;
-    }
-    .sidebar.open { transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,0.5); }
-
-    .mobile-topbar { display:flex; }
-    .bottom-nav { display:flex; }
-
-    .main {
-      margin-top:56px; /* topbar height */
-      margin-bottom:72px; /* bottom nav height */
-      height:auto; min-height:calc(100vh - 128px);
-    }
-
-    .section { padding:20px 16px; min-height:auto; }
-
-    /* Stack all 2-col grids */
-    .grid-2 { grid-template-columns:1fr; }
-    .grid-3 { grid-template-columns:1fr; }
-
-    .page-header { margin-bottom:20px; }
-    .page-header h1 { font-size:24px; }
-    .page-header p { font-size:13px; }
-
-    .section-title { font-size:16px; }
-
-    /* Cards padding */
-    .card { padding:16px; }
-    .card2 { padding:12px; }
-
-    /* Metric row — 2 columns */
-    .metric-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:16px; }
-    .metric-card { padding:12px; }
-    .metric-val { font-size:18px; }
-
-    /* Origin timeline — smaller text */
-    .timeline-text { font-size:10px; }
-    .timeline-text b { font-size:11px; }
-    .timeline-dot { width:24px; height:24px; font-size:10px; }
-
-    /* Sample cards scroll */
-    .sample-cards { flex-wrap:nowrap; }
-
-    /* Cert grid — 2 col */
-    .cert-grid { grid-template-columns:1fr 1fr; }
-
-    /* Chat */
-    .chat-container { height:220px; }
-
-    /* Knowledge tabs — scrollable */
-    .knowledge-tabs { overflow-x:auto; flex-wrap:nowrap; }
-    .knowledge-tabs::-webkit-scrollbar { display:none; }
-    .ktab { min-width:max-content; font-size:12px; padding:8px 12px; }
-
-    /* Payment options — 2x2 grid */
-    .payment-options { display:grid; grid-template-columns:1fr 1fr; }
-    .pay-option { min-width:unset; }
-
-    /* Escrow visual */
-    .escrow-visual { flex-direction:column; align-items:stretch; }
-    .escrow-arrow { transform:rotate(90deg); text-align:center; padding:4px 0; }
-
-    /* Sensor grid */
-    .sensor-grid { grid-template-columns:1fr 1fr; }
-
-    /* Roastery profile */
-    .roastery-profile { flex-direction:column; }
-    .roastery-logo { width:48px; height:48px; font-size:22px; }
-
-    /* Order rows */
-    .order-row { flex-wrap:wrap; }
-    .order-row .order-title { font-size:13px; }
-
-    /* Match cards */
-    .match-card { padding:10px; gap:10px; }
-    .match-avatar { width:40px; height:40px; font-size:16px; }
-
-    /* Score big */
-    .score-big { font-size:44px; }
-
-    /* canvas radar */
-    canvas#cuppingRadar { max-width:240px; }
-
-    /* Tracking timeline */
-    .tracking-timeline { padding-left:20px; }
-
-    /* RFQ row */
-    .rfq-row { flex-direction:column; gap:6px; }
-
-    /* Filter tags */
-    .filter-tags { gap:6px; }
-    .filter-tag { font-size:11px; padding:4px 10px; }
-
-    /* Bottom nav spacing for toast */
-    .toast { bottom:80px; }
-
-    /* Slider label shorter on mobile */
-    .slider-label { width:64px; font-size:11px; }
-
-    /* Form grid 2-col inside cards */
-    .form-grid-2 { grid-template-columns:1fr !important; }
+  /* ══════════════════════════════════
+     SCREEN 2: SCAN QRIS
+  ══════════════════════════════════ */
+  #screen-scan {
+    background: #0D0006;
+    color: var(--white);
   }
 
-  /* Very small: < 380px */
-  @media (max-width:380px) {
-    .section { padding:16px 12px; }
-    .page-header h1 { font-size:20px; }
-    .metric-row { grid-template-columns:1fr 1fr; }
-    .metric-val { font-size:16px; }
-    .cert-grid { grid-template-columns:1fr 1fr; }
-    .bottom-nav { padding:6px 0; }
-    .bnav-item { min-width:48px; padding:5px 6px; font-size:9px; }
+  .scan-header {
+    display: flex;
+    align-items: center;
+    padding: 52px 20px 16px;
+    position: relative;
+    z-index: 10;
   }
+  .back-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    border: none;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .scan-title {
+    flex: 1;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--white);
+  }
+  .scan-header-space { width: 38px; }
+
+  /* Camera viewfinder area */
+  .viewfinder-wrap {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Simulated camera BG */
+  .camera-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, #0D0006 0%, #1A0510 40%, #0D0006 100%);
+    overflow: hidden;
+  }
+  .camera-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
+  /* Blurred shape suggesting background scene */
+  .camera-scene {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 30% 40%, rgba(80,20,40,0.6) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 60% at 70% 60%, rgba(40,10,20,0.8) 0%, transparent 50%);
+  }
+
+  /* The QR finder box */
+  .qr-finder {
+    position: relative;
+    z-index: 5;
+    width: 240px;
+    height: 240px;
+  }
+
+  /* Corner brackets */
+  .corner {
+    position: absolute;
+    width: 32px; height: 32px;
+    border-color: var(--gold);
+    border-style: solid;
+    border-width: 0;
+  }
+  .corner-tl { top: 0; left: 0; border-top-width: 3px; border-left-width: 3px; border-radius: 4px 0 0 0; }
+  .corner-tr { top: 0; right: 0; border-top-width: 3px; border-right-width: 3px; border-radius: 0 4px 0 0; }
+  .corner-bl { bottom: 0; left: 0; border-bottom-width: 3px; border-left-width: 3px; border-radius: 0 0 0 4px; }
+  .corner-br { bottom: 0; right: 0; border-bottom-width: 3px; border-right-width: 3px; border-radius: 0 0 4px 0; }
+
+  /* Scan laser line */
+  .scan-line {
+    position: absolute;
+    left: 10px; right: 10px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold-light) 30%, var(--gold) 50%, var(--gold-light) 70%, transparent 100%);
+    border-radius: 2px;
+    box-shadow: 0 0 12px var(--gold), 0 0 24px rgba(201,168,76,0.4);
+    animation: scanMove 2s ease-in-out infinite;
+    top: 10px;
+  }
+  @keyframes scanMove {
+    0%   { top: 10px; opacity: 0.8; }
+    50%  { top: calc(100% - 12px); opacity: 1; }
+    100% { top: 10px; opacity: 0.8; }
+  }
+
+  /* QR inside finder (simulated) */
+  .qr-inside {
+    position: absolute;
+    inset: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .qr-inside.visible { opacity: 1; }
+
+  /* Dark overlay outside finder */
+  .vf-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+  }
+  .vf-overlay::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(13,0,6,0.55);
+    /* cut out center with clip-path is tricky; we'll use box-shadow trick */
+    box-shadow: 0 0 0 9999px rgba(13,0,6,0.55);
+    clip-path: polygon(
+      0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%,
+      calc(50% - 120px) calc(50% - 120px),
+      calc(50% - 120px) calc(50% + 120px),
+      calc(50% + 120px) calc(50% + 120px),
+      calc(50% + 120px) calc(50% - 120px),
+      calc(50% - 120px) calc(50% - 120px)
+    );
+  }
+
+  /* Hint text */
+  .scan-hint {
+    position: absolute;
+    bottom: 60px;
+    left: 0; right: 0;
+    text-align: center;
+    z-index: 10;
+    padding: 0 24px;
+  }
+  .scan-hint p {
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 4px;
+  }
+  .scan-hint strong {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold-light);
+    font-size: 15px;
+  }
+
+  /* Scan actions row */
+  .scan-actions {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 16px 32px 36px;
+    background: linear-gradient(to top, rgba(13,0,6,0.95) 0%, transparent 100%);
+  }
+  .scan-act-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: rgba(255,255,255,0.7);
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .scan-act-btn:hover { color: var(--gold-light); }
+  .scan-act-icon {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.2s;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .scan-act-btn:hover .scan-act-icon { background: rgba(201,168,76,0.2); }
+
+  /* Success overlay */
+  .success-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(13,0,6,0.92);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+  }
+  .success-overlay.show { opacity: 1; pointer-events: all; }
+  .success-ring {
+    width: 90px; height: 90px;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 20px;
+    animation: ringPulse 1.5s ease infinite;
+  }
+  @keyframes ringPulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(201,168,76,0.4); }
+    50% { box-shadow: 0 0 0 16px rgba(201,168,76,0); }
+  }
+  .success-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+  .success-merchant {
+    font-size: 14px;
+    color: var(--gold-light);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  .success-nmid {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 1px;
+    margin-bottom: 28px;
+  }
+  .success-continue-btn {
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+    color: var(--maroon-deep);
+    border: none;
+    border-radius: 50px;
+    padding: 14px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 8px 24px rgba(201,168,76,0.4);
+  }
+  .success-continue-btn:active { transform: scale(0.96); }
+
+  /* ══════════════════════════════════
+     SCREEN 3: INPUT NOMINAL
+  ══════════════════════════════════ */
+  #screen-payment {
+    background: var(--cream);
+  }
+
+  .payment-header {
+    background: linear-gradient(160deg, var(--maroon-deep) 0%, var(--maroon) 100%);
+    padding: 52px 24px 28px;
+    position: relative;
+    border-radius: 0 0 28px 28px;
+    overflow: hidden;
+  }
+  .payment-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 160px; height: 160px;
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 50%;
+  }
+
+  .ph-back-row {
+    display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
+  }
+  .ph-back { background: rgba(255,255,255,0.12); border: none; width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .ph-title { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--white); }
+
+  .merchant-card {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 16px;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    backdrop-filter: blur(10px);
+  }
+  .merchant-avatar {
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--maroon-deep);
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .merchant-name { font-size: 15px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+  .merchant-nmid { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 1px; }
+
+  /* Nominal input */
+  .nominal-section {
+    padding: 32px 24px 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(107,26,42,0.08);
+  }
+  .nominal-label {
+    font-size: 12px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .nominal-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 8px;
+    position: relative;
+  }
+  .nominal-currency {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .nominal-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 44px;
+    color: var(--text-main);
+    letter-spacing: -1px;
+    min-width: 60px;
+    display: inline-block;
+  }
+  .nominal-cursor {
+    display: inline-block;
+    width: 2px; height: 44px;
+    background: var(--maroon);
+    animation: blink 1s step-end infinite;
+    vertical-align: middle;
+    margin-left: 2px;
+  }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .nominal-hint { font-size: 12px; color: var(--text-muted); }
+
+  /* Quick amount buttons */
+  .quick-amounts {
+    padding: 20px 24px 0;
+  }
+  .qa-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .qa-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+  .qa-chip {
+    background: var(--white);
+    border: 1.5px solid rgba(107,26,42,0.12);
+    border-radius: 12px;
+    padding: 10px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--maroon);
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    box-shadow: 0 2px 8px rgba(107,26,42,0.06);
+  }
+  .qa-chip:active, .qa-chip.selected {
+    background: var(--maroon);
+    color: var(--white);
+    border-color: var(--maroon);
+  }
+
+  /* Notes field */
+  .notes-field {
+    margin: 20px 24px 0;
+    background: var(--white);
+    border: 1.5px solid rgba(107,26,42,0.10);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+  }
+  .notes-text { font-size: 13px; color: var(--text-muted); flex: 1; }
+
+  /* Numpad */
+  .numpad-wrap {
+    padding: 20px 16px 0;
+  }
+  .numpad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+  }
+  .num-key {
+    height: 56px;
+    border-radius: 14px;
+    border: none;
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(107,26,42,0.06);
+    transition: all 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .num-key:active { background: var(--gold-pale); transform: scale(0.96); }
+  .num-key.del { background: rgba(107,26,42,0.06); }
+  .num-key.empty { background: transparent; box-shadow: none; pointer-events: none; }
+
+  /* Pay button */
+  .pay-btn-wrap {
+    padding: 20px 24px 36px;
+  }
+  .pay-btn {
+    width: 100%;
+    background: linear-gradient(135deg, var(--maroon-mid) 0%, var(--maroon-deep) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 18px;
+    height: 60px;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 12px 32px rgba(107,26,42,0.35);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .pay-btn:active { transform: scale(0.98); box-shadow: 0 6px 18px rgba(107,26,42,0.25); }
+  .pay-amount-badge {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+  }
+
+  /* ══════════════════════════════════
+     SCREEN 4: SUKSES
+  ══════════════════════════════════ */
+  #screen-success {
+    background: var(--cream);
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+  }
+
+  .success-header-bg {
+    width: 100%;
+    background: linear-gradient(160deg, var(--maroon-deep) 0%, var(--maroon) 100%);
+    padding: 60px 24px 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .success-header-bg::after {
+    content: '';
+    position: absolute;
+    bottom: -2px; left: 0; right: 0;
+    height: 40px;
+    background: var(--cream);
+    border-radius: 40px 40px 0 0;
+  }
+  .sh-ornament {
+    position: absolute;
+    top: -60px; left: -60px;
+    width: 200px; height: 200px;
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 50%;
+  }
+  .sh-ornament2 {
+    position: absolute;
+    bottom: 20px; right: -40px;
+    width: 140px; height: 140px;
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 50%;
+  }
+
+  .success-check {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 100%);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 12px 32px rgba(201,168,76,0.5);
+    margin-bottom: 18px;
+    z-index: 1;
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  @keyframes popIn { from{transform:scale(0);} to{transform:scale(1);} }
+  .success-hdr-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    color: var(--white);
+    margin-bottom: 6px;
+    z-index: 1;
+  }
+  .success-hdr-sub { font-size: 13px; color: rgba(255,255,255,0.5); z-index: 1; }
+
+  /* Receipt card */
+  .receipt-card {
+    width: calc(100% - 48px);
+    background: var(--white);
+    border-radius: 24px;
+    box-shadow: var(--shadow-card);
+    padding: 28px 24px;
+    margin-top: -20px;
+    position: relative;
+    z-index: 2;
+  }
+  .receipt-amount {
+    text-align: center;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1.5px dashed rgba(107,26,42,0.12);
+    position: relative;
+  }
+  .receipt-amount::before, .receipt-amount::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    width: 20px; height: 20px;
+    background: var(--cream);
+    border-radius: 50%;
+    box-shadow: inset 0 0 0 1.5px rgba(107,26,42,0.12);
+  }
+  .receipt-amount::before { left: -34px; }
+  .receipt-amount::after { right: -34px; }
+  .receipt-lbl { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; }
+  .receipt-big-amt {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    color: var(--text-main);
+    letter-spacing: -1px;
+  }
+  .receipt-big-amt span { font-size: 20px; color: var(--text-muted); margin-right: 4px; }
+  .receipt-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .rr-key { font-size: 12px; color: var(--text-muted); }
+  .rr-val { font-size: 13px; font-weight: 500; color: var(--text-main); text-align: right; max-width: 55%; }
+  .receipt-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: rgba(45,122,79,0.1);
+    border-radius: 30px;
+    padding: 8px 16px;
+    margin-top: 16px;
+  }
+  .receipt-status span { font-size: 12px; font-weight: 600; color: var(--success); }
+
+  /* QRIS logo row */
+  .qris-logo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(107,26,42,0.08);
+  }
+  .qris-badge {
+    background: linear-gradient(135deg, #E63946 0%, #C1121F 100%);
+    color: white;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+  .qris-powered { font-size: 11px; color: var(--text-muted); }
+
+  .success-actions {
+    width: calc(100% - 48px);
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    padding-bottom: 40px;
+  }
+  .sa-btn {
+    flex: 1;
+    height: 52px;
+    border-radius: 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+  }
+  .sa-btn.outline {
+    background: var(--white);
+    border: 1.5px solid rgba(107,26,42,0.15);
+    color: var(--maroon);
+    box-shadow: 0 2px 8px rgba(107,26,42,0.06);
+  }
+  .sa-btn.filled {
+    background: linear-gradient(135deg, var(--maroon-mid) 0%, var(--maroon-deep) 100%);
+    color: var(--white);
+    box-shadow: 0 8px 24px rgba(107,26,42,0.3);
+  }
+  .sa-btn:active { transform: scale(0.97); }
+
+  /* ─── STATUS BAR ─── */
+  .status-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    z-index: 200;
+  }
+  .sb-time { font-size: 11px; font-weight: 600; color: var(--white); }
+  .sb-icons { display: flex; gap: 4px; align-items: center; }
+  .sb-icons svg { opacity: 0.85; }
+  .status-bar.dark .sb-time { color: var(--text-main); }
+  .status-bar.dark .sb-icons svg { color: var(--text-main); opacity: 1; }
+
+  /* QRIS brand watermark */
+  .qris-watermark {
+    position: absolute;
+    bottom: 80px; left: 0; right: 0;
+    text-align: center;
+    z-index: 3;
+  }
+  .qris-brand-row {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px;
+    padding: 6px 14px;
+  }
+  .qris-brand-row .qb { font-size: 10px; font-weight: 800; color: white; background: #E63946; padding: 2px 6px; border-radius: 4px; letter-spacing: 0.5px; }
+  .qris-brand-row span { font-size: 11px; color: rgba(255,255,255,0.5); }
+
+  /* Scrollable screens */
+  .scroll-body { overflow-y: auto; flex: 1; }
+
+  /* PIN modal */
+  .pin-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    display: none;
+    align-items: flex-end;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+  }
+  .pin-modal.show { display: flex; animation: fadeIn 0.2s ease; }
+  .pin-sheet {
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 28px 28px 0 0;
+    padding: 28px 24px 48px;
+    animation: slideUp 0.3s cubic-bezier(0.34,1.2,0.64,1);
+  }
+  @keyframes slideUp { from{transform:translateY(100%);} to{transform:translateY(0);} }
+  .pin-handle {
+    width: 40px; height: 4px;
+    background: rgba(107,26,42,0.15);
+    border-radius: 2px;
+    margin: 0 auto 24px;
+  }
+  .pin-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--text-main);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .pin-sub { font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 24px; }
+  .pin-dots {
+    display: flex; gap: 14px; justify-content: center; margin-bottom: 32px;
+  }
+  .pin-dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid rgba(107,26,42,0.2);
+    background: transparent;
+    transition: all 0.15s;
+  }
+  .pin-dot.filled { background: var(--maroon); border-color: var(--maroon); }
+  .pin-numpad { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .pin-key {
+    height: 60px;
+    border-radius: 16px;
+    border: none;
+    background: rgba(107,26,42,0.04);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: all 0.1s;
+  }
+  .pin-key:active { background: var(--gold-pale); transform: scale(0.94); }
+  .pin-key.del-key { font-size: 16px; }
+  .pin-key.empty-key { pointer-events: none; background: transparent; }
+  .pin-cancel { width: 100%; margin-top: 14px; background: none; border: none; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text-muted); cursor: pointer; padding: 10px; }
+
+  /* Responsive scrollbar */
+  ::-webkit-scrollbar { width: 0; }
 </style>
 </head>
 <body>
 
-<!-- MOBILE TOP BAR -->
-<div class="mobile-topbar">
-  <div class="hamburger" id="hamburger" onclick="toggleSidebar()">
-    <span></span><span></span><span></span>
+<div class="bg-motif bg-motif-1"></div>
+<div class="bg-motif bg-motif-2"></div>
+<div class="bg-motif bg-motif-3"></div>
+
+<div class="phone-wrap">
+
+  <!-- ══ STATUS BAR ══ -->
+  <div class="status-bar" id="statusBarMain">
+    <span class="sb-time" id="clockMain">09:41</span>
+    <div class="sb-icons">
+      <svg width="15" height="11" viewBox="0 0 15 11" fill="currentColor" color="white">
+        <rect x="0" y="4" width="3" height="7" rx="0.5"/>
+        <rect x="4" y="2.5" width="3" height="8.5" rx="0.5"/>
+        <rect x="8" y="1" width="3" height="10" rx="0.5"/>
+        <rect x="12" y="0" width="3" height="11" rx="0.5"/>
+      </svg>
+      <svg width="14" height="11" viewBox="0 0 14 11" fill="currentColor" color="white">
+        <path d="M7 2.5C9 2.5 10.8 3.3 12.1 4.6L13.5 3.2C11.8 1.5 9.5 0.5 7 0.5C4.5 0.5 2.2 1.5 0.5 3.2L1.9 4.6C3.2 3.3 5 2.5 7 2.5Z"/>
+        <path d="M7 5.5C8.2 5.5 9.3 6 10.1 6.8L11.5 5.4C10.3 4.2 8.7 3.5 7 3.5C5.3 3.5 3.7 4.2 2.5 5.4L3.9 6.8C4.7 6 5.8 5.5 7 5.5Z"/>
+        <circle cx="7" cy="9" r="1.5"/>
+      </svg>
+      <svg width="24" height="11" viewBox="0 0 24 11" fill="currentColor" color="white">
+        <rect x="0" y="1" width="20" height="9" rx="2" stroke="currentColor" stroke-width="1" fill="none"/>
+        <rect x="20.5" y="3.5" width="2" height="4" rx="1"/>
+        <rect x="1.5" y="2.5" width="15" height="6" rx="1.5"/>
+      </svg>
+    </div>
   </div>
-  <div>
-    <div class="logo-mark">☕ BrewLink</div>
-    <div class="logo-sub">B2B Coffee Platform</div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 1: HOME
+  ══════════════════════════════════ -->
+  <div class="screen active" id="screen-home">
+    <div class="home-header">
+      <div class="header-ornament"></div>
+      <div class="header-top-row">
+        <div class="brand-mark">
+          <div class="brand-logo">S</div>
+          <div class="brand-name">
+            Saprahan Bank
+            <span>Pontianak · Kalimantan Barat</span>
+          </div>
+        </div>
+        <button class="notif-btn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+          </svg>
+        </button>
+      </div>
+      <div class="greet-text">Selamat Pagi 👋</div>
+      <div class="greet-name" id="greetName" onclick="startEditName()" title="Ketuk untuk ubah nama" style="cursor:pointer;display:flex;align-items:center;gap:8px;">
+        <span id="greetNameText">Budi Santoso</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+      </div>
+      <!-- Inline name editor (hidden by default) -->
+      <div id="nameEditWrap" style="display:none;margin-bottom:16px;">
+        <input id="nameEditInput" type="text" maxlength="30"
+          style="
+            background:rgba(255,255,255,0.15);
+            border:1.5px solid rgba(201,168,76,0.5);
+            border-radius:12px;
+            padding:10px 14px;
+            color:white;
+            font-family:'DM Sans',sans-serif;
+            font-size:16px;
+            width:100%;
+            outline:none;
+            letter-spacing:0.2px;
+          "
+          placeholder="Masukkan nama Anda"
+          onkeydown="if(event.key==='Enter')saveEditName()"
+        >
+        <div style="display:flex;gap:8px;margin-top:8px;">
+          <button onclick="saveEditName()" style="
+            flex:1;background:linear-gradient(135deg,var(--gold-light),var(--gold));
+            color:var(--maroon-deep);border:none;border-radius:10px;
+            padding:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;
+          ">✓ Simpan</button>
+          <button onclick="cancelEditName()" style="
+            flex:1;background:rgba(255,255,255,0.1);
+            color:rgba(255,255,255,0.7);border:none;border-radius:10px;
+            padding:9px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;
+          ">Batal</button>
+        </div>
+      </div>
+      <div class="balance-card">
+        <div class="balance-label">Saldo Rekening</div>
+        <div class="balance-amount" id="balanceDisplay"><span>Rp</span><span id="balanceValue">12.450.000</span></div>
+        <div class="balance-account">•••• •••• •••• 7823</div>
+        <button class="balance-eye" id="balanceEyeBtn" onclick="toggleBalance()">
+          <svg id="eyeIconOpen" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <svg id="eyeIconClosed" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2" style="display:none">
+            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/>
+            <path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/>
+            <line x1="1" y1="1" x2="23" y2="23"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="scroll-body">
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <div class="section-label">Layanan Utama</div>
+        <div class="actions-grid">
+          <button class="action-btn" onclick="goToScan()">
+            <div class="action-icon gold">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+                <rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/>
+                <rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/>
+              </svg>
+            </div>
+            <span class="action-label">Scan QRIS</span>
+          </button>
+          <button class="action-btn">
+            <div class="action-icon primary">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+              </svg>
+            </div>
+            <span class="action-label">Transfer</span>
+          </button>
+          <button class="action-btn">
+            <div class="action-icon light">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+              </svg>
+            </div>
+            <span class="action-label">Bayar</span>
+          </button>
+          <button class="action-btn">
+            <div class="action-icon light">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+              </svg>
+            </div>
+            <span class="action-label">Top Up</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Promo -->
+      <div class="promo-section">
+        <div class="promo-banner">
+          <div class="promo-text">
+            <div class="promo-badge">✦ Spesial</div>
+            <div class="promo-title">Cashback QRIS 10%</div>
+            <div class="promo-desc">Berlaku hingga 31 Mei 2025</div>
+          </div>
+          <div class="promo-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.8)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent transactions -->
+      <div class="recent-section">
+        <div class="recent-header">
+          <div class="section-label" style="margin:0">Transaksi Terakhir</div>
+          <button class="see-all">Lihat Semua →</button>
+        </div>
+        <div class="trx-item">
+          <div class="trx-icon in">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+            </svg>
+          </div>
+          <div class="trx-info">
+            <div class="trx-name">Gaji Bulan Mei</div>
+            <div class="trx-date">28 Apr 2025 · Bank Transfer</div>
+          </div>
+          <div class="trx-amount in">+Rp 5.000.000</div>
+        </div>
+        <div class="trx-item">
+          <div class="trx-icon out">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+            </svg>
+          </div>
+          <div class="trx-info">
+            <div class="trx-name">Warung Saprahan</div>
+            <div class="trx-date">27 Apr 2025 · QRIS</div>
+          </div>
+          <div class="trx-amount out">−Rp 45.000</div>
+        </div>
+        <div class="trx-item">
+          <div class="trx-icon out">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6B1A2A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/>
+            </svg>
+          </div>
+          <div class="trx-info">
+            <div class="trx-name">PLN Prabayar</div>
+            <div class="trx-date">26 Apr 2025 · Tagihan</div>
+          </div>
+          <div class="trx-amount out">−Rp 200.000</div>
+        </div>
+        <div class="trx-item">
+          <div class="trx-icon in">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/>
+            </svg>
+          </div>
+          <div class="trx-info">
+            <div class="trx-name">Transfer dari Ahmad</div>
+            <div class="trx-date">25 Apr 2025 · Bank Transfer</div>
+          </div>
+          <div class="trx-amount in">+Rp 150.000</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Nav -->
+    <nav class="bottom-nav">
+      <button class="nav-item active">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="#6B1A2A" stroke="none">
+          <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        <span class="nav-label" style="color:var(--maroon)">Beranda</span>
+      </button>
+      <button class="nav-item" onclick="goToScan()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6A74" stroke-width="2">
+          <rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>
+        </svg>
+        <span class="nav-label">Bayar</span>
+      </button>
+      <button class="nav-qris-btn" onclick="goToScan()">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+          <rect x="7" y="7" width="4" height="4" rx="0.5"/><rect x="13" y="7" width="4" height="4" rx="0.5"/>
+          <rect x="7" y="13" width="4" height="4" rx="0.5"/><rect x="13" y="13" width="4" height="4" rx="0.5"/>
+        </svg>
+      </button>
+      <button class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6A74" stroke-width="2">
+          <line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+        </svg>
+        <span class="nav-label">Mutasi</span>
+      </button>
+      <button class="nav-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8B6A74" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        <span class="nav-label">Profil</span>
+      </button>
+    </nav>
   </div>
-  <div class="mobile-page-title" id="mobileTitle">Origin Story</div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 2: SCAN QRIS
+  ══════════════════════════════════ -->
+  <div class="screen" id="screen-scan">
+    <div class="scan-header">
+      <button class="back-btn" onclick="goHome()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="15 18 9 12 15 6"/>
+        </svg>
+      </button>
+      <span class="scan-title">Scan QRIS</span>
+      <div class="scan-header-space"></div>
+    </div>
+
+    <div class="viewfinder-wrap">
+      <!-- REAL camera video feed -->
+      <video id="cameraVideo" autoplay playsinline muted
+        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;"></video>
+      <!-- Hidden canvas for jsQR frame processing -->
+      <canvas id="qrCanvas" style="display:none;"></canvas>
+
+      <!-- Fallback bg when camera not active -->
+      <div class="camera-bg" id="cameraBg">
+        <div class="camera-grain"></div>
+        <div class="camera-scene"></div>
+      </div>
+
+      <!-- Dark overlay cutout -->
+      <div class="vf-overlay"></div>
+
+      <!-- QR finder box -->
+      <div class="qr-finder" id="qrFinder">
+        <div class="corner corner-tl"></div>
+        <div class="corner corner-tr"></div>
+        <div class="corner corner-bl"></div>
+        <div class="corner corner-br"></div>
+        <div class="scan-line" id="scanLine"></div>
+      </div>
+
+      <!-- Camera permission / status message -->
+      <div id="cameraStatus" style="
+        position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+        z-index:8; text-align:center; padding:0 32px; display:none;
+      ">
+        <div style="font-size:36px;margin-bottom:12px;">📷</div>
+        <p style="color:rgba(255,255,255,0.8);font-size:14px;line-height:1.6;" id="cameraStatusMsg">
+          Meminta izin kamera...
+        </p>
+        <button onclick="startCamera()" style="
+          margin-top:16px; background:rgba(201,168,76,0.9); color:#4A0F1C;
+          border:none; border-radius:30px; padding:10px 24px;
+          font-family:'DM Sans',sans-serif; font-size:13px; font-weight:600;
+          cursor:pointer; display:none;
+        " id="retryBtn">Coba Lagi</button>
+      </div>
+
+      <!-- Scan hint text -->
+      <div class="scan-hint">
+        <p id="scanHintText">Arahkan kamera ke kode QRIS</p>
+        <strong>✦ Saprahan Bank</strong>
+      </div>
+
+      <!-- QRIS branding -->
+      <div class="qris-watermark">
+        <div class="qris-brand-row">
+          <span class="qb">QRIS</span>
+          <span>Satu QR untuk semua pembayaran</span>
+        </div>
+      </div>
+
+      <!-- Scan action buttons -->
+      <div class="scan-actions">
+        <label class="scan-act-btn" style="cursor:pointer">
+          <div class="scan-act-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          Unggah QR
+          <input type="file" accept="image/*" id="uploadQrInput" style="display:none" onchange="handleUploadQR(event)">
+        </label>
+        <button class="scan-act-btn" id="torchBtn">
+          <div class="scan-act-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 2l-6 12h6l-2 8 13-14h-7l3-6z"/>
+            </svg>
+          </div>
+          Flash
+        </button>
+        <button class="scan-act-btn" onclick="simulateScan()">
+          <div class="scan-act-icon" style="background:rgba(201,168,76,0.25);border-color:rgba(201,168,76,0.3)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.9)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </div>
+          Demo Scan
+        </button>
+      </div>
+
+      <!-- Scan success overlay -->
+      <div class="success-overlay" id="scanSuccessOverlay">
+        <div class="success-ring">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div class="success-title">QR Terdeteksi!</div>
+        <div class="success-merchant" id="qrMerchantName">Merchant QRIS</div>
+        <div class="success-nmid" id="qrNmid">Memproses data...</div>
+        <button class="success-continue-btn" onclick="goToPayment()">
+          Lanjutkan Pembayaran →
+        </button>
+        <button onclick="resetScan()" style="
+          margin-top:12px; background:none; border:none;
+          color:rgba(255,255,255,0.4); font-size:12px;
+          cursor:pointer; font-family:'DM Sans',sans-serif;
+        ">← Scan ulang</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 3: INPUT NOMINAL
+  ══════════════════════════════════ -->
+  <div class="screen" id="screen-payment">
+    <div class="payment-header">
+      <div class="ph-back-row">
+        <button class="ph-back" onclick="goToScan()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+        </button>
+        <span class="ph-title">Input Nominal</span>
+      </div>
+      <div class="merchant-card">
+        <div class="merchant-avatar">W</div>
+        <div>
+          <div class="merchant-name">Warung Saprahan Mbak Sri</div>
+          <div class="merchant-nmid">NMID: ID1024567890123 · Kota Pontianak</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scroll-body">
+      <!-- Amount display -->
+      <div class="nominal-section">
+        <div class="nominal-label">Jumlah Pembayaran</div>
+        <div class="nominal-display">
+          <span class="nominal-currency">Rp</span>
+          <span class="nominal-value" id="nominalDisplay">0</span>
+          <span class="nominal-cursor" id="nominalCursor"></span>
+        </div>
+        <div class="nominal-hint" id="nominalHint">Masukkan nominal pembayaran</div>
+      </div>
+
+      <!-- Quick amounts -->
+      <div class="quick-amounts">
+        <div class="qa-label">Nominal Cepat</div>
+        <div class="qa-grid">
+          <button class="qa-chip" onclick="setQuickAmount(10000)">Rp 10.000</button>
+          <button class="qa-chip" onclick="setQuickAmount(25000)">Rp 25.000</button>
+          <button class="qa-chip" onclick="setQuickAmount(50000)">Rp 50.000</button>
+          <button class="qa-chip" onclick="setQuickAmount(100000)">Rp 100.000</button>
+          <button class="qa-chip" onclick="setQuickAmount(200000)">Rp 200.000</button>
+          <button class="qa-chip" onclick="setQuickAmount(500000)">Rp 500.000</button>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="notes-field">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+        </svg>
+        <span class="notes-text">Tambah catatan (opsional)</span>
+      </div>
+
+      <!-- Numpad -->
+      <div class="numpad-wrap">
+        <div class="numpad">
+          <button class="num-key" onclick="pressNum('1')">1</button>
+          <button class="num-key" onclick="pressNum('2')">2</button>
+          <button class="num-key" onclick="pressNum('3')">3</button>
+          <button class="num-key" onclick="pressNum('4')">4</button>
+          <button class="num-key" onclick="pressNum('5')">5</button>
+          <button class="num-key" onclick="pressNum('6')">6</button>
+          <button class="num-key" onclick="pressNum('7')">7</button>
+          <button class="num-key" onclick="pressNum('8')">8</button>
+          <button class="num-key" onclick="pressNum('9')">9</button>
+          <button class="num-key empty"></button>
+          <button class="num-key" onclick="pressNum('0')">0</button>
+          <button class="num-key del" onclick="pressNum('del')">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-main)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+              <line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Pay button -->
+      <div class="pay-btn-wrap">
+        <button class="pay-btn" id="payBtn" onclick="showPinModal()">
+          <span>Bayar Sekarang</span>
+          <span class="pay-amount-badge" id="payBtnAmt">Rp 0</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCREEN 4: SUKSES
+  ══════════════════════════════════ -->
+  <div class="screen" id="screen-success">
+    <div class="success-header-bg">
+      <div class="sh-ornament"></div>
+      <div class="sh-ornament2"></div>
+      <div class="success-check">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <div class="success-hdr-title">Pembayaran Berhasil</div>
+      <div class="success-hdr-sub">Transaksi telah diproses</div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;flex:1;overflow-y:auto;padding-bottom:40px">
+      <!-- Receipt -->
+      <div class="receipt-card">
+        <div class="receipt-amount">
+          <div class="receipt-lbl">Total Dibayar</div>
+          <div class="receipt-big-amt"><span>Rp</span><span id="receiptAmt">50.000</span></div>
+        </div>
+        <div class="receipt-row">
+          <span class="rr-key">Merchant</span>
+          <span class="rr-val">Warung Saprahan Mbak Sri</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rr-key">NMID</span>
+          <span class="rr-val">ID1024567890123</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rr-key">Referensi</span>
+          <span class="rr-val" id="receiptRef">SBK20250428-001</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rr-key">Waktu</span>
+          <span class="rr-val" id="receiptTime">28 Apr 2025, 09:41</span>
+        </div>
+        <div class="receipt-row">
+          <span class="rr-key">Metode</span>
+          <span class="rr-val">QRIS · Saprahan Bank</span>
+        </div>
+        <div class="receipt-status">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#2D7A4F">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+          </svg>
+          <span>Berhasil Dikirim ke Merchant</span>
+        </div>
+        <div class="qris-logo-row">
+          <span class="qris-badge">QRIS</span>
+          <span class="qris-powered">Powered by Bank Indonesia</span>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="success-actions">
+        <button class="sa-btn outline">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px;vertical-align:middle">
+            <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+          Struk
+        </button>
+        <button class="sa-btn filled" onclick="goHome()">
+          Kembali ke Beranda
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end phone-wrap -->
+
+<!-- ══ PIN MODAL ══ -->
+<div class="pin-modal" id="pinModal">
+  <div class="pin-sheet">
+    <div class="pin-handle"></div>
+    <div class="pin-title">Masukkan PIN</div>
+    <div class="pin-sub">Konfirmasi pembayaran Anda</div>
+    <div class="pin-dots" id="pinDots">
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd4"></div>
+      <div class="pin-dot" id="pd5"></div>
+      <div class="pin-dot" id="pd6"></div>
+    </div>
+    <div class="pin-numpad">
+      <button class="pin-key" onclick="enterPin('1')">1</button>
+      <button class="pin-key" onclick="enterPin('2')">2</button>
+      <button class="pin-key" onclick="enterPin('3')">3</button>
+      <button class="pin-key" onclick="enterPin('4')">4</button>
+      <button class="pin-key" onclick="enterPin('5')">5</button>
+      <button class="pin-key" onclick="enterPin('6')">6</button>
+      <button class="pin-key" onclick="enterPin('7')">7</button>
+      <button class="pin-key" onclick="enterPin('8')">8</button>
+      <button class="pin-key" onclick="enterPin('9')">9</button>
+      <button class="pin-key empty-key"></button>
+      <button class="pin-key" onclick="enterPin('0')">0</button>
+      <button class="pin-key del-key" onclick="deletePin()">⌫</button>
+    </div>
+    <button class="pin-cancel" onclick="closePinModal()">Batalkan</button>
+  </div>
 </div>
 
-<!-- SIDEBAR OVERLAY -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-<!-- BOTTOM NAV -->
-<nav class="bottom-nav" id="bottomNav">
-  <div class="bnav-item active" onclick="showSection('origin',this,'Origin Story')"><span class="bnav-icon">🌱</span>Origin</div>
-  <div class="bnav-item" onclick="showSection('subscription',this,'Standing Order')"><span class="bnav-icon">📦</span>Order</div>
-  <div class="bnav-item" onclick="showSection('cupping',this,'Digital Cupping')"><span class="bnav-icon">🧪</span>Cupping</div>
-  <div class="bnav-item" onclick="showSection('matching',this,'Match Making')"><span class="bnav-icon">🤝</span>Match</div>
-  <div class="bnav-item" onclick="showSection('dashboard',this,'BI Dashboard')"><span class="bnav-icon">📊</span>Dashboard</div>
-  <div class="bnav-item" onclick="showSection('negotiation',this,'Negotiation Room')"><span class="bnav-icon">💬</span>Negosiasi</div>
-  <div class="bnav-item" onclick="showSection('trust',this,'Trust System')"><span class="bnav-icon">🏆</span>Trust</div>
-  <div class="bnav-item" onclick="showSection('knowledge',this,'Knowledge Hub')"><span class="bnav-icon">🎓</span>Knowledge</div>
-  <div class="bnav-item" onclick="showSection('payment',this,'Payment & Finance')"><span class="bnav-icon">💳</span>Payment</div>
-  <div class="bnav-item" onclick="showSection('logistics',this,'Logistics Tracker')"><span class="bnav-icon">🚚</span>Logistik</div>
-</nav>
-
-<!-- SIDEBAR -->
-<nav class="sidebar" id="sidebar">
-  <div class="logo">
-    <div class="logo-mark">☕ BrewLink</div>
-    <div class="logo-sub">B2B Coffee Platform</div>
-  </div>
-
-  <div class="nav-section">
-    <div class="nav-label">Fitur Platform</div>
-    <div class="nav-item active" onclick="showSection('origin',null,'Origin Story')">
-      <span class="icon">🌱</span> Origin Story
-    </div>
-    <div class="nav-item" onclick="showSection('subscription',null,'Standing Order')">
-      <span class="icon">📦</span> Standing Order
-      <span class="nav-badge">3</span>
-    </div>
-    <div class="nav-item" onclick="showSection('cupping',null,'Digital Cupping')">
-      <span class="icon">🧪</span> Digital Cupping
-    </div>
-    <div class="nav-item" onclick="showSection('matching',null,'Match Making')">
-      <span class="icon">🤝</span> Match Making
-      <span class="nav-badge">New</span>
-    </div>
-    <div class="nav-item" onclick="showSection('dashboard',null,'BI Dashboard')">
-      <span class="icon">📊</span> BI Dashboard
-    </div>
-    <div class="nav-item" onclick="showSection('negotiation',null,'Negotiation Room')">
-      <span class="icon">💬</span> Negotiation Room
-    </div>
-    <div class="nav-item" onclick="showSection('trust',null,'Trust System')">
-      <span class="icon">🏆</span> Trust System
-    </div>
-    <div class="nav-item" onclick="showSection('knowledge',null,'Knowledge Hub')">
-      <span class="icon">🎓</span> Knowledge Hub
-    </div>
-    <div class="nav-item" onclick="showSection('payment',null,'Payment & Finance')">
-      <span class="icon">💳</span> Payment & Finance
-    </div>
-    <div class="nav-item" onclick="showSection('logistics',null,'Logistics Tracker')">
-      <span class="icon">🚚</span> Logistics Tracker
-    </div>
-  </div>
-
-  <div class="sidebar-footer">
-    <div class="user-card">
-      <div class="user-avatar">KW</div>
-      <div class="user-info">
-        <div class="name">Krisna Wijaya</div>
-        <div class="role">Coffee Shop Owner</div>
-      </div>
-    </div>
-  </div>
-</nav>
-
-<!-- MAIN CONTENT -->
-<main class="main">
-
-  <!-- ===== SECTION 1: ORIGIN STORY ===== -->
-  <div class="section active" id="section-origin">
-    <div class="page-header">
-      <h1>🌱 Origin Story</h1>
-      <p>Transparansi penuh dari kebun ke cangkir — setiap biji kopi punya cerita</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Peta Perjalanan Kopi</div>
-          <div class="origin-map">
-            <div class="map-bg"></div>
-            <svg width="100%" height="100%" style="position:absolute;inset:0">
-              <line x1="28%" y1="65%" x2="50%" y2="40%" stroke="#d4830a" stroke-width="1.5" stroke-dasharray="4" opacity="0.5"/>
-              <line x1="60%" y1="55%" x2="50%" y2="40%" stroke="#d4830a" stroke-width="1.5" stroke-dasharray="4" opacity="0.5"/>
-              <line x1="50%" y1="40%" x2="75%" y2="35%" stroke="#4caf78" stroke-width="1.5" stroke-dasharray="4" opacity="0.5"/>
-            </svg>
-            <!-- Farms -->
-            <div class="map-pin" style="left:25%;top:60%">
-              <div class="pin-dot pin-farm" title="Kintamani Farm"></div>
-              <div class="pin-label" style="color:var(--green);font-size:9px">🌿 Kintamani</div>
-            </div>
-            <div class="map-pin" style="left:57%;top:50%">
-              <div class="pin-dot pin-farm" title="Toraja Farm"></div>
-              <div class="pin-label" style="color:var(--green);font-size:9px">🌿 Toraja</div>
-            </div>
-            <!-- Roastery -->
-            <div class="map-pin" style="left:47%;top:34%">
-              <div class="pin-dot" style="background:var(--amber);border-color:var(--amber-light);width:16px;height:16px;"></div>
-              <div class="pin-label" style="color:var(--amber-light);font-size:10px;font-weight:600">🔥 Roastery</div>
-            </div>
-            <!-- Coffee shop -->
-            <div class="map-pin" style="left:72%;top:30%">
-              <div class="pin-dot" style="background:var(--blue);border-color:var(--blue);"></div>
-              <div class="pin-label" style="color:var(--blue);font-size:9px">☕ Your Cafe</div>
-            </div>
-            <div style="position:absolute;bottom:10px;left:12px;font-size:10px;color:var(--muted);">
-              <span style="color:var(--green)">●</span> Kebun &nbsp; <span style="color:var(--amber)">●</span> Roastery &nbsp; <span style="color:var(--blue)">●</span> Coffee Shop
-            </div>
-          </div>
-
-          <div class="origin-timeline" style="margin-top:20px">
-            <div class="timeline-step">
-              <div class="timeline-dot done">🌱</div>
-              <div class="timeline-text"><b>Panen</b>Jul 2024</div>
-            </div>
-            <div class="timeline-step">
-              <div class="timeline-dot done">⚙️</div>
-              <div class="timeline-text"><b>Proses</b>Natural</div>
-            </div>
-            <div class="timeline-step">
-              <div class="timeline-dot done">🔥</div>
-              <div class="timeline-text"><b>Roast</b>Medium</div>
-            </div>
-            <div class="timeline-step">
-              <div class="timeline-dot active">📦</div>
-              <div class="timeline-text"><b>Packing</b>Hari ini</div>
-            </div>
-            <div class="timeline-step">
-              <div class="timeline-dot">☕</div>
-              <div class="timeline-text"><b>Tiba</b>2 hari lagi</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Flavor Notes Terverifikasi</div>
-          <div style="display:flex;gap:20px;align-items:flex-start">
-            <div>
-              <div style="font-size:12px;color:var(--muted);margin-bottom:4px">Cupping Score</div>
-              <div style="font-family:'Playfair Display',serif;font-size:36px;color:var(--amber-light);font-weight:700">87.5</div>
-              <div style="font-size:11px;color:var(--green)">✓ SCA Certified</div>
-            </div>
-            <div style="flex:1">
-              <div class="flavor-tags">
-                <span class="flavor-tag">🍊 Orange Citrus</span>
-                <span class="flavor-tag">🍫 Dark Chocolate</span>
-                <span class="flavor-tag">🌹 Rose</span>
-                <span class="flavor-tag">🍯 Honey</span>
-                <span class="flavor-tag">🌰 Almond</span>
-              </div>
-              <div style="margin-top:12px;font-size:12px;color:var(--muted)">
-                Acidity: <span style="color:var(--cream)">Medium-High</span> &nbsp;|&nbsp; 
-                Body: <span style="color:var(--cream)">Full</span> &nbsp;|&nbsp; 
-                Finish: <span style="color:var(--cream)">Long</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card" style="height:100%">
-          <div class="section-title">Detail Produk</div>
-          <div style="display:flex;flex-direction:column;gap:14px">
-            <div class="card2">
-              <div style="font-size:18px;font-weight:700;color:var(--cream);font-family:'Playfair Display',serif">Kintamani Natural</div>
-              <div style="font-size:12px;color:var(--muted);margin-top:4px">by Gunung Agung Roastery · Bali</div>
-              <hr class="divider">
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px">
-                <div><div style="color:var(--muted);font-size:11px">Varietal</div><div style="color:var(--cream)">Kintamani Arabica</div></div>
-                <div><div style="color:var(--muted);font-size:11px">Proses</div><div style="color:var(--cream)">Natural Sun-Dried</div></div>
-                <div><div style="color:var(--muted);font-size:11px">Elevasi</div><div style="color:var(--cream)">1,400–1,700 mdpl</div></div>
-                <div><div style="color:var(--muted);font-size:11px">Panen</div><div style="color:var(--cream)">Juli 2024</div></div>
-                <div><div style="color:var(--muted);font-size:11px">Roast Date</div><div style="color:var(--cream)">19 Feb 2026</div></div>
-                <div><div style="color:var(--muted);font-size:11px">Petani</div><div style="color:var(--cream)">Pak Made Suarsa</div></div>
-              </div>
-            </div>
-            <div class="card2">
-              <div style="font-size:13px;font-weight:600;color:var(--amber-light);margin-bottom:10px">📸 Galeri Kebun</div>
-              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-                <div style="height:60px;border-radius:6px;background:linear-gradient(135deg,#2a4a1a,#4a8a2a);display:flex;align-items:center;justify-content:center;font-size:20px">🌿</div>
-                <div style="height:60px;border-radius:6px;background:linear-gradient(135deg,#4a2a1a,#8a4a2a);display:flex;align-items:center;justify-content:center;font-size:20px">🍒</div>
-                <div style="height:60px;border-radius:6px;background:linear-gradient(135deg,#1a2a4a,#2a4a8a);display:flex;align-items:center;justify-content:center;font-size:20px">🏔️</div>
-              </div>
-            </div>
-            <div class="card2">
-              <div style="font-size:13px;font-weight:600;color:var(--amber-light);margin-bottom:8px">💬 Cerita dari Petani</div>
-              <p style="font-size:13px;color:var(--text2);line-height:1.6;font-style:italic">"Tahun ini musim hujan sangat baik. Cherry matang dengan sempurna dan kami proses natural selama 30 hari di raised bed..."</p>
-              <div style="font-size:11px;color:var(--muted);margin-top:6px">— Pak Made Suarsa, Kintamani</div>
-            </div>
-            <button class="btn btn-primary" style="width:100%" onclick="showToast('Standing order dibuat untuk Kintamani Natural!')">📦 Pesan Sekarang</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 2: SUBSCRIPTION ===== -->
-  <div class="section" id="section-subscription">
-    <div class="page-header">
-      <h1>📦 Standing Order Cerdas</h1>
-      <p>Sistem berlangganan berbasis prediksi konsumsi — tidak pernah kehabisan stok</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Active Subscriptions</div>
-          <div class="order-row">
-            <div class="order-icon">☕</div>
-            <div class="order-info">
-              <div class="order-title">Kintamani Natural — 5kg/minggu</div>
-              <div class="order-detail">Gunung Agung Roastery · Next: Rabu, 26 Feb</div>
-            </div>
-            <span class="badge badge-green">● Aktif</span>
-          </div>
-          <div class="order-row">
-            <div class="order-icon">🌿</div>
-            <div class="order-info">
-              <div class="order-title">Toraja Sulawesi — 3kg/2 minggu</div>
-              <div class="order-detail">Celebes Roastery · Next: Jumat, 28 Feb</div>
-            </div>
-            <span class="badge badge-green">● Aktif</span>
-          </div>
-          <div class="order-row">
-            <div class="order-icon">🍫</div>
-            <div class="order-info">
-              <div class="order-title">Flores Bajawa — 2kg/bulan</div>
-              <div class="order-detail">Timur Roastery · Next: 10 Maret</div>
-            </div>
-            <span class="badge badge-amber">⏸ Pause</span>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Prediksi Konsumsi</div>
-          <div class="subscription-meter">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-              <span style="font-size:13px;color:var(--text2)">Kintamani Natural</span>
-              <span style="font-size:12px;color:var(--amber-light);font-family:'DM Mono',monospace">2.1kg tersisa</span>
-            </div>
-            <div class="meter-bar"><div class="meter-fill" style="width:42%"></div></div>
-            <div class="days-indicator">
-              <span>Habis ~3 hari lagi</span>
-              <span>📦 Tiba: Rabu</span>
-            </div>
-          </div>
-          <div class="subscription-meter" style="margin-top:10px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-              <span style="font-size:13px;color:var(--text2)">Toraja Sulawesi</span>
-              <span style="font-size:12px;color:var(--green);font-family:'DM Mono',monospace">5.8kg tersisa</span>
-            </div>
-            <div class="meter-bar"><div class="meter-fill" style="width:78%"></div></div>
-            <div class="days-indicator">
-              <span>Cukup ~11 hari lagi</span>
-              <span>✅ Aman</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="section-title">Buat Standing Order Baru</div>
-          <div class="form-group">
-            <label>Pilih Produk</label>
-            <select>
-              <option>Kintamani Natural — Gunung Agung Roastery</option>
-              <option>Flores Bajawa — Timur Roastery</option>
-              <option>Gayo Aceh — Sumatra Roastery</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Volume per Pengiriman</label>
-            <input type="number" value="5" min="1" id="volInput" oninput="calcSavings()"> <span style="font-size:12px;color:var(--muted)">kg</span>
-          </div>
-          <div class="form-group">
-            <label>Frekuensi</label>
-            <select id="freqSelect" onchange="calcSavings()">
-              <option value="1">Setiap minggu</option>
-              <option value="2">Setiap 2 minggu</option>
-              <option value="4">Setiap bulan</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Mulai dari</label>
-            <input type="date" value="2026-03-01">
-          </div>
-          <div class="calc-result" style="margin-top:8px">
-            <div style="font-size:12px;color:var(--amber-light);font-weight:600;margin-bottom:8px">💰 Estimasi Penghematan</div>
-            <div class="calc-row"><span style="color:var(--muted)">Harga Normal</span><span id="normalPrice">Rp 87.500/kg</span></div>
-            <div class="calc-row"><span style="color:var(--muted)">Harga Subscription</span><span style="color:var(--green)" id="subPrice">Rp 80.500/kg</span></div>
-            <div class="calc-row total"><span>Hemat per Bulan</span><span id="savings">Rp 140.000</span></div>
-          </div>
-          <button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="showToast('Standing order berhasil dibuat!')">🔄 Aktifkan Standing Order</button>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Jadwal Bulan Ini</div>
-          <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Titik hijau = pengiriman dijadwalkan</div>
-          <div class="schedule-viz" id="schedViz"></div>
-          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:4px">
-            <span>1 Mar</span><span>15 Mar</span><span>31 Mar</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 3: CUPPING ROOM ===== -->
-  <div class="section" id="section-cupping">
-    <div class="page-header">
-      <h1>🧪 Digital Cupping Room</h1>
-      <p>Evaluasi sample sebelum order besar — submit hasil cupping dan bandingkan dengan komunitas</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Pilih Sample</div>
-          <div class="sample-cards" id="sampleCards">
-            <div class="sample-card selected" onclick="selectSample(this,'Kintamani Natural',87)">
-              <div class="sample-name">Kintamani Natural</div>
-              <div class="sample-origin">🌿 Bali, 1500mdpl</div>
-              <div class="sample-score">87.5</div>
-            </div>
-            <div class="sample-card" onclick="selectSample(this,'Toraja Sulawesi',84)">
-              <div class="sample-name">Toraja Sulawesi</div>
-              <div class="sample-origin">🌿 Sulawesi, 1800mdpl</div>
-              <div class="sample-score">84.0</div>
-            </div>
-            <div class="sample-card" onclick="selectSample(this,'Flores Bajawa',86)">
-              <div class="sample-name">Flores Bajawa</div>
-              <div class="sample-origin">🌿 NTT, 1200mdpl</div>
-              <div class="sample-score">86.5</div>
-            </div>
-            <div class="sample-card" onclick="selectSample(this,'Gayo Aceh',88)">
-              <div class="sample-name">Gayo Aceh</div>
-              <div class="sample-origin">🌿 Aceh, 1600mdpl</div>
-              <div class="sample-score">88.0</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Radar Chart</div>
-          <div class="cupping-wheel">
-            <canvas id="cuppingRadar" width="280" height="240"></canvas>
-          </div>
-          <div class="cupping-score">
-            <div class="score-big" id="totalScore">87.5</div>
-            <div class="score-label">Total Cupping Score (SCA Method)</div>
-            <div style="margin-top:8px;display:flex;justify-content:center;gap:16px;font-size:12px;color:var(--muted)">
-              <span>🏆 Community Avg: <span style="color:var(--amber-light)">86.2</span></span>
-              <span>📝 Your Score: <span style="color:var(--green)">87.5</span></span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="section-title">Scoring Panel</div>
-          <div class="cupping-sliders">
-            <div class="slider-row">
-              <span class="slider-label">Fragrance</span>
-              <input type="range" min="6" max="10" step="0.25" value="8.5" oninput="updateCupping(this,0,'fragrance-val')">
-              <span class="slider-value" id="fragrance-val">8.5</span>
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Aroma</span>
-              <input type="range" min="6" max="10" step="0.25" value="8.0" oninput="updateCupping(this,1,'aroma-val')">
-              <span class="slider-value" id="aroma-val">8.0</span>
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Flavor</span>
-              <input type="range" min="6" max="10" step="0.25" value="8.75" oninput="updateCupping(this,2,'flavor-val')">
-              <span class="slider-value" id="flavor-val">8.75</span>
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Acidity</span>
-              <input type="range" min="6" max="10" step="0.25" value="8.25" oninput="updateCupping(this,3,'acidity-val')">
-              <span class="slider-value" id="acidity-val">8.25</span>
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Body</span>
-              <input type="range" min="6" max="10" step="0.25" value="8.0" oninput="updateCupping(this,4,'body-val')">
-              <span class="slider-value" id="body-val">8.0</span>
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Balance</span>
-              <input type="range" min="6" max="10" step="0.25" value="8.5" oninput="updateCupping(this,5,'balance-val')">
-              <span class="slider-value" id="balance-val">8.5</span>
-            </div>
-            <div class="slider-row">
-              <span class="slider-label">Overall</span>
-              <input type="range" min="6" max="10" step="0.25" value="8.5" oninput="updateCupping(this,6,'overall-val')">
-              <span class="slider-value" id="overall-val">8.5</span>
-            </div>
-          </div>
-          <div class="form-group" style="margin-top:16px">
-            <label>Tasting Notes (opsional)</label>
-            <textarea placeholder="Cth: Aroma jasmine yang kuat, citrus orange di mid-palate, finish dark chocolate yang panjang..."></textarea>
-          </div>
-          <button class="btn btn-primary" style="width:100%" onclick="showToast('Hasil cupping berhasil disubmit!')">📤 Submit Cupping Score</button>
-          <button class="btn btn-outline" style="width:100%;margin-top:8px" onclick="showToast('Request sample dikirim ke roastery!')">📬 Request Sample Pack (50gr)</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 4: MATCHMAKING ===== -->
-  <div class="section" id="section-matching">
-    <div class="page-header">
-      <h1>🤝 Smart Match Making</h1>
-      <p>Platform merekomendasikan roastery yang paling cocok untuk profil coffee shop kamu</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Profil Coffee Shop Kamu</div>
-          <div class="match-profile">
-            <div class="form-group">
-              <label>Tipe Menu Utama</label>
-              <select>
-                <option>Espresso-Based (Cappuccino, Latte, etc)</option>
-                <option>Single Origin Manual Brew</option>
-                <option>Mixed (Espresso + Manual)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Kebutuhan Volume</label>
-              <select>
-                <option>Small (1-5 kg/minggu)</option>
-                <option selected>Medium (5-20 kg/minggu)</option>
-                <option>Large (20kg+ /minggu)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Budget Range per kg</label>
-              <select>
-                <option>Rp 50.000 - 80.000 (Commercial)</option>
-                <option selected>Rp 80.000 - 120.000 (Specialty)</option>
-                <option>Rp 120.000+ (Micro-lot)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Preferensi Origin</label>
-              <div class="filter-tags" id="originFilters">
-                <div class="filter-tag active" onclick="toggleFilter(this)">Bali</div>
-                <div class="filter-tag active" onclick="toggleFilter(this)">Sulawesi</div>
-                <div class="filter-tag" onclick="toggleFilter(this)">Aceh</div>
-                <div class="filter-tag" onclick="toggleFilter(this)">Flores</div>
-                <div class="filter-tag" onclick="toggleFilter(this)">Papua</div>
-                <div class="filter-tag" onclick="toggleFilter(this)">Ethiopia</div>
-              </div>
-            </div>
-            <button class="btn btn-primary" style="width:100%" onclick="runMatching()">🔍 Cari Match</button>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="matching-pulse" id="matchingStatus">
-            <div class="pulse-dot"></div>
-            Algorithm menemukan roastery terbaik untukmu...
-          </div>
-          <div class="section-title">Hasil Rekomendasi</div>
-
-          <div class="match-card" onclick="showToast('Membuka profil Gunung Agung Roastery...')">
-            <div class="match-avatar" style="background:linear-gradient(135deg,#8b4513,#d4830a)">🔥</div>
-            <div class="match-info">
-              <div class="match-name">Gunung Agung Roastery</div>
-              <div class="match-detail">Bali · Specialty · 5–50kg/minggu</div>
-              <div class="match-bar"><div class="match-bar-fill" style="width:96%"></div></div>
-            </div>
-            <div class="match-pct" style="color:var(--green)">96%</div>
-          </div>
-
-          <div class="match-card" onclick="showToast('Membuka profil Celebes Roastery...')">
-            <div class="match-avatar" style="background:linear-gradient(135deg,#1a4a2a,#4caf78)">🌿</div>
-            <div class="match-info">
-              <div class="match-name">Celebes Roastery</div>
-              <div class="match-detail">Sulawesi · Specialty · 3–30kg/minggu</div>
-              <div class="match-bar"><div class="match-bar-fill" style="width:89%"></div></div>
-            </div>
-            <div class="match-pct" style="color:var(--amber-light)">89%</div>
-          </div>
-
-          <div class="match-card" onclick="showToast('Membuka profil Sumatra Roastery...')">
-            <div class="match-avatar" style="background:linear-gradient(135deg,#1a2a4a,#5090e0)">💎</div>
-            <div class="match-info">
-              <div class="match-name">Sumatra Premium Roast</div>
-              <div class="match-detail">Aceh · Micro-lot · 2–15kg/minggu</div>
-              <div class="match-bar"><div class="match-bar-fill" style="width:82%"></div></div>
-            </div>
-            <div class="match-pct" style="color:var(--blue)">82%</div>
-          </div>
-
-          <div class="match-card" onclick="showToast('Membuka profil Nusantara Roastery...')">
-            <div class="match-avatar" style="background:linear-gradient(135deg,#4a1a1a,#e05050)">♨️</div>
-            <div class="match-info">
-              <div class="match-name">Nusantara Roasters</div>
-              <div class="match-detail">Jakarta · Blends · 10–100kg/minggu</div>
-              <div class="match-bar"><div class="match-bar-fill" style="width:74%"></div></div>
-            </div>
-            <div class="match-pct" style="color:var(--muted)">74%</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 5: BI DASHBOARD ===== -->
-  <div class="section" id="section-dashboard">
-    <div class="page-header">
-      <h1>📊 Business Intelligence</h1>
-      <p>Analisis cost, tren pasar, dan performa bisnis kamu secara real-time</p>
-    </div>
-
-    <div class="metric-row">
-      <div class="metric-card">
-        <div class="metric-val">Rp 12.4jt</div>
-        <div class="metric-lbl">Pembelian Bulan Ini</div>
-        <div class="metric-chg">↑ 8.2% vs bulan lalu</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-val">47kg</div>
-        <div class="metric-lbl">Total Volume Beli</div>
-        <div class="metric-chg">↑ 12.5% vs bulan lalu</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-val">Rp 264k</div>
-        <div class="metric-lbl">Cost Per kg Rata-rata</div>
-        <div class="metric-chg down">↓ 3.1% vs bulan lalu</div>
-      </div>
-      <div class="metric-card">
-        <div class="metric-val">3</div>
-        <div class="metric-lbl">Active Roastery Partners</div>
-        <div class="metric-chg">+1 bulan ini</div>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="section-title">Pengeluaran 6 Bulan Terakhir</div>
-        <div class="chart-wrap">
-          <canvas id="biChart"></canvas>
-        </div>
-      </div>
-      <div class="card">
-        <div class="section-title">Tren Harga Kopi</div>
-        <div class="chart-wrap">
-          <canvas id="priceChart"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-top:16px">
-      <div class="card">
-        <div class="section-title">Produk Terlaris di Platform</div>
-        <ul class="top-list">
-          <li>
-            <div class="top-rank">1</div>
-            <div class="top-bar">
-              <div>Kintamani Natural — Gunung Agung</div>
-              <div class="top-bar-bg"><div class="top-bar-fill" style="width:90%"></div></div>
-            </div>
-            <span style="font-size:12px;color:var(--muted)">1.2t/bln</span>
-          </li>
-          <li>
-            <div class="top-rank">2</div>
-            <div class="top-bar">
-              <div>Gayo Honey Process — Sumatra</div>
-              <div class="top-bar-bg"><div class="top-bar-fill" style="width:72%"></div></div>
-            </div>
-            <span style="font-size:12px;color:var(--muted)">980kg/bln</span>
-          </li>
-          <li>
-            <div class="top-rank">3</div>
-            <div class="top-bar">
-              <div>Toraja Sulawesi Natural</div>
-              <div class="top-bar-bg"><div class="top-bar-fill" style="width:58%"></div></div>
-            </div>
-            <span style="font-size:12px;color:var(--muted)">760kg/bln</span>
-          </li>
-          <li>
-            <div class="top-rank">4</div>
-            <div class="top-bar">
-              <div>Flores Bajawa Washed</div>
-              <div class="top-bar-bg"><div class="top-bar-fill" style="width:44%"></div></div>
-            </div>
-            <span style="font-size:12px;color:var(--muted)">540kg/bln</span>
-          </li>
-        </ul>
-      </div>
-      <div class="card">
-        <div class="section-title">Analisis Cost Per Cup</div>
-        <div style="display:flex;flex-direction:column;gap:10px">
-          <div class="card2">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:13px;color:var(--cream)">Espresso (18gr dose)</span>
-              <span style="font-size:16px;font-weight:700;color:var(--amber-light);font-family:'Playfair Display',serif">Rp 4.752</span>
-            </div>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">Kintamani Natural @ Rp 264k/kg</div>
-          </div>
-          <div class="card2">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <span style="font-size:13px;color:var(--cream)">Pour Over (15gr dose)</span>
-              <span style="font-size:16px;font-weight:700;color:var(--amber-light);font-family:'Playfair Display',serif">Rp 3.960</span>
-            </div>
-            <div style="font-size:11px;color:var(--muted);margin-top:4px">Toraja Sulawesi @ Rp 264k/kg</div>
-          </div>
-          <div style="padding:12px;background:var(--amber-pale);border-radius:8px;border:1px solid var(--amber)44">
-            <div style="font-size:12px;color:var(--amber-light);font-weight:600">💡 Rekomendasi AI</div>
-            <div style="font-size:12px;color:var(--text2);margin-top:4px">Switch ke Toraja Sulawesi untuk espresso blend bisa hemat Rp 792/cup (16.6% food cost reduction)</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 6: NEGOTIATION ROOM ===== -->
-  <div class="section" id="section-negotiation">
-    <div class="page-header">
-      <h1>💬 Negotiation Room</h1>
-      <p>Negosiasi harga volume, RFQ system, dan kontrak digital terintegrasi</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Chat Negosiasi</div>
-          <div style="display:flex;align-items:center;gap:10px;padding:10px;background:var(--bg3);border-radius:8px;border:1px solid var(--border);margin-bottom:12px">
-            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#8b4513,#d4830a);display:flex;align-items:center;justify-content:center;font-size:16px">🔥</div>
-            <div>
-              <div style="font-size:13px;font-weight:600;color:var(--cream)">Gunung Agung Roastery</div>
-              <div style="font-size:11px;color:var(--green)">● Online sekarang</div>
-            </div>
-            <div style="margin-left:auto"><span class="badge badge-amber">Negosiasi Aktif</span></div>
-          </div>
-
-          <div class="chat-container" id="chatContainer">
-            <div class="msg msg-recv">
-              <div class="msg-bubble">Halo! Kami bisa offer Kintamani Natural 10kg/minggu dengan harga Rp 270.000/kg untuk kontrak 3 bulan.</div>
-              <div class="msg-meta">Gunung Agung · 14:20</div>
-            </div>
-            <div class="msg msg-sent">
-              <div class="msg-bubble">Terima kasih. Apakah bisa Rp 255.000/kg untuk volume yang sama? Kami tertarik untuk jangka panjang.</div>
-              <div class="msg-meta">Kamu · 14:25</div>
-            </div>
-            <div class="msg msg-recv">
-              <div class="msg-bubble">Boleh kami pertimbangkan. Untuk 3 bulan pertama, kami bisa tawarkan Rp 262.000/kg. Selanjutnya review harga bersama.</div>
-              <div class="msg-meta">Gunung Agung · 14:32</div>
-            </div>
-          </div>
-
-          <div class="chat-input-row">
-            <input type="text" placeholder="Ketik pesan negosiasi..." id="chatInput" onkeypress="sendChat(event)">
-            <button class="btn btn-primary" onclick="sendChatBtn()">Kirim</button>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Offer Aktif</div>
-          <div class="offer-card">
-            <div class="offer-header">
-              <span class="offer-title">📋 Counter Offer #3</span>
-              <span class="badge badge-amber">Menunggu Persetujuan</span>
-            </div>
-            <div class="offer-row"><span style="color:var(--muted)">Produk</span><span>Kintamani Natural</span></div>
-            <div class="offer-row"><span style="color:var(--muted)">Volume</span><span>10 kg/minggu</span></div>
-            <div class="offer-row"><span style="color:var(--muted)">Durasi</span><span>3 bulan</span></div>
-            <div class="offer-row"><span style="color:var(--muted)">Harga/kg</span><span style="color:var(--amber-light)">Rp 262.000</span></div>
-            <div class="offer-row"><span style="color:var(--muted)">Total Estimasi</span><span style="color:var(--green)">Rp 31.440.000</span></div>
-            <div class="offer-actions">
-              <button class="btn btn-green btn-sm" onclick="showToast('Offer diterima! Kontrak sedang dibuat...')">✓ Terima</button>
-              <button class="btn btn-outline btn-sm" onclick="showToast('Counter offer baru dikirim!')">↩ Counter</button>
-              <button class="btn btn-outline btn-sm" style="color:var(--red);border-color:var(--red)44" onclick="showToast('Offer ditolak.')">✕ Tolak</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="section-title">RFQ — Request for Quote</div>
-          <div style="font-size:13px;color:var(--muted);margin-bottom:14px">Posting kebutuhan kamu, biarkan roastery yang bid</div>
-
-          <div class="rfq-row">
-            <div>
-              <div class="rfq-title">Butuh Single Origin Washed 15kg/mgg</div>
-              <div style="font-size:11px;color:var(--muted)">Diposting 2 jam lalu · Budget: 280k-320k/kg</div>
-            </div>
-            <div style="text-align:right">
-              <div class="rfq-bids">5 bids</div>
-              <div style="font-size:11px;color:var(--muted)">Terendah: 285k</div>
-            </div>
-          </div>
-          <div class="rfq-row">
-            <div>
-              <div class="rfq-title">Blend Espresso Medium-Dark 20kg/mgg</div>
-              <div style="font-size:11px;color:var(--muted)">Diposting kemarin · Budget: 200k-250k/kg</div>
-            </div>
-            <div style="text-align:right">
-              <div class="rfq-bids">12 bids</div>
-              <div style="font-size:11px;color:var(--muted)">Terendah: 205k</div>
-            </div>
-          </div>
-
-          <hr class="divider">
-          <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:12px">Buat RFQ Baru</div>
-          <div class="form-group">
-            <label>Deskripsi Kebutuhan</label>
-            <input type="text" placeholder="Cth: Butuh natural process, fruity, cupping 85+">
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" class="form-grid-2">
-            <div class="form-group">
-              <label>Volume/Minggu</label>
-              <input type="text" placeholder="10 kg">
-            </div>
-            <div class="form-group">
-              <label>Budget/kg</label>
-              <input type="text" placeholder="Rp 250.000">
-            </div>
-          </div>
-          <div class="form-group">
-            <label>Deadline Negosiasi</label>
-            <input type="date" value="2026-03-05">
-          </div>
-          <button class="btn btn-primary" style="width:100%" onclick="showToast('RFQ berhasil dipost! Menunggu bid dari roastery...')">📢 Post RFQ</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 7: TRUST SYSTEM ===== -->
-  <div class="section" id="section-trust">
-    <div class="page-header">
-      <h1>🏆 Trust & Certification System</h1>
-      <p>Bukan sekadar bintang 1-5 — sistem kepercayaan berbasis data dan sertifikasi</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Profil Roastery</div>
-          <div class="roastery-profile">
-            <div class="roastery-logo">🔥</div>
-            <div style="flex:1">
-              <div style="font-size:18px;font-weight:700;color:var(--cream);font-family:'Playfair Display',serif">Gunung Agung Roastery</div>
-              <div style="font-size:12px;color:var(--muted);margin-top:2px">Bali, Indonesia · Berdiri 2018</div>
-              <div class="stars">★★★★★</div>
-              <div style="font-size:12px;color:var(--muted)">4.9 · 128 ulasan</div>
-            </div>
-          </div>
-
-          <hr class="divider">
-          <div style="font-size:13px;font-weight:600;color:var(--amber-light);margin-bottom:12px">Trust Metrics</div>
-
-          <div class="trust-item">
-            <div class="trust-header"><span>On-Time Delivery</span><span style="color:var(--green)">97%</span></div>
-            <div class="trust-bar"><div class="trust-fill" style="width:97%;background:var(--green)"></div></div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-header"><span>Roast Consistency Score</span><span style="color:var(--amber-light)">94%</span></div>
-            <div class="trust-bar"><div class="trust-fill" style="width:94%;background:var(--amber)"></div></div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-header"><span>Response Rate</span><span style="color:var(--amber-light)">98%</span></div>
-            <div class="trust-bar"><div class="trust-fill" style="width:98%;background:var(--amber)"></div></div>
-          </div>
-          <div class="trust-item">
-            <div class="trust-header"><span>Reorder Rate (Repeat Buyer)</span><span style="color:var(--blue)">82%</span></div>
-            <div class="trust-bar"><div class="trust-fill" style="width:82%;background:var(--blue)"></div></div>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Ulasan Terbaru</div>
-          <div class="review-item">
-            <div class="review-header">
-              <div class="reviewer">Kopilandia Café · Jakarta</div>
-              <div class="stars" style="font-size:12px">★★★★★</div>
-            </div>
-            <div class="review-text">"Konsistensi roast luar biasa. Sudah 8 bulan berlangganan dan tidak pernah ada masalah. Pengiriman selalu tepat waktu."</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px">3 hari lalu · ✓ Verified Purchase</div>
-          </div>
-          <div class="review-item">
-            <div class="review-header">
-              <div class="reviewer">Kopi Nusantara · Surabaya</div>
-              <div class="stars" style="font-size:12px">★★★★☆</div>
-            </div>
-            <div class="review-text">"Produk excellent. Satu kali keterlambatan pengiriman tapi langsung dikomunikasikan dengan baik."</div>
-            <div style="font-size:11px;color:var(--muted);margin-top:6px">1 minggu lalu · ✓ Verified Purchase</div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="section-title">Sertifikasi & Badge</div>
-          <div class="cert-grid">
-            <div class="cert-card active">
-              <div class="cert-icon">☕</div>
-              <div class="cert-name">SCAI Certified</div>
-              <div class="cert-check">✅</div>
-            </div>
-            <div class="cert-card active">
-              <div class="cert-icon">🌿</div>
-              <div class="cert-name">Rainforest Alliance</div>
-              <div class="cert-check">✅</div>
-            </div>
-            <div class="cert-card active">
-              <div class="cert-icon">⚖️</div>
-              <div class="cert-name">Fair Trade</div>
-              <div class="cert-check">✅</div>
-            </div>
-            <div class="cert-card active">
-              <div class="cert-icon">🏅</div>
-              <div class="cert-name">Preferred Supplier</div>
-              <div class="cert-check">🌟</div>
-            </div>
-            <div class="cert-card">
-              <div class="cert-icon">🌱</div>
-              <div class="cert-name">Carbon Neutral</div>
-              <div class="cert-check" style="color:var(--muted)">—</div>
-            </div>
-            <div class="cert-card">
-              <div class="cert-icon">🔬</div>
-              <div class="cert-name">Q Grader Lab</div>
-              <div class="cert-check" style="color:var(--muted)">—</div>
-            </div>
-          </div>
-
-          <hr class="divider">
-          <div style="font-size:13px;font-weight:600;color:var(--amber-light);margin-bottom:12px">Rating Breakdown</div>
-          <div style="display:flex;flex-direction:column;gap:6px">
-            <div style="display:flex;align-items:center;gap:8px;font-size:12px">
-              <span style="color:var(--muted);width:40px">5 ★</span>
-              <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:75%;height:100%;background:var(--amber);border-radius:3px"></div></div>
-              <span style="color:var(--muted)">75%</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;font-size:12px">
-              <span style="color:var(--muted);width:40px">4 ★</span>
-              <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:20%;height:100%;background:var(--amber-light);border-radius:3px"></div></div>
-              <span style="color:var(--muted)">20%</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;font-size:12px">
-              <span style="color:var(--muted);width:40px">3 ★</span>
-              <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:4%;height:100%;background:var(--muted);border-radius:3px"></div></div>
-              <span style="color:var(--muted)">4%</span>
-            </div>
-            <div style="display:flex;align-items:center;gap:8px;font-size:12px">
-              <span style="color:var(--muted);width:40px">≤2 ★</span>
-              <div style="flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden"><div style="width:1%;height:100%;background:var(--red);border-radius:3px"></div></div>
-              <span style="color:var(--muted)">1%</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 8: KNOWLEDGE HUB ===== -->
-  <div class="section" id="section-knowledge">
-    <div class="page-header">
-      <h1>🎓 Knowledge Hub</h1>
-      <p>Belajar dari roaster terbaik — panduan brewing, webinar, dan konsultasi langsung</p>
-    </div>
-
-    <div class="knowledge-tabs">
-      <div class="ktab active" onclick="switchKTab(this,'brewing')">🍵 Brewing Guide</div>
-      <div class="ktab" onclick="switchKTab(this,'webinar')">🎥 Webinar</div>
-      <div class="ktab" onclick="switchKTab(this,'consult')">💬 Konsultasi</div>
-      <div class="ktab" onclick="switchKTab(this,'origin')">🌍 Origin Edu</div>
-    </div>
-
-    <div id="ktab-brewing">
-      <div class="grid-3">
-        <div class="content-card" onclick="showToast('Membuka brewing guide Kintamani Natural...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#2a1a0a,#8b4513)">☕</div>
-          <div class="content-body">
-            <div class="content-type">Brewing Guide · Espresso</div>
-            <div class="content-title">Kintamani Natural — Espresso Recipe</div>
-            <div class="content-meta">by Gunung Agung Roastery · 5 min read</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka guide Pour Over...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#0a1a2a,#1a5a8a)">🫗</div>
-          <div class="content-body">
-            <div class="content-type">Brewing Guide · Pour Over</div>
-            <div class="content-title">Toraja V60 — Ratio & Temperature Guide</div>
-            <div class="content-meta">by Celebes Roastery · 8 min read</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka guide Cold Brew...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#0a2a1a,#1a8a5a)">🧊</div>
-          <div class="content-body">
-            <div class="content-type">Brewing Guide · Cold Brew</div>
-            <div class="content-title">Flores Bajawa Cold Brew 12hr Steep</div>
-            <div class="content-meta">by Timur Roastery · 6 min read</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka guide Milk Steaming...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#2a1a2a,#8a1a8a)">🥛</div>
-          <div class="content-body">
-            <div class="content-type">Technique · Latte Art</div>
-            <div class="content-title">Milk Steaming Suhu & Textur Perfect</div>
-            <div class="content-meta">by BrewLink Academy · 10 min read</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka guide Grind Size...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#2a2a0a,#8a8a1a)">⚙️</div>
-          <div class="content-body">
-            <div class="content-type">Technique · Grinder</div>
-            <div class="content-title">Grind Size Optimization per Brewing Method</div>
-            <div class="content-meta">by BrewLink Academy · 7 min read</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka panduan storage...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#1a1a2a,#4a4a8a)">📦</div>
-          <div class="content-body">
-            <div class="content-type">Storage · Best Practice</div>
-            <div class="content-title">Cara Simpan Biji Kopi Agar Tahan Lama</div>
-            <div class="content-meta">by BrewLink Academy · 4 min read</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="ktab-webinar" style="display:none">
-      <div class="grid-3">
-        <div class="content-card" onclick="showToast('Mendaftar webinar...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#2a1a0a,#d4830a)">🎥</div>
-          <div class="content-body">
-            <div class="content-type" style="color:var(--red)">🔴 LIVE · 28 Feb, 14:00</div>
-            <div class="content-title">Membangun Menu Signature Coffee yang Profitable</div>
-            <div class="content-meta">Gunung Agung Roastery · 120 orang terdaftar</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka rekaman...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#0a1a2a,#5090e0)">▶️</div>
-          <div class="content-body">
-            <div class="content-type">Rekaman · 45 menit</div>
-            <div class="content-title">Understanding Specialty Coffee Processing Methods</div>
-            <div class="content-meta">1.2k views · 2 minggu lalu</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Mendaftar workshop...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#0a2a0a,#4caf78)">🏫</div>
-          <div class="content-body">
-            <div class="content-type">Workshop Online · 5 Mar</div>
-            <div class="content-title">Cupping Fundamentals — SCA Method</div>
-            <div class="content-meta">Celebes Roastery · 8 slot tersisa</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="ktab-consult" style="display:none">
-      <div class="grid-2">
-        <div class="card">
-          <div class="section-title">Konsultasi dengan Roaster</div>
-          <div class="consult-form">
-            <div class="form-group">
-              <label>Pilih Roastery</label>
-              <select>
-                <option>Gunung Agung Roastery (Online)</option>
-                <option>Celebes Roastery (Offline dalam 2 jam)</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Topik Konsultasi</label>
-              <select>
-                <option>Profil roast yang cocok untuk menu saya</option>
-                <option>Rekomendasi origin untuk target pelanggan</option>
-                <option>Optimasi espresso recipe</option>
-                <option>Lainnya</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Detail Pertanyaan</label>
-              <textarea placeholder="Jelaskan detail kebutuhan atau pertanyaan kamu..."></textarea>
-            </div>
-            <button class="btn btn-primary" style="width:100%" onclick="showToast('Request konsultasi dikirim!')">📨 Kirim Request Konsultasi</button>
-          </div>
-        </div>
-        <div class="card">
-          <div class="section-title">Ahli Tersedia Sekarang</div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <div class="card2" style="display:flex;align-items:center;gap:12px">
-              <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#8b4513,#d4830a);display:flex;align-items:center;justify-content:center;font-size:18px">👨‍🍳</div>
-              <div style="flex:1">
-                <div style="font-size:13px;font-weight:600;color:var(--cream)">Wayan Krisna</div>
-                <div style="font-size:11px;color:var(--muted)">Q Grader · Gunung Agung</div>
-                <span class="badge badge-green" style="font-size:10px;margin-top:4px">● Online</span>
-              </div>
-              <button class="btn btn-outline btn-sm" onclick="showToast('Chat dibuka!')">Chat</button>
-            </div>
-            <div class="card2" style="display:flex;align-items:center;gap:12px">
-              <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,#1a4a2a,#4caf78);display:flex;align-items:center;justify-content:center;font-size:18px">👩‍🍳</div>
-              <div style="flex:1">
-                <div style="font-size:13px;font-weight:600;color:var(--cream)">Siti Rahma</div>
-                <div style="font-size:11px;color:var(--muted)">Head Roaster · Celebes</div>
-                <span class="badge badge-green" style="font-size:10px;margin-top:4px">● Online</span>
-              </div>
-              <button class="btn btn-outline btn-sm" onclick="showToast('Chat dibuka!')">Chat</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div id="ktab-origin" style="display:none">
-      <div class="grid-3">
-        <div class="content-card" onclick="showToast('Membuka artikel Kintamani...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#2a1a0a,#8b4513)">🌋</div>
-          <div class="content-body">
-            <div class="content-type">Origin Story · Indonesia</div>
-            <div class="content-title">Kintamani: Kopi di Kaki Gunung Berapi Bali</div>
-            <div class="content-meta">BrewLink Origin Series · 12 min read</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka artikel Toraja...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#0a2a1a,#1a8a5a)">⛰️</div>
-          <div class="content-body">
-            <div class="content-type">Origin Story · Indonesia</div>
-            <div class="content-title">Toraja: Tradisi Kopi di Dataran Tinggi Sulawesi</div>
-            <div class="content-meta">BrewLink Origin Series · 10 min read</div>
-          </div>
-        </div>
-        <div class="content-card" onclick="showToast('Membuka artikel Gayo...')">
-          <div class="content-thumb" style="background:linear-gradient(135deg,#0a1a2a,#1a5a8a)">🌊</div>
-          <div class="content-body">
-            <div class="content-type">Origin Story · Indonesia</div>
-            <div class="content-title">Gayo Aceh: Warisan Kopi Arabika Tertua Nusantara</div>
-            <div class="content-meta">BrewLink Origin Series · 15 min read</div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 9: PAYMENT ===== -->
-  <div class="section" id="section-payment">
-    <div class="page-header">
-      <h1>💳 Flexible Payment & Finance</h1>
-      <p>Net terms, cicilan, escrow, dan pembiayaan khusus untuk transaksi B2B kopi</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Pilih Metode Pembayaran</div>
-          <div class="payment-options">
-            <div class="pay-option selected" onclick="selectPay(this,'Rp 31.440.000','0','0')">
-              <div class="pay-icon">⚡</div>
-              <div class="pay-name">Full Payment</div>
-              <div class="pay-desc">Bayar langsung</div>
-            </div>
-            <div class="pay-option" onclick="selectPay(this,'Rp 31.440.000','Net 15 days','0')">
-              <div class="pay-icon">📅</div>
-              <div class="pay-name">Net 15</div>
-              <div class="pay-desc">Bayar 15 hari</div>
-            </div>
-            <div class="pay-option" onclick="selectPay(this,'Rp 31.440.000','Net 30 days','2%')">
-              <div class="pay-icon">🗓️</div>
-              <div class="pay-name">Net 30</div>
-              <div class="pay-desc">Bayar 30 hari</div>
-            </div>
-            <div class="pay-option" onclick="selectPay(this,'Rp 31.440.000','3x cicilan','1.5%')">
-              <div class="pay-icon">💰</div>
-              <div class="pay-name">3x Cicilan</div>
-              <div class="pay-desc">Split payment</div>
-            </div>
-          </div>
-
-          <div class="calc-result" id="calcResult">
-            <div style="font-size:12px;color:var(--amber-light);font-weight:600;margin-bottom:8px">💰 Rincian Pembayaran</div>
-            <div class="calc-row"><span style="color:var(--muted)">Subtotal Order</span><span>Rp 31.440.000</span></div>
-            <div class="calc-row"><span style="color:var(--muted)">Biaya Admin</span><span>Rp 0</span></div>
-            <div class="calc-row"><span style="color:var(--muted)">Platform Fee (1.5%)</span><span>Rp 471.600</span></div>
-            <div class="calc-row total"><span>Total</span><span id="totalPay">Rp 31.911.600</span></div>
-          </div>
-          <button class="btn btn-primary" style="width:100%;margin-top:14px" onclick="showToast('Pembayaran diproses melalui escrow!')">✅ Konfirmasi & Bayar</button>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">Riwayat Pembayaran</div>
-          <div style="display:flex;flex-direction:column;gap:8px">
-            <div class="card2" style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div style="font-size:13px;color:var(--cream)">INV-2026-0219</div>
-                <div style="font-size:11px;color:var(--muted)">19 Feb 2026 · Kintamani 10kg</div>
-              </div>
-              <div style="text-align:right">
-                <div style="font-size:14px;font-weight:600;color:var(--cream)">Rp 2.640.000</div>
-                <span class="badge badge-green">Lunas</span>
-              </div>
-            </div>
-            <div class="card2" style="display:flex;justify-content:space-between;align-items:center">
-              <div>
-                <div style="font-size:13px;color:var(--cream)">INV-2026-0212</div>
-                <div style="font-size:11px;color:var(--muted)">12 Feb 2026 · Toraja 8kg</div>
-              </div>
-              <div style="text-align:right">
-                <div style="font-size:14px;font-weight:600;color:var(--cream)">Rp 2.120.000</div>
-                <span class="badge badge-green">Lunas</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="section-title">🔒 Escrow System</div>
-          <p style="font-size:13px;color:var(--muted);margin-bottom:16px">Uang ditahan escrow sampai barang diterima dan dikonfirmasi — aman untuk kedua pihak</p>
-
-          <div class="escrow-visual">
-            <div class="escrow-box buyer">
-              <div class="escrow-label" style="color:var(--blue)">Buyer</div>
-              <div style="font-size:20px;margin:4px 0">🏪</div>
-              <div style="font-size:11px;color:var(--muted)">Coffee Shop</div>
-            </div>
-            <div class="escrow-arrow">→</div>
-            <div class="escrow-box escrow">
-              <div class="escrow-label" style="color:var(--amber-light)">Escrow</div>
-              <div style="font-size:20px;margin:4px 0">🔐</div>
-              <div style="font-size:11px;color:var(--muted)">BrewLink</div>
-            </div>
-            <div class="escrow-arrow">→</div>
-            <div class="escrow-box seller">
-              <div class="escrow-label" style="color:var(--green)">Seller</div>
-              <div style="font-size:20px;margin:4px 0">🔥</div>
-              <div style="font-size:11px;color:var(--muted)">Roastery</div>
-            </div>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-            <div class="card2" style="display:flex;gap:10px;align-items:flex-start">
-              <span style="font-size:18px">1️⃣</span>
-              <div style="font-size:13px;color:var(--text2)">Buyer transfer ke escrow BrewLink — dana ditahan aman</div>
-            </div>
-            <div class="card2" style="display:flex;gap:10px;align-items:flex-start">
-              <span style="font-size:18px">2️⃣</span>
-              <div style="font-size:13px;color:var(--text2)">Roastery menerima konfirmasi dan memproses order</div>
-            </div>
-            <div class="card2" style="display:flex;gap:10px;align-items:flex-start">
-              <span style="font-size:18px">3️⃣</span>
-              <div style="font-size:13px;color:var(--text2)">Barang diterima buyer, konfirmasi di platform</div>
-            </div>
-            <div class="card2" style="display:flex;gap:10px;align-items:flex-start">
-              <span style="font-size:18px">4️⃣</span>
-              <div style="font-size:13px;color:var(--text2)">Dana dilepas ke roastery secara otomatis ✅</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== SECTION 10: LOGISTICS ===== -->
-  <div class="section" id="section-logistics">
-    <div class="page-header">
-      <h1>🚚 Logistics Tracker</h1>
-      <p>Tracking realtime, sensor suhu & kelembaban, dan prediksi kesegaran kopi</p>
-    </div>
-    <div class="grid-2">
-      <div>
-        <div class="card">
-          <div class="section-title">Order Tracking — #ORD-2026-0847</div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding:12px;background:var(--bg3);border-radius:8px;border:1px solid var(--border)">
-            <div>
-              <div style="font-size:14px;font-weight:600;color:var(--cream)">Kintamani Natural — 10kg</div>
-              <div style="font-size:12px;color:var(--muted)">Gunung Agung Roastery → Teman Ngopi Pontianak</div>
-            </div>
-            <span class="badge badge-amber">In Transit</span>
-          </div>
-
-          <div class="tracking-timeline">
-            <div class="track-step">
-              <div class="track-dot done">✓</div>
-              <div class="track-title">Order Dikonfirmasi</div>
-              <div class="track-desc">Roastery memulai proses packaging</div>
-              <div class="track-time">Senin, 23 Feb · 09:15</div>
-            </div>
-            <div class="track-step">
-              <div class="track-dot done">✓</div>
-              <div class="track-title">Roasting Selesai</div>
-              <div class="track-desc">Roasted fresh, langsung packaging vacuum sealed</div>
-              <div class="track-time">Senin, 23 Feb · 14:30</div>
-            </div>
-            <div class="track-step">
-              <div class="track-dot done">✓</div>
-              <div class="track-title">Pick up oleh Kurir</div>
-              <div class="track-desc">JNE Express - ID: JNE724819024</div>
-              <div class="track-time">Senin, 23 Feb · 17:00</div>
-            </div>
-            <div class="track-step">
-              <div class="track-dot active">→</div>
-              <div class="track-title">Dalam Perjalanan</div>
-              <div class="track-desc">Bali → Surabaya → Pontianak</div>
-              <div class="track-time">Selasa, 24 Feb · Sekarang</div>
-            </div>
-            <div class="track-step">
-              <div class="track-dot">📦</div>
-              <div class="track-title muted">Tiba di Tujuan</div>
-              <div class="track-desc" style="color:var(--muted)">Estimasi: Rabu, 25 Feb</div>
-            </div>
-            <div class="track-step">
-              <div class="track-dot">✅</div>
-              <div class="track-title muted">Diterima & Dikonfirmasi</div>
-              <div class="track-desc" style="color:var(--muted)">Dana escrow akan dilepas ke roastery</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div>
-        <div class="card">
-          <div class="section-title">🌡️ Real-time Sensor Data</div>
-          <div class="sensor-grid">
-            <div class="sensor-card">
-              <div class="sensor-icon">🌡️</div>
-              <div class="sensor-val" id="tempVal">22.4°C</div>
-              <div class="sensor-lbl">Suhu Paket</div>
-              <span class="sensor-ok">✓ Normal</span>
-            </div>
-            <div class="sensor-card">
-              <div class="sensor-icon">💧</div>
-              <div class="sensor-val" id="humVal">55%</div>
-              <div class="sensor-lbl">Kelembaban</div>
-              <span class="sensor-ok">✓ Normal</span>
-            </div>
-            <div class="sensor-card">
-              <div class="sensor-icon">📍</div>
-              <div class="sensor-val" style="font-size:14px">Surabaya Hub</div>
-              <div class="sensor-lbl">Lokasi Terakhir</div>
-              <span class="sensor-ok">✓ Updated</span>
-            </div>
-            <div class="sensor-card">
-              <div class="sensor-icon">⚡</div>
-              <div class="sensor-val" id="shockVal">0</div>
-              <div class="sensor-lbl">Shock Events</div>
-              <span class="sensor-ok">✓ Aman</span>
-            </div>
-          </div>
-          <button class="btn btn-ghost btn-sm" style="width:100%;margin-top:12px" onclick="refreshSensors()">🔄 Refresh Data</button>
-        </div>
-
-        <div class="card" style="margin-top:16px">
-          <div class="section-title">☕ Freshness Predictor</div>
-          <p style="font-size:12px;color:var(--muted);margin-bottom:12px">Berdasarkan roast date dan estimasi tiba</p>
-          <div class="freshness-bar">
-            <div class="fresh-header">
-              <span style="font-size:13px;color:var(--cream)">Kintamani Natural</span>
-              <span style="color:var(--green);font-weight:600">🟢 Peak Freshness</span>
-            </div>
-            <div style="font-size:12px;color:var(--muted);margin-bottom:6px">Roast: 23 Feb 2026 → Tiba: 25 Feb → Best Before: 25 Mar 2026</div>
-            <div class="fresh-fill" style="position:relative;overflow:visible">
-              <div style="position:absolute;top:-3px;left:8%;width:4px;height:14px;background:#fff;border-radius:2px;box-shadow:0 0 6px rgba(255,255,255,0.5)"></div>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);margin-top:4px">
-              <span>Roast</span>
-              <span>Peak (7-21 hari)</span>
-              <span>Best Before</span>
-            </div>
-          </div>
-
-          <div style="padding:12px;background:var(--amber-pale);border-radius:8px;border:1px solid var(--amber)44;margin-top:12px">
-            <div style="font-size:12px;color:var(--amber-light);font-weight:600">💡 Rekomendasi</div>
-            <div style="font-size:12px;color:var(--text2);margin-top:4px">Kopi akan tiba pada peak freshness window (2-22 hari setelah roast). Optimal untuk espresso ekstraksi.</div>
-          </div>
-
-          <button class="btn btn-outline" style="width:100%;margin-top:12px" onclick="showToast('Konfirmasi penerimaan berhasil! Dana escrow dilepas ke roastery.')">✅ Konfirmasi Diterima & Rilis Escrow</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</main>
-
-<!-- TOAST -->
-<div class="toast" id="toast"></div>
-
 <script>
-// Mobile sidebar
-function toggleSidebar() {
-  const sidebar = document.getElementById('sidebar');
-  const overlay = document.getElementById('sidebarOverlay');
-  const hamburger = document.getElementById('hamburger');
-  sidebar.classList.toggle('open');
-  overlay.classList.toggle('show');
-  hamburger.classList.toggle('open');
+// ─── Load jsQR from CDN ───
+const jsQRScript = document.createElement('script');
+jsQRScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js';
+document.head.appendChild(jsQRScript);
+
+// ─── Clock ───
+function updateClock() {
+  const now = new Date();
+  const h = now.getHours().toString().padStart(2,'0');
+  const m = now.getMinutes().toString().padStart(2,'0');
+  document.getElementById('clockMain').textContent = `${h}:${m}`;
 }
-function closeSidebar() {
-  document.getElementById('sidebar').classList.remove('open');
-  document.getElementById('sidebarOverlay').classList.remove('show');
-  document.getElementById('hamburger').classList.remove('open');
-}
+updateClock();
+setInterval(updateClock, 10000);
 
-// Navigation
-function showSection(id, bnavEl, title) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.querySelectorAll('.bnav-item').forEach(n => n.classList.remove('active'));
-
-  document.getElementById('section-' + id).classList.add('active');
-
-  // Desktop nav highlight
-  const desktopNav = document.querySelector(`.nav-item[onclick*="'${id}'"]`);
-  if (desktopNav) desktopNav.classList.add('active');
-  else if (event && event.currentTarget && event.currentTarget.classList.contains('nav-item')) {
-    event.currentTarget.classList.add('active');
-  }
-
-  // Bottom nav highlight
-  if (bnavEl) {
-    bnavEl.classList.add('active');
+// ─── Screen switching ───
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const sb = document.getElementById('statusBarMain');
+  if (id === 'screen-scan') {
+    sb.classList.remove('dark');
+    sb.style.color = 'white';
+    startCamera();
   } else {
-    // called from desktop nav, find matching bnav
-    const bn = document.querySelector(`.bnav-item[onclick*="'${id}'"]`);
-    if (bn) bn.classList.add('active');
+    sb.classList.add('dark');
+    sb.style.color = 'var(--text-main)';
+    if (id !== 'screen-scan') stopCamera();
   }
-
-  // Mobile title
-  const mobileTitle = document.getElementById('mobileTitle');
-  if (mobileTitle && title) mobileTitle.textContent = title;
-
-  document.querySelector('.main').scrollTo(0, 0);
-  closeSidebar();
-
-  if (id === 'cupping') setTimeout(initRadar, 100);
-  if (id === 'dashboard') setTimeout(initCharts, 100);
+  document.querySelectorAll('.scroll-body').forEach(el => el.scrollTop = 0);
 }
 
-// Toast
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3000);
+function goHome() {
+  stopCamera();
+  showScreen('screen-home');
+  pinEntry = '';
+  updatePinDots();
+  document.getElementById('pinModal').classList.remove('show');
+}
+function goToScan() {
+  document.getElementById('scanSuccessOverlay').classList.remove('show');
+  showScreen('screen-scan');
+}
+function goToPayment() {
+  stopCamera();
+  showScreen('screen-payment');
+}
+function resetScan() {
+  document.getElementById('scanSuccessOverlay').classList.remove('show');
+  qrDetected = false;
+  startCamera();
 }
 
-// ===== SUBSCRIPTION =====
-function calcSavings() {
-  const vol = parseFloat(document.getElementById('volInput').value) || 5;
-  const freq = parseInt(document.getElementById('freqSelect').value);
-  const perKg = 87500;
-  const subPerKg = 80500;
-  const ordersPerMonth = 4 / freq;
-  const savings = (perKg - subPerKg) * vol * ordersPerMonth;
-  document.getElementById('savings').textContent = 'Rp ' + Math.round(savings).toLocaleString('id');
-  document.getElementById('subPrice').textContent = 'Rp ' + subPerKg.toLocaleString('id') + '/kg';
-}
+// ─── Camera & QR Scanning ───
+let cameraStream = null;
+let qrAnimFrame = null;
+let qrDetected = false;
+let currentTrack = null;
 
-// Schedule viz
-const schedViz = document.getElementById('schedViz');
-if (schedViz) {
-  for (let i = 0; i < 31; i++) {
-    const d = document.createElement('div');
-    d.className = 'sched-dot';
-    if (i === 6 || i === 13 || i === 20 || i === 27) d.classList.add('filled');
-    if (i === 3) d.classList.add('today');
-    schedViz.appendChild(d);
-  }
-}
+async function startCamera() {
+  qrDetected = false;
+  const video = document.getElementById('cameraVideo');
+  const status = document.getElementById('cameraStatus');
+  const statusMsg = document.getElementById('cameraStatusMsg');
+  const retryBtn = document.getElementById('retryBtn');
+  const cameraBg = document.getElementById('cameraBg');
 
-// ===== CUPPING RADAR =====
-let cuppingValues = [8.5, 8.0, 8.75, 8.25, 8.0, 8.5, 8.5];
-const labels = ['Fragrance','Aroma','Flavor','Acidity','Body','Balance','Overall'];
+  // Stop any existing stream
+  stopCamera();
 
-function initRadar() {
-  const canvas = document.getElementById('cuppingRadar');
-  if (!canvas) return;
-  drawRadar(canvas, cuppingValues);
-}
+  // Show status while requesting
+  status.style.display = 'block';
+  statusMsg.textContent = 'Meminta izin kamera...';
+  retryBtn.style.display = 'none';
 
-function drawRadar(canvas, values) {
-  const ctx = canvas.getContext('2d');
-  const cx = canvas.width / 2, cy = canvas.height / 2;
-  const r = Math.min(cx, cy) - 30;
-  const n = values.length;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: { ideal: 'environment' }, // kamera belakang
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: false
+    });
 
-  // Grid
-  for (let ring = 1; ring <= 4; ring++) {
-    ctx.beginPath();
-    for (let i = 0; i < n; i++) {
-      const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
-      const pr = (ring / 4) * r;
-      const x = cx + Math.cos(angle) * pr;
-      const y = cy + Math.sin(angle) * pr;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    cameraStream = stream;
+    currentTrack = stream.getVideoTracks()[0];
+    video.srcObject = stream;
+    video.play();
+
+    // Hide bg, hide status when camera ready
+    video.onloadedmetadata = () => {
+      cameraBg.style.display = 'none';
+      status.style.display = 'none';
+      document.getElementById('scanHintText').textContent = 'Arahkan ke kode QRIS';
+      startQrLoop();
+    };
+  } catch(err) {
+    cameraBg.style.display = 'block';
+    status.style.display = 'block';
+    retryBtn.style.display = 'inline-block';
+    if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+      statusMsg.textContent = 'Izin kamera ditolak. Aktifkan izin kamera di pengaturan browser, lalu coba lagi.';
+    } else if (err.name === 'NotFoundError') {
+      statusMsg.textContent = 'Kamera tidak ditemukan di perangkat ini.';
+    } else {
+      statusMsg.textContent = 'Tidak dapat mengakses kamera: ' + err.message;
     }
-    ctx.closePath();
-    ctx.strokeStyle = '#3a2a18';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+  }
+}
+
+function stopCamera() {
+  if (qrAnimFrame) { cancelAnimationFrame(qrAnimFrame); qrAnimFrame = null; }
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(t => t.stop());
+    cameraStream = null;
+  }
+  const video = document.getElementById('cameraVideo');
+  video.srcObject = null;
+  document.getElementById('cameraBg').style.display = 'block';
+}
+
+function startQrLoop() {
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.getElementById('qrCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function tick() {
+    if (qrDetected || document.getElementById('screen-scan').style.display === 'none') return;
+    if (!document.getElementById('screen-scan').classList.contains('active')) return;
+
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      if (typeof jsQR !== 'undefined') {
+        const code = jsQR(imageData.data, imageData.width, imageData.height, {
+          inversionAttempts: 'dontInvert'
+        });
+        if (code) {
+          qrDetected = true;
+          handleQrResult(code.data);
+          return;
+        }
+      }
+    }
+    qrAnimFrame = requestAnimationFrame(tick);
+  }
+  qrAnimFrame = requestAnimationFrame(tick);
+}
+
+// Parse QRIS data or any QR string
+function handleQrResult(data) {
+  // Flash corners gold
+  document.querySelectorAll('.corner').forEach(c => {
+    c.style.borderColor = '#E6C97A';
+    c.style.transition = 'border-color 0.2s';
+  });
+
+  // Try parse QRIS merchant name (field 59 = merchant name)
+  let merchantName = 'Merchant QRIS';
+  let nmid = '';
+
+  // Simple QRIS TLV parser for display
+  try {
+    // field 59 is merchant name in QRIS
+    const f59 = extractQrisTlv(data, '59');
+    if (f59) merchantName = f59;
+    // field 00-26 area has NMID info
+    const f26 = extractQrisTlv(data, '26');
+    if (f26) {
+      const sub01 = extractQrisTlv(f26, '01');
+      if (sub01) nmid = 'NMID: ' + sub01;
+    }
+    if (!nmid) nmid = 'Data: ' + data.substring(0, 30) + (data.length > 30 ? '...' : '');
+  } catch(e) {
+    merchantName = 'Merchant QRIS';
+    nmid = data.substring(0, 40) + (data.length > 40 ? '...' : '');
   }
 
-  // Spokes
-  for (let i = 0; i < n; i++) {
-    const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx + Math.cos(angle) * r, cy + Math.sin(angle) * r);
-    ctx.strokeStyle = '#3a2a18';
-    ctx.lineWidth = 1;
-    ctx.stroke();
+  document.getElementById('qrMerchantName').textContent = merchantName;
+  document.getElementById('qrNmid').textContent = nmid;
+
+  // Also update payment screen merchant info
+  document.querySelector('.merchant-name').textContent = merchantName;
+  document.querySelector('.merchant-nmid').textContent = nmid + ' · Terdeteksi via QRIS';
+  document.querySelector('.merchant-avatar').textContent = merchantName.charAt(0).toUpperCase();
+
+  setTimeout(() => {
+    document.getElementById('scanSuccessOverlay').classList.add('show');
+  }, 400);
+}
+
+function extractQrisTlv(data, id) {
+  let i = 0;
+  while (i < data.length - 4) {
+    const tag = data.substring(i, i + 2);
+    const len = parseInt(data.substring(i + 2, i + 4), 10);
+    if (isNaN(len)) break;
+    const val = data.substring(i + 4, i + 4 + len);
+    if (tag === id) return val;
+    i += 4 + len;
   }
-
-  // Data
-  ctx.beginPath();
-  values.forEach((v, i) => {
-    const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
-    const pr = ((v - 6) / 4) * r;
-    const x = cx + Math.cos(angle) * pr;
-    const y = cy + Math.sin(angle) * pr;
-    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-  });
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(212, 131, 10, 0.25)';
-  ctx.fill();
-  ctx.strokeStyle = '#d4830a';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-
-  // Labels
-  ctx.fillStyle = '#c8a870';
-  ctx.font = '11px DM Sans';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  labels.forEach((lbl, i) => {
-    const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
-    const x = cx + Math.cos(angle) * (r + 18);
-    const y = cy + Math.sin(angle) * (r + 18);
-    ctx.fillText(lbl, x, y);
-  });
-
-  // Dots
-  values.forEach((v, i) => {
-    const angle = (i / n) * Math.PI * 2 - Math.PI / 2;
-    const pr = ((v - 6) / 4) * r;
-    ctx.beginPath();
-    ctx.arc(cx + Math.cos(angle) * pr, cy + Math.sin(angle) * pr, 4, 0, Math.PI * 2);
-    ctx.fillStyle = '#f0a830';
-    ctx.fill();
-  });
+  return null;
 }
 
-function updateCupping(input, idx, valId) {
-  const v = parseFloat(input.value);
-  cuppingValues[idx] = v;
-  document.getElementById(valId).textContent = v;
-  const total = (cuppingValues.reduce((a, b) => a + b, 0) / cuppingValues.length + 80 - 8).toFixed(1);
-  document.getElementById('totalScore').textContent = total;
-  const canvas = document.getElementById('cuppingRadar');
-  if (canvas) drawRadar(canvas, cuppingValues);
+// ─── Simulate QR Scan (fallback / demo) ───
+function simulateScan() {
+  if (qrDetected) return;
+  qrDetected = true;
+  // Simulate a demo QRIS payload
+  const demoData = '00020101021226660014ID.CO.BRI.WWW011893600002030303803021ID1024567890123030314ID.QRIS.WWW5204531253033605802ID5915Warung Saprahan Mbak Sri6007Pontianak63041234';
+  handleQrResult(demoData);
 }
 
-function selectSample(el, name, score) {
-  document.querySelectorAll('.sample-card').forEach(c => c.classList.remove('selected'));
-  el.classList.add('selected');
-  document.getElementById('totalScore').textContent = score + '.0';
-  cuppingValues = cuppingValues.map(v => v + (Math.random() - 0.5) * 0.5);
-  const canvas = document.getElementById('cuppingRadar');
-  if (canvas) drawRadar(canvas, cuppingValues);
+// ─── Upload QR from image ───
+function handleUploadQR(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.getElementById('qrCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      ctx.drawImage(img, 0, 0);
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      if (typeof jsQR !== 'undefined') {
+        const code = jsQR(imageData.data, imageData.width, imageData.height, { inversionAttempts: 'attemptBoth' });
+        if (code) {
+          qrDetected = true;
+          handleQrResult(code.data);
+        } else {
+          alert('QR Code tidak terdeteksi di gambar ini. Coba foto yang lebih jelas.');
+        }
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+  // Reset input
+  event.target.value = '';
 }
 
-// ===== MATCHING =====
-function toggleFilter(el) {
-  el.classList.toggle('active');
+// ─── Numpad logic ───
+let rawAmount = '';
+function pressNum(key) {
+  if (key === 'del') {
+    rawAmount = rawAmount.slice(0, -1);
+  } else {
+    if (rawAmount.length >= 9) return; // max 999.999.999
+    if (rawAmount === '' && key === '0') return;
+    rawAmount += key;
+  }
+  updateDisplay();
 }
-
-function runMatching() {
-  const status = document.getElementById('matchingStatus');
-  status.innerHTML = '<div class="pulse-dot"></div> Sedang mencari kecocokan terbaik...';
-  setTimeout(() => {
-    status.innerHTML = '<div class="pulse-dot" style="background:var(--green)"></div> Ditemukan 4 roastery dengan kecocokan tinggi!';
-    status.style.background = '#4caf7820';
-    status.style.borderColor = '#4caf7844';
-    status.style.color = 'var(--green)';
-  }, 2000);
-}
-
-// ===== BI CHARTS =====
-function initCharts() {
-  const bi = document.getElementById('biChart');
-  const price = document.getElementById('priceChart');
-  if (!bi || !price || bi.dataset.drawn) return;
-  bi.dataset.drawn = '1';
-  price.dataset.drawn = '1';
-
-  // Bar chart - spending
-  const ctx1 = bi.getContext('2d');
-  const months = ['Sep','Okt','Nov','Des','Jan','Feb'];
-  const vals = [8.2, 9.4, 11.8, 10.2, 11.5, 12.4];
-  const bW = bi.width / months.length;
-  const maxV = 15;
-  bi.height = 180;
-
-  ctx1.fillStyle = '#160f07';
-  ctx1.fillRect(0,0,bi.width,bi.height);
-  vals.forEach((v, i) => {
-    const barH = (v / maxV) * (bi.height - 30);
-    const x = i * bW + bW * 0.2;
-    const w = bW * 0.6;
-    const gradient = ctx1.createLinearGradient(0, bi.height - 30 - barH, 0, bi.height - 30);
-    gradient.addColorStop(0, '#f0a830');
-    gradient.addColorStop(1, '#8b4513');
-    ctx1.fillStyle = gradient;
-    ctx1.fillRect(x, bi.height - 30 - barH, w, barH);
-    ctx1.fillStyle = '#7a6040';
-    ctx1.font = '10px DM Sans';
-    ctx1.textAlign = 'center';
-    ctx1.fillText(months[i], x + w / 2, bi.height - 8);
-    ctx1.fillStyle = '#c8a870';
-    ctx1.fillText(v.toFixed(1)+'jt', x + w / 2, bi.height - 36 - barH);
-  });
-
-  // Line chart - price trend
-  const ctx2 = price.getContext('2d');
-  const prices = [240, 248, 255, 260, 268, 264];
-  price.height = 180;
-  ctx2.fillStyle = '#160f07';
-  ctx2.fillRect(0, 0, price.width, price.height);
-  const pw = price.width / (prices.length - 1);
-  const minP = 220, maxP = 280;
-  const points = prices.map((p, i) => ({
-    x: i * pw,
-    y: price.height - 20 - ((p - minP) / (maxP - minP)) * (price.height - 40)
-  }));
-
-  // Fill area
-  ctx2.beginPath();
-  ctx2.moveTo(points[0].x, price.height - 20);
-  points.forEach(p => ctx2.lineTo(p.x, p.y));
-  ctx2.lineTo(points[points.length - 1].x, price.height - 20);
-  ctx2.closePath();
-  ctx2.fillStyle = 'rgba(212, 131, 10, 0.15)';
-  ctx2.fill();
-
-  // Line
-  ctx2.beginPath();
-  points.forEach((p, i) => i === 0 ? ctx2.moveTo(p.x, p.y) : ctx2.lineTo(p.x, p.y));
-  ctx2.strokeStyle = '#d4830a';
-  ctx2.lineWidth = 2;
-  ctx2.stroke();
-
-  // Dots & labels
-  points.forEach((p, i) => {
-    ctx2.beginPath();
-    ctx2.arc(p.x, p.y, 4, 0, Math.PI * 2);
-    ctx2.fillStyle = '#f0a830';
-    ctx2.fill();
-    ctx2.fillStyle = '#7a6040';
-    ctx2.font = '10px DM Sans';
-    ctx2.textAlign = 'center';
-    ctx2.fillText(months[i], p.x, price.height - 6);
-    ctx2.fillStyle = '#c8a870';
-    ctx2.fillText(prices[i]+'k', p.x, p.y - 10);
+function setQuickAmount(amount) {
+  rawAmount = amount.toString();
+  updateDisplay();
+  // Deselect all, select matching
+  document.querySelectorAll('.qa-chip').forEach(chip => {
+    chip.classList.remove('selected');
+    if (chip.onclick && chip.onclick.toString().includes(amount)) chip.classList.add('selected');
   });
 }
-
-// ===== CHAT =====
-function sendChat(e) {
-  if (e.key === 'Enter') sendChatBtn();
+function formatRp(num) {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+function updateDisplay() {
+  const num = parseInt(rawAmount || '0');
+  document.getElementById('nominalDisplay').textContent = num === 0 ? '0' : formatRp(num);
+  document.getElementById('payBtnAmt').textContent = num === 0 ? 'Rp 0' : 'Rp ' + formatRp(num);
+  const hint = document.getElementById('nominalHint');
+  if (num > 0) {
+    hint.textContent = 'Saldo cukup untuk transaksi ini';
+    hint.style.color = 'var(--success)';
+  } else {
+    hint.textContent = 'Masukkan nominal pembayaran';
+    hint.style.color = 'var(--text-muted)';
+  }
+  // Deselect quick amounts if manual input
+  document.querySelectorAll('.qa-chip').forEach(chip => chip.classList.remove('selected'));
 }
 
-function sendChatBtn() {
-  const input = document.getElementById('chatInput');
-  if (!input.value.trim()) return;
-  const container = document.getElementById('chatContainer');
-  const msg = document.createElement('div');
-  msg.className = 'msg msg-sent';
-  msg.innerHTML = `<div class="msg-bubble">${input.value}</div><div class="msg-meta">Kamu · Baru saja</div>`;
-  container.appendChild(msg);
-  container.scrollTop = container.scrollHeight;
-  input.value = '';
-  setTimeout(() => {
-    const reply = document.createElement('div');
-    reply.className = 'msg msg-recv';
-    reply.innerHTML = `<div class="msg-bubble">Terima kasih atas penawaran Anda. Kami akan segera mempertimbangkan dan memberikan jawaban terbaik. 🤝</div><div class="msg-meta">Gunung Agung · Baru saja</div>`;
-    container.appendChild(reply);
-    container.scrollTop = container.scrollHeight;
-  }, 1500);
+// ─── PIN Modal ───
+let pinEntry = '';
+function showPinModal() {
+  const num = parseInt(rawAmount || '0');
+  if (num <= 0) {
+    // Shake the display
+    const d = document.getElementById('nominalDisplay');
+    d.style.animation = 'none';
+    d.style.transition = 'color 0.2s';
+    d.style.color = 'var(--maroon)';
+    setTimeout(() => d.style.color = '', 600);
+    return;
+  }
+  pinEntry = '';
+  updatePinDots();
+  document.getElementById('pinModal').classList.add('show');
+}
+function closePinModal() {
+  document.getElementById('pinModal').classList.remove('show');
+  pinEntry = '';
+  updatePinDots();
+}
+function enterPin(digit) {
+  if (pinEntry.length >= 6) return;
+  pinEntry += digit;
+  updatePinDots();
+  if (pinEntry.length === 6) {
+    setTimeout(processPayment, 300);
+  }
+}
+function deletePin() {
+  pinEntry = pinEntry.slice(0, -1);
+  updatePinDots();
+}
+function updatePinDots() {
+  for (let i = 1; i <= 6; i++) {
+    const dot = document.getElementById('pd' + i);
+    dot.classList.toggle('filled', i <= pinEntry.length);
+  }
+}
+function processPayment() {
+  document.getElementById('pinModal').classList.remove('show');
+  // Set receipt data
+  const num = parseInt(rawAmount || '0');
+  document.getElementById('receiptAmt').textContent = formatRp(num);
+  const now = new Date();
+  const months = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Ags','Sep','Okt','Nov','Des'];
+  const timeStr = `${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}, ${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+  document.getElementById('receiptTime').textContent = timeStr;
+  const ref = 'SBK' + now.getFullYear().toString().slice(-2) + (now.getMonth()+1).toString().padStart(2,'0') + now.getDate().toString().padStart(2,'0') + '-' + Math.floor(Math.random()*900+100);
+  document.getElementById('receiptRef').textContent = ref;
+  // Reset amount
+  rawAmount = '';
+  updateDisplay();
+  showScreen('screen-success');
 }
 
-// ===== KNOWLEDGE TABS =====
-function switchKTab(el, tab) {
-  document.querySelectorAll('.ktab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  document.querySelectorAll('[id^="ktab-"]').forEach(t => t.style.display = 'none');
-  document.getElementById('ktab-' + tab).style.display = '';
+// ─── Name Edit ───
+function startEditName() {
+  const input = document.getElementById('nameEditInput');
+  input.value = document.getElementById('greetNameText').textContent;
+  document.getElementById('greetName').style.display = 'none';
+  document.getElementById('nameEditWrap').style.display = 'block';
+  setTimeout(() => input.focus(), 50);
+}
+function saveEditName() {
+  const val = document.getElementById('nameEditInput').value.trim();
+  if (val) {
+    document.getElementById('greetNameText').textContent = val;
+    // Update struk juga kalau ada
+    document.getElementById('greetName').style.display = 'flex';
+    document.getElementById('nameEditWrap').style.display = 'none';
+  }
+}
+function cancelEditName() {
+  document.getElementById('greetName').style.display = 'flex';
+  document.getElementById('nameEditWrap').style.display = 'none';
 }
 
-// ===== PAYMENT =====
-function selectPay(el, total, terms, fee) {
-  document.querySelectorAll('.pay-option').forEach(p => p.classList.remove('selected'));
-  el.classList.add('selected');
-  showToast(`Metode ${el.querySelector('.pay-name').textContent} dipilih`);
+// ─── Balance Toggle ───
+let balanceVisible = true;
+function toggleBalance() {
+  balanceVisible = !balanceVisible;
+  const valEl = document.getElementById('balanceValue');
+  document.getElementById('eyeIconOpen').style.display = balanceVisible ? 'block' : 'none';
+  document.getElementById('eyeIconClosed').style.display = balanceVisible ? 'none' : 'block';
+  valEl.textContent = balanceVisible ? '12.450.000' : '***.***.***';
+  valEl.style.letterSpacing = balanceVisible ? '' : '3px';
+  valEl.style.fontSize = balanceVisible ? '' : '22px';
 }
 
-// ===== LOGISTICS SENSORS =====
-function refreshSensors() {
-  document.getElementById('tempVal').textContent = (21 + Math.random() * 3).toFixed(1) + '°C';
-  document.getElementById('humVal').textContent = Math.round(50 + Math.random() * 10) + '%';
-  showToast('Data sensor diperbarui!');
-}
 
-// Initialize
-setTimeout(initRadar, 200);
+document.getElementById('statusBarMain').classList.add('dark');
+
+// ─── Torch button (real flashlight via ImageCapture API) ───
+let torchOn = false;
+document.getElementById('torchBtn').addEventListener('click', async function() {
+  torchOn = !torchOn;
+  const icon = this.querySelector('.scan-act-icon');
+  if (currentTrack) {
+    try {
+      await currentTrack.applyConstraints({ advanced: [{ torch: torchOn }] });
+    } catch(e) { /* torch not supported */ }
+  }
+  if (torchOn) {
+    icon.style.background = 'rgba(201,168,76,0.3)';
+    icon.style.borderColor = 'rgba(201,168,76,0.5)';
+  } else {
+    icon.style.background = 'rgba(255,255,255,0.1)';
+    icon.style.borderColor = 'rgba(255,255,255,0.08)';
+  }
+});
 </script>
 </body>
 </html>
