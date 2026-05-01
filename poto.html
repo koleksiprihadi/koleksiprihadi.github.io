@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>📸 PHOTOBOOTH RECEIPT MACHINE v2</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#080808;--surface:#111;--surface2:#1a1a1a;--border:#2a2a2a;
+  --white:#f0ebe0;--cream:#ede7d4;--red:#e63030;--yellow:#f5c518;
+  --green:#2ecc71;--gray:#666;--paper:#f7f2e3;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--white);font-family:'Space Mono',monospace;min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.07) 2px,rgba(0,0,0,.07) 4px);pointer-events:none;z-index:9999}
+
+/* HEADER */
+header{background:linear-gradient(135deg,#1a0000,#300,#1a0000);border-bottom:3px solid var(–red);padding:12px 20px 10px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.hd-logo{font-family:‘Bebas Neue’,sans-serif;font-size:1.8rem;letter-spacing:.15em;color:var(–white);text-shadow:2px 2px 0 #000}
+.hd-logo em{color:var(–yellow);font-style:normal}
+.hd-badge{background:var(–yellow);color:#000;font-size:.6rem;letter-spacing:.15em;padding:3px 8px;border-radius:2px;font-weight:700}
+.hd-status{display:flex;align-items:center;gap:8px;font-size:.62rem;color:var(–gray);letter-spacing:.1em}
+.hd-led{width:8px;height:8px;border-radius:50%;background:#333;transition:background .3s,box-shadow .3s}
+.hd-led.on{background:var(–green);box-shadow:0 0 8px var(–green)}
+.hd-led.rec{background:var(–red);box-shadow:0 0 8px var(–red);animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:1fr 360px;min-height:calc(100vh - 58px)}
+.left{border-right:1px solid var(–border);display:flex;flex-direction:column}
+.right{display:flex;flex-direction:column;background:var(–surface)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(–border);background:var(–surface)}
+.tab{flex:1;padding:10px;text-align:center;font-size:.63rem;letter-spacing:.12em;color:var(–gray);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;text-transform:uppercase}
+.tab:hover{color:var(–white)}
+.tab.active{color:var(–yellow);border-bottom-color:var(–yellow)}
+.tab-panel{display:none;flex:1;flex-direction:column}
+.tab-panel.active{display:flex}
+
+/* VIDEO */
+.video-wrap{position:relative;background:#000;aspect-ratio:4/3;overflow:hidden}
+#video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);display:block}
+.video-overlay{position:absolute;inset:0;pointer-events:none}
+.corner{position:absolute;width:26px;height:26px;border-color:rgba(245,197,24,.55);border-style:solid}
+.corner.tl{top:12px;left:12px;border-width:2px 0 0 2px}
+.corner.tr{top:12px;right:12px;border-width:2px 2px 0 0}
+.corner.bl{bottom:12px;left:12px;border-width:0 0 2px 2px}
+.corner.br{bottom:12px;right:12px;border-width:0 2px 2px 0}
+.xhair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:36px;height:36px;opacity:.25}
+.xhair::before,.xhair::after{content:’’;position:absolute;background:var(–yellow)}
+.xhair::before{width:100%;height:1px;top:50%;left:0}
+.xhair::after{height:100%;width:1px;left:50%;top:0}
+#flash-overlay{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;transition:opacity .05s}
+.sticker-cvs{position:absolute;inset:0;pointer-events:none}
+.no-cam{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:#444;font-size:.72rem;text-align:center;padding:20px}
+.no-cam .ico{font-size:2.8rem}
+
+/* BARS */
+.bar{display:flex;gap:5px;padding:7px 9px;overflow-x:auto;background:var(–surface);border-bottom:1px solid var(–border);scrollbar-width:none;align-items:center}
+.bar::-webkit-scrollbar{display:none}
+.bar-lbl{font-size:.58rem;color:var(–gray);white-space:nowrap;letter-spacing:.1em;flex-shrink:0}
+.fbtn{flex-shrink:0;padding:4px 10px;background:var(–surface2);border:1px solid var(–border);color:var(–white);font-family:‘Space Mono’,monospace;font-size:.6rem;cursor:pointer;border-radius:2px;transition:all .15s;white-space:nowrap}
+.fbtn:hover,.fbtn.active{background:var(–yellow);color:#000;border-color:var(–yellow)}
+.sbtn{flex-shrink:0;font-size:1.35rem;cursor:pointer;padding:1px 3px;border-radius:3px;background:transparent;border:1px solid transparent;transition:all .12s;line-height:1}
+.sbtn:hover,.sbtn.active{background:var(–surface2);border-color:var(–border)}
+.sbtn-clr{flex-shrink:0;font-size:.58rem;color:var(–red);cursor:pointer;letter-spacing:.08em;padding:3px 7px;border:1px solid #300;border-radius:2px;white-space:nowrap;background:transparent;transition:all .12s}
+.sbtn-clr:hover{background:#300}
+.frame-btn{flex-shrink:0;width:34px;height:24px;background:var(–surface2);border:1px solid var(–border);cursor:pointer;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:.58rem;color:var(–gray);transition:all .12s}
+.frame-btn:hover,.frame-btn.active{border-color:var(–yellow);color:var(–yellow);background:rgba(245,197,24,.08)}
+
+/* CONTROLS */
+.cam-ctrl{padding:11px;display:flex;flex-direction:column;gap:9px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px}
+label{font-size:.58rem;letter-spacing:.12em;color:var(–gray);display:block;margin-bottom:2px;text-transform:uppercase}
+input[type=text],select,textarea{width:100%;background:var(–surface2);border:1px solid var(–border);color:var(–white);font-family:‘Space Mono’,monospace;font-size:.7rem;padding:6px 8px;border-radius:2px;outline:none;transition:border .15s}
+input[type=text]:focus,select:focus,textarea:focus{border-color:var(–yellow)}
+select option{background:#1a1a1a}
+textarea{resize:vertical;min-height:46px;line-height:1.5}
+
+/* SHOT GRID */
+.shot-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:4px}
+.shot-opt{background:var(–surface2);border:1px solid var(–border);padding:5px 3px;text-align:center;cursor:pointer;border-radius:2px;transition:all .15s}
+.shot-opt .n{font-family:‘Bebas Neue’,sans-serif;font-size:1.2rem;display:block;color:var(–white)}
+.shot-opt .l{font-size:.52rem;color:var(–gray)}
+.shot-opt:hover,.shot-opt.active{border-color:var(–yellow)}
+.shot-opt.active .n,.shot-opt.active .l{color:var(–yellow)}
+
+/* BUTTONS */
+.btn{width:100%;padding:11px;border:none;font-family:‘Bebas Neue’,sans-serif;font-size:1.2rem;letter-spacing:.2em;cursor:pointer;border-radius:2px;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.btn-red{background:var(–red);color:#fff}
+.btn-red:hover{background:#ff4444;transform:translateY(-1px)}
+.btn-red:active{transform:translateY(1px)}
+.btn-red:disabled{background:#333;color:#555;cursor:not-allowed;transform:none}
+.btn-yellow{background:var(–yellow);color:#000}
+.btn-yellow:hover{background:#ffd740;transform:translateY(-1px)}
+.btn-yellow:disabled{background:#333;color:#555;cursor:not-allowed;transform:none}
+.btn-ghost{background:transparent;border:1px solid var(–border);color:var(–gray);font-family:‘Space Mono’,monospace;font-size:.7rem;letter-spacing:.1em}
+.btn-ghost:hover{border-color:var(–red);color:var(–red)}
+.btn-green{background:#1a2a1a;border:1px solid #2a4a2a;color:var(–green)}
+.btn-green:hover{background:#1e331e}
+.btn-green.running{background:var(–green);color:#000}
+
+/* COUNTDOWN */
+.countdown{text-align:center;font-family:‘VT323’,monospace;font-size:4.5rem;color:var(–yellow);min-height:65px;line-height:1;display:flex;align-items:center;justify-content:center;text-shadow:0 0 25px var(–yellow)}
+
+/* PROGRESS DOTS */
+.prog-dots{display:flex;gap:4px;justify-content:center;padding:3px 0}
+.pdot{width:9px;height:9px;border-radius:50%;background:var(–border);border:1px solid #333;transition:all .2s}
+.pdot.done{background:var(–yellow);border-color:var(–yellow);box-shadow:0 0 5px var(–yellow)}
+.pdot.cur{background:var(–red);border-color:var(–red);animation:blink .6s infinite}
+
+/* SHOTS STRIP */
+.shots-strip{display:flex;gap:3px;padding:7px 9px;background:var(–surface);border-top:1px solid var(–border);min-height:62px;overflow-x:auto;scrollbar-width:none;align-items:center}
+.shots-strip::-webkit-scrollbar{display:none}
+.sthumb-w{position:relative;flex-shrink:0}
+.sthumb{height:50px;aspect-ratio:4/3;object-fit:cover;border:1px solid var(–border);display:block;border-radius:1px;transition:all .15s;cursor:pointer}
+.sthumb:hover{border-color:var(–red)}
+.sdel{position:absolute;top:-4px;right:-4px;background:var(–red);color:#fff;border:none;width:13px;height:13px;border-radius:50%;font-size:7px;cursor:pointer;display:none;align-items:center;justify-content:center}
+.sthumb-w:hover .sdel{display:flex}
+.sph{height:50px;aspect-ratio:4/3;background:var(–surface2);border:1px dashed var(–border);display:flex;align-items:center;justify-content:center;color:#333;font-size:.9rem;border-radius:1px;flex-shrink:0}
+
+/* SETTINGS PANEL */
+.settings-panel{padding:13px;display:flex;flex-direction:column;gap:13px;overflow-y:auto;flex:1}
+.sg{background:var(–surface2);border:1px solid var(–border);border-radius:3px;overflow:hidden}
+.sg-title{font-size:.62rem;letter-spacing:.15em;color:var(–yellow);padding:7px 11px;background:rgba(245,197,24,.04);border-bottom:1px solid var(–border);text-transform:uppercase}
+.sg-body{padding:11px;display:flex;flex-direction:column;gap:9px}
+.color-row{display:flex;gap:7px;flex-wrap:wrap}
+.cswatch{width:26px;height:26px;border-radius:50%;border:2px solid transparent;cursor:pointer;transition:all .15s}
+.cswatch:hover{transform:scale(1.2)}
+.cswatch.active{border-color:var(–white);box-shadow:0 0 6px rgba(255,255,255,.25)}
+.font-row{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.font-opt{padding:7px 5px;background:var(–surface);border:1px solid var(–border);text-align:center;cursor:pointer;border-radius:2px;font-size:.68rem;transition:all .12s}
+.font-opt:hover,.font-opt.active{border-color:var(–yellow);color:var(–yellow)}
+
+/* RIGHT PANEL */
+.right-hdr{padding:9px 13px;border-bottom:1px solid var(–border);font-family:‘Bebas Neue’,sans-serif;font-size:.95rem;letter-spacing:.2em;color:var(–yellow);display:flex;justify-content:space-between;align-items:center}
+.right-hdr span{font-size:.58rem;color:var(–gray);letter-spacing:.1em;font-family:‘Space Mono’,monospace}
+.rcpt-scroll{flex:1;overflow-y:auto;display:flex;justify-content:center;padding:18px 13px;background:#0a0a0a;scrollbar-width:thin;scrollbar-color:#222 transparent}
+
+/* ══ RECEIPT ══ */
+#receipt{
+width:268px;background:var(–paper);color:#111;
+font-family:‘Space Mono’,monospace;font-size:11px;
+padding:13px 11px 18px;position:relative;
+filter:drop-shadow(0 5px 20px rgba(0,0,0,.7));
+}
+#receipt::before{content:’’;position:absolute;top:-9px;left:0;right:0;height:9px;background:radial-gradient(circle at 5px -5px,transparent 6px,var(–paper) 7px) -5px 0/10px 9px,radial-gradient(circle at 5px -5px,transparent 6px,var(–paper) 7px) 0px 0/10px 9px;background-repeat:repeat-x}
+#receipt::after{content:’’;position:absolute;bottom:-9px;left:0;right:0;height:9px;background:radial-gradient(circle at 5px 14px,transparent 6px,var(–paper) 7px) -5px 0/10px 9px,radial-gradient(circle at 5px 14px,transparent 6px,var(–paper) 7px) 0px 0/10px 9px;background-repeat:repeat-x}
+
+.r-logo-w{text-align:center;margin-bottom:7px}
+.r-logo{font-family:‘Bebas Neue’,sans-serif;font-size:24px;letter-spacing:.08em;line-height:1;color:#111}
+.r-logo em{font-style:normal}
+.r-tagline{font-size:8px;letter-spacing:.2em;color:#666;margin-top:2px;text-transform:uppercase}
+.r-evbig{font-family:‘Bebas Neue’,sans-serif;font-size:15px;letter-spacing:.1em;text-align:center;margin:3px 0;line-height:1.1}
+.r-div{border:none;border-top:1px dashed #aaa;margin:5px 0}
+.r-row{display:flex;justify-content:space-between;font-size:10px;margin:2px 0}
+.r-row .k{color:#555}
+.r-row .v{font-weight:700;color:#111;text-align:right;max-width:55%}
+.r-photos{display:flex;flex-direction:column;gap:3px;margin:5px 0}
+.r-photo{width:100%;display:block;border:1px solid #ccc}
+.r-photo-ph{width:100%;aspect-ratio:4/3;background:#e8e3d6;display:flex;align-items:center;justify-content:center;font-size:2rem;color:#bbb;border:1px solid #ccc}
+.r-photos.strip{display:grid;grid-template-columns:1fr 1fr;gap:3px}
+.r-photos.strip .r-photo{aspect-ratio:3/4;object-fit:cover}
+.r-cmsg{text-align:center;font-size:10px;color:#444;margin:3px 0;font-style:italic;line-height:1.4}
+.r-bc{width:100%;height:28px;margin:4px 0;background:repeating-linear-gradient(90deg,#111 0 1px,#fff 1px 2px,#111 2px 4px,#fff 4px 5px,#111 5px 6px,#fff 6px 9px,#111 9px 11px,#fff 11px 12px,#111 12px 13px,#fff 13px 16px,#111 16px 17px,#fff 17px 20px,#111 20px 22px,#fff 22px 23px,#111 23px 25px,#fff 25px 27px,#111 27px 28px,#fff 28px 31px,#111 31px 33px,#fff 33px 34px,#111 34px 37px,#fff 37px 38px,#111 38px 40px,#fff 40px 43px,#111 43px 44px,#fff 44px 46px,#111 46px 50px)}
+.r-bcnum{text-align:center;font-size:8px;letter-spacing:.15em;color:#888;margin-top:-1px}
+.r-thanks{font-family:‘Bebas Neue’,sans-serif;font-size:21px;letter-spacing:.3em;text-align:center;margin:5px 0 2px;color:#222}
+.r-hashtag{text-align:center;font-size:10px;font-weight:700;letter-spacing:.05em}
+.r-footer{text-align:center;font-size:8px;color:#999;margin-top:3px;letter-spacing:.08em}
+
+/* Frame styles */
+.fr-classic{border:3px solid #111;padding:9px}
+.fr-vintage{border:2px solid #aaa;outline:4px double #aaa;outline-offset:2px}
+.fr-bold{border:5px solid #111}
+.fr-gold{border:3px solid #b8860b;box-shadow:inset 0 0 0 1px #daa520}
+.fr-polaroid{border:3px solid #fff;box-shadow:0 3px 10px rgba(0,0,0,.2);padding-bottom:22px;background:#fff}
+
+/* PRINT BAR */
+.print-bar{padding:11px;border-top:1px solid var(–border);display:flex;flex-direction:column;gap:7px}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(80px);background:var(–yellow);color:#000;font-family:‘Space Mono’,monospace;font-size:.7rem;padding:9px 16px;border-radius:2px;opacity:0;transition:all .3s;pointer-events:none;z-index:9998;white-space:nowrap;font-weight:700}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* THERMAL PRINT */
+@media print{
+@page{size:80mm auto;margin:0}
+body *{visibility:hidden}
+#tp-area,#tp-area *{visibility:visible}
+#tp-area{position:fixed!important;top:0;left:0;width:80mm;background:white;color:black;font-family:‘Courier New’,monospace;font-size:11px;padding:3mm 3mm 8mm}
+}
+#tp-area{display:none;width:80mm;background:white;color:black;font-family:‘Courier New’,monospace;font-size:11px;padding:3mm 3mm 8mm}
+.tc{text-align:center}.tb{font-weight:bold}
+.tlg{font-size:20px;font-weight:bold;letter-spacing:3px;text-align:center}
+.tdiv{border:none;border-top:1px dashed #000;margin:3px 0}
+.trow{display:flex;justify-content:space-between;font-size:10px}
+.tphoto{width:100%;display:block;margin:2px 0;filter:grayscale(1) contrast(1.3)}
+.tphotos2{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:3px 0}
+.tphotos2 img{width:100%;display:block;filter:grayscale(1) contrast(1.3)}
+.tbc{width:100%;height:24px;margin:3px 0;background:repeating-linear-gradient(90deg,#000 0 1px,#fff 1px 2px,#000 2px 4px,#fff 4px 5px,#000 5px 6px,#fff 6px 9px,#000 9px 11px,#fff 11px 12px,#000 12px 13px,#fff 13px 16px,#000 16px 17px,#fff 17px 20px,#000 20px 22px,#fff 22px 23px,#000 23px 25px,#fff 25px 27px,#000 27px 28px,#fff 28px 31px,#000 31px 33px,#fff 33px 34px,#000 34px 55px)}
+
+@media(max-width:820px){.app{grid-template-columns:1fr}.right{min-height:500px}}
+</style>
+
+</head>
+<body>
+
+<header>
+  <div class="hd-logo">📸 PHOTO<em>BOOTH</em> RECEIPT</div>
+  <div class="hd-status">
+    <div class="hd-led" id="led-cam"></div><span id="led-lbl">OFFLINE</span>
+    &nbsp;|&nbsp;
+    <div class="hd-led" id="led-rec"></div><span>REC</span>
+  </div>
+  <div class="hd-badge">v2.0</div>
+</header>
+
+<div class="app">
+
+<!-- ══════════ LEFT ══════════ -->
+
+<div class="left">
+  <div class="tabs">
+    <div class="tab active" data-tab="cam">📷 KAMERA</div>
+    <div class="tab" data-tab="set">⚙ PENGATURAN</div>
+  </div>
+
+  <!-- CAMERA TAB -->
+
+  <div class="tab-panel active" data-panel="cam">
+
+```
+<div class="video-wrap">
+  <video id="video" autoplay playsinline muted></video>
+  <canvas id="canvas" style="display:none"></canvas>
+  <canvas id="scvs" class="sticker-cvs"></canvas>
+  <div class="video-overlay">
+    <div class="corner tl"></div><div class="corner tr"></div>
+    <div class="corner bl"></div><div class="corner br"></div>
+    <div class="xhair"></div>
+  </div>
+  <div id="flash-overlay"></div>
+  <div class="no-cam" id="no-cam">
+    <span class="ico">📷</span>
+    <span>Klik <strong style="color:var(--yellow)">MULAI KAMERA</strong><br>untuk mengaktifkan</span>
+  </div>
+</div>
+
+<!-- FILTER -->
+<div class="bar">
+  <span class="bar-lbl">FILTER:</span>
+  <button class="fbtn active" data-filter="none" data-fname="NORMAL">NORMAL</button>
+  <button class="fbtn" data-filter="grayscale(1)" data-fname="B&W">B&W</button>
+  <button class="fbtn" data-filter="sepia(.9)" data-fname="SEPIA">SEPIA</button>
+  <button class="fbtn" data-filter="contrast(1.5) saturate(1.6)" data-fname="VIVID">VIVID</button>
+  <button class="fbtn" data-filter="brightness(1.1) contrast(1.2) saturate(0.4)" data-fname="MUTED">MUTED</button>
+  <button class="fbtn" data-filter="hue-rotate(180deg) saturate(1.5)" data-fname="NEON">NEON</button>
+  <button class="fbtn" data-filter="invert(1)" data-fname="INVERT">INVERT</button>
+  <button class="fbtn" data-filter="grayscale(1) contrast(1.8)" data-fname="HARSH">HARSH</button>
+  <button class="fbtn" data-filter="saturate(2) contrast(1.1) hue-rotate(20deg)" data-fname="POP">POP</button>
+</div>
+
+<!-- STICKER -->
+<div class="bar">
+  <span class="bar-lbl">STIKER:</span>
+  <button class="sbtn" data-s="✨">✨</button>
+  <button class="sbtn" data-s="🎉">🎉</button>
+  <button class="sbtn" data-s="❤️">❤️</button>
+  <button class="sbtn" data-s="🌟">🌟</button>
+  <button class="sbtn" data-s="🎊">🎊</button>
+  <button class="sbtn" data-s="🦋">🦋</button>
+  <button class="sbtn" data-s="🌈">🌈</button>
+  <button class="sbtn" data-s="🎵">🎵</button>
+  <button class="sbtn" data-s="👑">👑</button>
+  <button class="sbtn" data-s="🔥">🔥</button>
+  <button class="sbtn" data-s="🌸">🌸</button>
+  <button class="sbtn" data-s="💫">💫</button>
+  <button class="sbtn-clr" id="btn-clr-s">✕ HAPUS</button>
+</div>
+
+<!-- FRAME -->
+<div class="bar">
+  <span class="bar-lbl">FRAME:</span>
+  <button class="frame-btn active" data-frame="" title="Tanpa Frame">—</button>
+  <button class="frame-btn" data-frame="fr-classic" title="Classic">■</button>
+  <button class="frame-btn" data-frame="fr-vintage" title="Vintage">◈</button>
+  <button class="frame-btn" data-frame="fr-bold" title="Bold">▣</button>
+  <button class="frame-btn" data-frame="fr-gold" title="Gold">◆</button>
+  <button class="frame-btn" data-frame="fr-polaroid" title="Polaroid">🟦</button>
+</div>
+
+<!-- CONTROLS -->
+<div class="cam-ctrl">
+  <div class="row2">
+    <div><label>Nama Tamu</label><input type="text" id="gname" value="TAMU SPESIAL" maxlength="24"></div>
+    <div><label>Nama Event</label><input type="text" id="ename" value="PESTA ULANG TAHUN" maxlength="28"></div>
+  </div>
+
+  <div>
+    <label>Jumlah Foto</label>
+    <div class="shot-grid">
+      <div class="shot-opt active" data-s="1"><span class="n">1</span><span class="l">foto</span></div>
+      <div class="shot-opt" data-s="2"><span class="n">2</span><span class="l">foto</span></div>
+      <div class="shot-opt" data-s="3"><span class="n">3</span><span class="l">foto</span></div>
+      <div class="shot-opt" data-s="4"><span class="n">4</span><span class="l">foto</span></div>
+      <div class="shot-opt" data-s="6"><span class="n">6</span><span class="l">foto</span></div>
+      <div class="shot-opt" data-s="8"><span class="n">8</span><span class="l">foto</span></div>
+    </div>
+  </div>
+
+  <div class="row3">
+    <div><label>Timer</label>
+      <select id="timer"><option value="0">OFF</option><option value="3" selected>3 dtk</option><option value="5">5 dtk</option><option value="10">10 dtk</option></select>
+    </div>
+    <div><label>Jeda Auto</label>
+      <select id="gap"><option value="1000">1 dtk</option><option value="2000" selected>2 dtk</option><option value="3000">3 dtk</option></select>
+    </div>
+    <div><label>Layout</label>
+      <select id="layout"><option value="list">LIST</option><option value="strip">STRIP 2×</option></select>
+    </div>
+  </div>
+
+  <div class="prog-dots" id="pdots"></div>
+  <div class="countdown" id="countdown"></div>
+
+  <button class="btn btn-red" id="btn-start">▶ MULAI KAMERA</button>
+  <button class="btn btn-red" id="btn-shoot" style="display:none">📸 AMBIL FOTO (<span id="slbl">1/1</span>)</button>
+  <button class="btn btn-green" id="btn-auto" style="display:none">⚡ AUTO SHOOT SEMUA</button>
+</div>
+
+<div class="shots-strip" id="sstrip"></div>
+```
+
+  </div><!-- /cam tab -->
+
+  <!-- SETTINGS TAB -->
+
+  <div class="tab-panel" data-panel="set">
+    <div class="settings-panel">
+
+```
+  <div class="sg">
+    <div class="sg-title">🎨 Warna Aksen Receipt</div>
+    <div class="sg-body">
+      <div class="color-row" id="accents">
+        <div class="cswatch active" data-c="#e63030" style="background:#e63030"></div>
+        <div class="cswatch" data-c="#f5c518" style="background:#f5c518"></div>
+        <div class="cswatch" data-c="#2196f3" style="background:#2196f3"></div>
+        <div class="cswatch" data-c="#9c27b0" style="background:#9c27b0"></div>
+        <div class="cswatch" data-c="#00bcd4" style="background:#00bcd4"></div>
+        <div class="cswatch" data-c="#4caf50" style="background:#4caf50"></div>
+        <div class="cswatch" data-c="#ff9800" style="background:#ff9800"></div>
+        <div class="cswatch" data-c="#e91e63" style="background:#e91e63"></div>
+        <div class="cswatch" data-c="#111" style="background:#111;border:1px solid #555"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg">
+    <div class="sg-title">🔤 Teks Receipt</div>
+    <div class="sg-body">
+      <div><label>Nama Studio</label><input type="text" id="studio" value="PHOTOBOOTH" maxlength="20"></div>
+      <div><label>Tagline</label><input type="text" id="tagline" value="✦ KENANGAN SEUMUR HIDUP ✦" maxlength="36"></div>
+      <div><label>Pesan / Ucapan</label><textarea id="cmsg" rows="2" placeholder="Selamat ulang tahun! 🎉" maxlength="80"></textarea></div>
+      <div><label>Hashtag</label><input type="text" id="hashtag" value="#photoboothmoment" maxlength="32"></div>
+      <div><label>Catatan Kaki</label><input type="text" id="fnote" value="simpan foto ini sebagai kenangan" maxlength="42"></div>
+    </div>
+  </div>
+
+  <div class="sg">
+    <div class="sg-title">🖋 Font Receipt</div>
+    <div class="sg-body">
+      <div class="font-row">
+        <div class="font-opt active" data-font="'Space Mono',monospace" style="font-family:'Space Mono',monospace">MONO</div>
+        <div class="font-opt" data-font="'VT323',monospace" style="font-family:'VT323',monospace;font-size:1rem">PIXEL</div>
+        <div class="font-opt" data-font="Georgia,serif" style="font-family:Georgia,serif;font-style:italic">Serif</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sg">
+    <div class="sg-title">📏 Lebar Printer Thermal</div>
+    <div class="sg-body">
+      <div><label>Lebar Kertas</label>
+        <select id="pwidth">
+          <option value="58mm">58mm</option>
+          <option value="80mm" selected>80mm (standar)</option>
+          <option value="112mm">112mm</option>
+        </select>
+      </div>
+      <div style="font-size:.6rem;color:var(--gray);line-height:1.6">Set <strong style="color:var(--white)">Page Setup → Custom paper</strong> di dialog print browser.</div>
+    </div>
+  </div>
+
+  <button class="btn btn-yellow" id="btn-apply">✓ TERAPKAN PENGATURAN</button>
+</div>
+```
+
+  </div><!-- /set tab -->
+
+</div><!-- /left -->
+
+<!-- ══════════ RIGHT ══════════ -->
+
+<div class="right">
+  <div class="right-hdr">🧾 RECEIPT PREVIEW <span id="rcpt-status">Belum ada foto</span></div>
+
+  <div class="rcpt-scroll">
+    <div id="receipt">
+      <div class="r-logo-w">
+        <div class="r-logo">📸 <em id="r-studio">PHOTOBOOTH</em></div>
+        <div class="r-tagline" id="r-tagline">✦ KENANGAN SEUMUR HIDUP ✦</div>
+      </div>
+      <div class="r-evbig" id="r-evbig">EVENT NAME</div>
+      <hr class="r-div">
+      <div class="r-row"><span class="k">ORDER</span><span class="v" id="r-order">PB-0000</span></div>
+      <div class="r-row"><span class="k">TANGGAL</span><span class="v" id="r-date">--</span></div>
+      <div class="r-row"><span class="k">WAKTU</span><span class="v" id="r-time">--</span></div>
+      <hr class="r-div">
+      <div class="r-row"><span class="k">TAMU</span><span class="v" id="r-name">-</span></div>
+      <div class="r-row"><span class="k">FILTER</span><span class="v" id="r-filter">NORMAL</span></div>
+      <div class="r-row"><span class="k">LAYOUT</span><span class="v" id="r-layout">LIST</span></div>
+      <hr class="r-div">
+      <div class="r-photos" id="r-photos"><div class="r-photo-ph">🖼</div></div>
+      <div class="r-cmsg" id="r-cmsg" style="display:none"></div>
+      <hr class="r-div">
+      <div class="r-row"><span class="k">JUMLAH FOTO</span><span class="v" id="r-count">0 PCS</span></div>
+      <hr class="r-div">
+      <div class="r-bc"></div>
+      <div class="r-bcnum" id="r-bcnum">0000000000</div>
+      <div class="r-thanks">TERIMA KASIH!</div>
+      <div class="r-hashtag" id="r-hashtag">#photoboothmoment</div>
+      <div class="r-footer" id="r-footer">✦ simpan foto ini sebagai kenangan ✦</div>
+    </div>
+  </div>
+
+  <div class="print-bar">
+    <button class="btn btn-yellow" id="btn-print" disabled>🖨 CETAK THERMAL</button>
+    <button class="btn btn-red" id="btn-dl" disabled>⬇ DOWNLOAD RECEIPT (PNG)</button>
+    <button class="btn btn-ghost" id="btn-reset" style="padding:8px">↺ FOTO BARU / RESET</button>
+  </div>
+</div><!-- /right -->
+
+</div><!-- /app -->
+
+<!-- THERMAL PRINT AREA -->
+
+<div id="tp-area">
+  <div class="tlg" id="tp-studio">PHOTOBOOTH</div>
+  <div class="tc" style="font-size:9px;letter-spacing:2px" id="tp-tagline">✦ KENANGAN SEUMUR HIDUP ✦</div>
+  <hr class="tdiv">
+  <div class="tc tb" id="tp-event">EVENT NAME</div>
+  <hr class="tdiv">
+  <div class="trow"><span>ORDER:</span><span id="tp-order"></span></div>
+  <div class="trow"><span>TANGGAL:</span><span id="tp-date"></span></div>
+  <div class="trow"><span>WAKTU:</span><span id="tp-time"></span></div>
+  <hr class="tdiv">
+  <div class="trow"><span>TAMU:</span><span id="tp-name"></span></div>
+  <div class="trow"><span>FILTER:</span><span id="tp-filter"></span></div>
+  <hr class="tdiv">
+  <div id="tp-photos"></div>
+  <div class="tc" id="tp-msg" style="font-size:10px;font-style:italic;margin:2px 0"></div>
+  <hr class="tdiv">
+  <div class="trow"><span>JUMLAH FOTO:</span><span id="tp-count"></span></div>
+  <hr class="tdiv">
+  <div class="tbc"></div>
+  <div class="tc" id="tp-bcnum" style="font-size:9px;letter-spacing:2px"></div>
+  <div class="tc tb" style="font-size:18px;letter-spacing:4px;margin:4px 0">TERIMA KASIH!</div>
+  <div class="tc tb" id="tp-hashtag" style="font-size:11px"></div>
+  <div class="tc" id="tp-footer" style="font-size:9px"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ═══ STATE ═══
+const S={shots:[],max:1,filter:'none',fname:'NORMAL',frame:'',layout:'list',stickers:[],accent:'#e63030',font:"'Space Mono',monospace",autoOn:false,busy:false,order:rndOrder()};
+
+function rndOrder(){return String(Math.floor(Math.random()*90000)+10000).padStart(10,'0')}
+const $=id=>document.getElementById(id);
+
+// ═══ INIT ═══
+initReceipt(); renderStrip(); renderDots();
+
+// ═══ TABS ═══
+document.querySelectorAll('.tab').forEach(t=>{
+  t.addEventListener('click',()=>{
+    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    document.querySelector(`[data-panel="${t.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+// ═══ CAMERA ═══
+$('btn-start').addEventListener('click',async()=>{
+  try{
+    const stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'user',width:{ideal:1280},height:{ideal:960}},audio:false});
+    const vid=$('video'); vid.srcObject=stream; vid.style.display='block';
+    $('no-cam').style.display='none';
+    $('btn-start').style.display='none';
+    $('btn-shoot').style.display='flex';
+    $('btn-auto').style.display='flex';
+    $('led-cam').classList.add('on'); $('led-lbl').textContent='ONLINE';
+    resizeScvs();
+    showToast('📷 Kamera aktif!');
+  }catch(e){showToast('❌ Kamera gagal: '+e.message)}
+});
+
+const scvs=$('scvs'), sctx=scvs.getContext('2d');
+function resizeScvs(){const p=scvs.parentElement;scvs.width=p.offsetWidth;scvs.height=p.offsetHeight;drawStickers()}
+window.addEventListener('resize',resizeScvs);
+
+// ═══ FILTERS ═══
+document.querySelectorAll('.fbtn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.fbtn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); S.filter=b.dataset.filter; S.fname=b.dataset.fname;
+    $('video').style.filter=S.filter;
+    $('r-filter').textContent=$('tp-filter').textContent=S.fname;
+  });
+});
+
+// ═══ STICKERS ═══
+document.querySelectorAll('.sbtn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    S.stickers.push({em:b.dataset.s,x:.1+Math.random()*.8,y:.1+Math.random()*.75,sz:.07+Math.random()*.06,rot:(Math.random()-.5)*.4});
+    drawStickers(); showToast('✨ Stiker ditambahkan!');
+  });
+});
+$('btn-clr-s').addEventListener('click',()=>{S.stickers=[];drawStickers();showToast('🗑 Stiker dihapus')});
+function drawStickers(){
+  sctx.clearRect(0,0,scvs.width,scvs.height);
+  S.stickers.forEach(s=>{
+    const x=s.x*scvs.width,y=s.y*scvs.height,sz=s.sz*Math.min(scvs.width,scvs.height);
+    sctx.save();sctx.translate(x,y);sctx.rotate(s.rot);
+    sctx.font=`${sz}px serif`;sctx.textAlign='center';sctx.textBaseline='middle';
+    sctx.fillText(s.em,0,0);sctx.restore();
+  });
+}
+
+// ═══ FRAMES ═══
+document.querySelectorAll('.frame-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('.frame-btn').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active'); S.frame=b.dataset.frame;
+    const r=$('receipt');
+    r.className='';
+    if(S.frame) r.classList.add(S.frame);
+  });
+});
+
+// ═══ SHOT COUNT ═══
+document.querySelectorAll('.shot-opt').forEach(o=>{
+  o.addEventListener('click',()=>{
+    document.querySelectorAll('.shot-opt').forEach(x=>x.classList.remove('active'));
+    o.classList.add('active'); S.max=parseInt(o.dataset.s); S.shots=[];
+    renderStrip(); renderDots(); updatePhotos(); updateSLbl();
+    $('btn-print').disabled=$('btn-dl').disabled=true;
+  });
+});
+
+// LAYOUT
+$('layout').addEventListener('change',e=>{S.layout=e.target.value;$('r-layout').textContent=e.target.value==='strip'?'STRIP 2×':'LIST';updatePhotos()});
+
+// META SYNC
+['gname','ename'].forEach(id=>$(id).addEventListener('input',syncMeta));
+function syncMeta(){
+  const n=$('gname').value.toUpperCase()||'—', ev=$('ename').value.toUpperCase()||'—';
+  $('r-name').textContent=$('tp-name').textContent=n;
+  $('r-evbig').textContent=$('tp-event').textContent=ev;
+}
+
+// ═══ SETTINGS ═══
+document.querySelectorAll('.cswatch').forEach(sw=>{
+  sw.addEventListener('click',()=>{
+    document.querySelectorAll('.cswatch').forEach(x=>x.classList.remove('active'));
+    sw.classList.add('active'); S.accent=sw.dataset.c;
+  });
+});
+document.querySelectorAll('.font-opt').forEach(f=>{
+  f.addEventListener('click',()=>{
+    document.querySelectorAll('.font-opt').forEach(x=>x.classList.remove('active'));
+    f.classList.add('active'); S.font=f.dataset.font;
+  });
+});
+
+$('btn-apply').addEventListener('click',()=>{
+  const studio=$('studio').value||'PHOTOBOOTH';
+  $('r-studio').textContent=$('tp-studio').textContent=studio.toUpperCase();
+  $('r-tagline').textContent=$('tp-tagline').textContent=$('tagline').value;
+  const msg=$('cmsg').value.trim();
+  $('r-cmsg').style.display=msg?'block':'none';
+  $('r-cmsg').textContent=msg?`"${msg}"`:'';
+  $('tp-msg').textContent=msg?`"${msg}"`:'';
+  $('r-hashtag').textContent=$('tp-hashtag').textContent=$('hashtag').value;
+  $('r-hashtag').style.color=S.accent;
+  $('r-evbig').style.color=S.accent;
+  const foot=$('fnote').value;
+  $('r-footer').textContent=`✦ ${foot} ✦`;
+  $('tp-footer').textContent=foot;
+  $('receipt').style.fontFamily=S.font;
+  // paper width
+  let pstyle=document.getElementById('dps');
+  if(!pstyle){pstyle=document.createElement('style');pstyle.id='dps';document.head.appendChild(pstyle)}
+  pstyle.textContent=`@media print{@page{size:${$('pwidth').value} auto;margin:0}#tp-area{width:${$('pwidth').value}}}`;
+  showToast('✅ Pengaturan diterapkan!');
+});
+
+// ═══ SHOOT ═══
+$('btn-shoot').addEventListener('click',()=>{
+  if(S.busy) return;
+  if(S.shots.length>=S.max){showToast('✅ Foto sudah penuh!');return}
+  const t=parseInt($('timer').value);
+  if(t>0) doCountdown(t,capture); else capture();
+});
+
+$('btn-auto').addEventListener('click',async()=>{
+  if(S.autoOn){S.autoOn=false;$('btn-auto').classList.remove('running');$('btn-auto').textContent='⚡ AUTO SHOOT SEMUA';return}
+  if(S.shots.length>=S.max){showToast('✅ Foto sudah penuh!');return}
+  S.autoOn=true;$('btn-auto').classList.add('running');$('btn-auto').textContent='⏹ STOP AUTO';
+  $('led-rec').classList.add('rec');
+  const t=parseInt($('timer').value), g=parseInt($('gap').value);
+  for(let i=S.shots.length;i<S.max;i++){
+    if(!S.autoOn) break;
+    if(t>0) await waitCD(t);
+    if(!S.autoOn) break;
+    capture();
+    if(i<S.max-1) await sleep(g);
+  }
+  S.autoOn=false;$('btn-auto').classList.remove('running');$('btn-auto').textContent='⚡ AUTO SHOOT SEMUA';
+  $('led-rec').classList.remove('rec');
+});
+
+function doCountdown(sec,cb){
+  S.busy=true;$('btn-shoot').disabled=true;
+  let t=sec; $('countdown').textContent=t;
+  const iv=setInterval(()=>{t--;if(t<=0){clearInterval(iv);$('countdown').textContent='';S.busy=false;$('btn-shoot').disabled=false;cb();}else $('countdown').textContent=t},1000);
+}
+function waitCD(sec){
+  return new Promise(res=>{
+    let t=sec; $('countdown').textContent=t;
+    const iv=setInterval(()=>{t--;if(!S.autoOn){clearInterval(iv);$('countdown').textContent='';res();return}if(t<=0){clearInterval(iv);$('countdown').textContent='';res();}else $('countdown').textContent=t},1000);
+  });
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms))}
+
+function capture(){
+  if(S.shots.length>=S.max) return;
+  $('flash-overlay').style.opacity='1';
+  setTimeout(()=>$('flash-overlay').style.opacity='0',120);
+  shutter();
+  const cvs=$('canvas'), vid=$('video');
+  cvs.width=vid.videoWidth||640; cvs.height=vid.videoHeight||480;
+  const ctx=cvs.getContext('2d');
+  ctx.save(); ctx.translate(cvs.width,0); ctx.scale(-1,1); ctx.drawImage(vid,0,0); ctx.restore();
+  applyFilter(ctx,cvs,S.filter);
+  // stickers
+  S.stickers.forEach(s=>{
+    const x=s.x*cvs.width,y=s.y*cvs.height,sz=s.sz*Math.min(cvs.width,cvs.height);
+    ctx.save();ctx.translate(x,y);ctx.rotate(s.rot);
+    ctx.font=`${sz}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(s.em,0,0);ctx.restore();
+  });
+  S.shots.push(cvs.toDataURL('image/jpeg',.88));
+  renderStrip(); renderDots(); updatePhotos(); updateSLbl();
+  const rem=S.max-S.shots.length;
+  if(rem>0) showToast(`📸 Foto ${S.shots.length}/${S.max} — ${rem} lagi!`);
+  else{showToast(`✅ ${S.max} foto siap!`);$('btn-print').disabled=$('btn-dl').disabled=false;$('rcpt-status').textContent=`${S.max} foto siap`}
+}
+
+function applyFilter(ctx,cvs,f){
+  if(!f||f==='none') return;
+  const d=ctx.getImageData(0,0,cvs.width,cvs.height),px=d.data;
+  const gs=f.includes('grayscale'),sp=f.includes('sepia'),iv=f.includes('invert');
+  const ct=(m=f.match(/contrast\(([\d.]+)\)/))?parseFloat(m[1]):1;
+  const br=(m=f.match(/brightness\(([\d.]+)\)/))?parseFloat(m[1]):1;
+  const st=(m=f.match(/saturate\(([\d.]+)\)/))?parseFloat(m[1]):1;
+  const hr=f.includes('hue-rotate(180');
+  for(let i=0;i<px.length;i+=4){
+    let r=px[i],g=px[i+1],b=px[i+2];
+    if(br!==1){r*=br;g*=br;b*=br}
+    if(ct!==1){r=ct*(r-128)+128;g=ct*(g-128)+128;b=ct*(b-128)+128}
+    if(gs){const l=.3*r+.59*g+.11*b;r=g=b=l}
+    if(sp){const nr=.393*r+.769*g+.189*b,ng=.349*r+.686*g+.168*b,nb=.272*r+.534*g+.131*b;r=nr;g=ng;b=nb}
+    if(st!==1&&!gs&&!sp){const l=.3*r+.59*g+.11*b;r=l+(r-l)*st;g=l+(g-l)*st;b=l+(b-l)*st}
+    if(hr){r=255-r;g=255-g;b=255-b}
+    if(iv){r=255-r;g=255-g;b=255-b}
+    px[i]=clamp(r);px[i+1]=clamp(g);px[i+2]=clamp(b);
+  }
+  ctx.putImageData(d,0,0);
+}
+function clamp(v){return Math.max(0,Math.min(255,v))}
+
+function shutter(){
+  try{
+    const ac=new(window.AudioContext||window.webkitAudioContext)();
+    const buf=ac.createBuffer(1,ac.sampleRate*.05,ac.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<data.length;i++) data[i]=(Math.random()*2-1)*(1-i/data.length);
+    const src=ac.createBufferSource(),gn=ac.createGain();
+    src.buffer=buf;src.connect(gn);gn.connect(ac.destination);
+    gn.gain.setValueAtTime(.3,ac.currentTime);
+    gn.gain.exponentialRampToValueAtTime(.001,ac.currentTime+.05);
+    src.start();
+  }catch(e){}
+}
+
+function updateSLbl(){$('slbl').textContent=`${Math.min(S.shots.length+1,S.max)}/${S.max}`}
+
+// ═══ RENDER ═══
+function renderStrip(){
+  const el=$('sstrip'); el.innerHTML='';
+  for(let i=0;i<S.max;i++){
+    if(S.shots[i]){
+      const w=document.createElement('div');w.className='sthumb-w';
+      const img=document.createElement('img');img.src=S.shots[i];img.className='sthumb';img.title=`Foto ${i+1}`;
+      const del=document.createElement('button');del.className='sdel';del.textContent='×';
+      const idx=i;
+      del.addEventListener('click',()=>{S.shots.splice(idx,1);renderStrip();renderDots();updatePhotos();updateSLbl();if(S.shots.length<S.max){$('btn-print').disabled=$('btn-dl').disabled=true}showToast('🗑 Foto dihapus')});
+      w.appendChild(img);w.appendChild(del);el.appendChild(w);
+    } else {
+      const ph=document.createElement('div');ph.className='sph';ph.textContent=i+1;el.appendChild(ph);
+    }
+  }
+}
+
+function renderDots(){
+  const el=$('pdots');el.innerHTML='';
+  for(let i=0;i<S.max;i++){
+    const d=document.createElement('div');d.className='pdot';
+    if(i<S.shots.length) d.classList.add('done');
+    else if(i===S.shots.length) d.classList.add('cur');
+    el.appendChild(d);
+  }
+}
+
+function updatePhotos(){
+  const rp=$('r-photos'),tp=$('tp-photos');
+  rp.innerHTML='';tp.innerHTML='';
+  const isStrip=S.layout==='strip';
+  rp.className='r-photos'+(isStrip?' strip':'');
+  if(!S.shots.length){rp.innerHTML='<div class="r-photo-ph">🖼</div>';return}
+  S.shots.forEach(src=>{const img=document.createElement('img');img.src=src;img.className='r-photo';rp.appendChild(img)});
+  if(isStrip&&S.shots.length>=2){
+    const g=document.createElement('div');g.className='tphotos2';
+    S.shots.forEach(src=>{const img=document.createElement('img');img.src=src;g.appendChild(img)});
+    tp.appendChild(g);
+  } else {
+    S.shots.forEach(src=>{const img=document.createElement('img');img.src=src;img.className='tphoto';tp.appendChild(img)});
+  }
+  $('r-count').textContent=`${S.shots.length} PCS`;
+  $('tp-count').textContent=S.shots.length;
+  $('r-layout').textContent=isStrip?'STRIP 2×':'LIST';
+}
+
+function initReceipt(){
+  const now=new Date();
+  const date=now.toLocaleDateString('id-ID',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const time=now.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+  $('r-order').textContent=`PB-${S.order}`;
+  $('r-date').textContent=$('tp-date').textContent=date;
+  $('r-time').textContent=$('tp-time').textContent=time;
+  $('r-bcnum').textContent=$('tp-bcnum').textContent=S.order;
+  $('tp-order').textContent=`PB-${S.order}`;
+  $('tp-hashtag').textContent=$('r-hashtag').textContent;
+  $('tp-footer').textContent='simpan foto ini sebagai kenangan';
+  syncMeta();
+}
+
+// ═══ PRINT ═══
+$('btn-print').addEventListener('click',()=>{
+  // sync thermal
+  syncMeta(); updatePhotos();
+  $('tp-msg').textContent=$('r-cmsg').textContent;
+  $('tp-filter').textContent=S.fname;
+  $('tp-area').style.display='block';
+  window.print();
+  setTimeout(()=>$('tp-area').style.display='none',1200);
+  showToast('🖨 Mengirim ke printer thermal...');
+});
+
+// ═══ DOWNLOAD PNG ═══
+$('btn-dl').addEventListener('click',async()=>{
+  showToast('⏳ Membuat gambar...');
+  try{ await dlReceipt(); }
+  catch(e){ showToast('❌ '+e.message) }
+});
+
+async function dlReceipt(){
+  const r=$('receipt');
+  const W=r.offsetWidth, H=r.scrollHeight;
+  const oc=document.createElement('canvas');
+  oc.width=W*2; oc.height=(H+30)*2;
+  const ctx=oc.getContext('2d');
+  ctx.scale(2,2);
+  ctx.fillStyle='#f7f2e3'; ctx.fillRect(0,0,W,H+30);
+
+  let y=0;
+  const txt=(t,x,yy,sz,col,align,bold)=>{
+    ctx.font=`${bold?'bold ':''} ${sz}px 'Courier New',monospace`;
+    ctx.fillStyle=col||'#111'; ctx.textAlign=align||'left';
+    ctx.fillText(t,x,yy);
+  };
+  const divider=()=>{ctx.strokeStyle='#aaa';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(8,y);ctx.lineTo(W-8,y);ctx.stroke();ctx.setLineDash([]);y+=8};
+  const row=(k,v)=>{txt(k,8,y,9,'#555','left');txt(v,W-8,y,9,'#111','right');y+=13};
+
+  y=26; txt('📸 '+($('r-studio').textContent||'PHOTOBOOTH'),W/2,y,20,'#111','center',true); y+=14;
+  txt($('r-tagline').textContent,W/2,y,8,'#666','center'); y+=12;
+  divider();
+  txt($('r-evbig').textContent,W/2,y,14,S.accent,'center',true); y+=16;
+  divider();
+  row('ORDER','PB-'+S.order); row('TANGGAL',$('r-date').textContent); row('WAKTU',$('r-time').textContent);
+  divider();
+  row('TAMU',$('r-name').textContent); row('FILTER',S.fname);
+  divider();
+
+  const ph=Math.floor((W-16)*3/4);
+  const isStrip=S.layout==='strip';
+  if(S.shots.length){
+    if(isStrip&&S.shots.length>=2){
+      const pw=Math.floor((W-18)/2);
+      for(let i=0;i<S.shots.length;i+=2){
+        const srcs=[S.shots[i],S.shots[i+1]].filter(Boolean);
+        const imgs=await Promise.all(srcs.map(src=>new Promise(res=>{const img=new Image();img.src=src;img.onload=()=>res(img);img.onerror=()=>res(null)})));
+        imgs.forEach((img,j)=>{ if(img) ctx.drawImage(img,8+j*(pw+2),y,pw,Math.floor(pw*4/3)); });
+        y+=Math.floor(pw*4/3)+3;
+      }
+    } else {
+      for(const src of S.shots){
+        const img=await new Promise(res=>{const i=new Image();i.src=src;i.onload=()=>res(i);i.onerror=()=>res(null)});
+        if(img) ctx.drawImage(img,8,y,W-16,ph);
+        y+=ph+3;
+      }
+    }
+  }
+  y+=4; divider();
+  row('JUMLAH FOTO',S.shots.length+' PCS');
+  y+=8;
+  txt('TERIMA KASIH!',W/2,y,17,'#222','center',true); y+=16;
+  txt($('r-hashtag').textContent,W/2,y,10,S.accent,'center',true); y+=13;
+  txt($('r-footer').textContent,W/2,y,8,'#999','center');
+
+  const a=document.createElement('a');
+  a.download=`photobooth-PB${S.order}.png`;
+  a.href=oc.toDataURL('image/png'); a.click();
+  showToast('📥 Receipt diunduh!');
+}
+
+// ═══ RESET ═══
+$('btn-reset').addEventListener('click',()=>{
+  S.shots=[];S.autoOn=false;S.busy=false;S.stickers=[];S.order=rndOrder();
+  renderStrip();renderDots();updatePhotos();initReceipt();
+  $('btn-print').disabled=$('btn-dl').disabled=true;
+  $('countdown').textContent='';$('btn-shoot').disabled=false;
+  $('btn-auto').classList.remove('running');$('btn-auto').textContent='⚡ AUTO SHOOT SEMUA';
+  $('led-rec').classList.remove('rec');
+  drawStickers();$('rcpt-status').textContent='Belum ada foto';updateSLbl();
+  showToast('🔄 Reset selesai!');
+});
+
+// ═══ TOAST ═══
+function showToast(msg){
+  const t=$('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+updateSLbl();
+</script>
+
+</body>
+</html>
