@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<title>Skor Headset</title>
+<style>
+  :root { --bg:#000; --fg:#fff; --dim:#9a9a9a; --acc:#ffd400; --accfg:#000; --ok:#2bd46a; --bad:#ff4d4d; --line:#333; --btn:#1c1c1c; }
+  [data-theme="light"] { --bg:#fff; --fg:#000; --dim:#555; --acc:#000; --accfg:#ffd400; --ok:#0a7a33; --bad:#c40000; --line:#bbb; --btn:#eee; }
+  * { box-sizing:border-box; }
+  html, body { margin:0; height:100%; background:var(--bg); color:var(--fg);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; -webkit-tap-highlight-color:transparent; }
+  body { padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom)); }
+  button { font:inherit; color:inherit; background:var(--btn); border:2px solid var(--line); border-radius:14px; cursor:pointer; touch-action:manipulation; }
+  button:active { transform:scale(.97); }
+  [hidden] { display:none !important; }
+
+  /* Layar awal */
+  #start { max-width:520px; margin:0 auto; display:flex; flex-direction:column; gap:16px; }
+  h1 { margin:8px 0 0; font-size:28px; }
+  .modes { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .modes label { border:2px solid var(--line); border-radius:14px; padding:14px; font-weight:700; font-size:20px; text-align:center; }
+  .modes input { display:none; }
+  .modes label:has(input:checked) { background:var(--acc); color:var(--accfg); border-color:var(--acc); }
+  .bigstart { padding:28px 12px; font-size:34px; font-weight:900; background:var(--acc); color:var(--accfg); border-color:var(--acc); }
+  .bigstart small { display:block; font-size:16px; font-weight:600; margin-top:6px; }
+  .sec { padding:14px; font-size:18px; font-weight:700; }
+  .note { color:var(--dim); font-size:15px; line-height:1.45; margin:0; }
+  .warn { color:var(--bad); font-weight:700; }
+
+  /* Layar skor */
+  #game { display:flex; flex-direction:column; gap:10px; min-height:100%; max-width:900px; margin:0 auto; }
+  .bar { display:flex; gap:6px; flex-wrap:wrap; align-items:center; }
+  .chip { padding:6px 9px; border-radius:999px; font-size:13px; font-weight:700; border:2px solid var(--line); background:var(--btn); }
+  .chip.ok { color:var(--ok); border-color:var(--ok); }
+  .chip.bad { color:var(--bad); border-color:var(--bad); }
+  .bar .sp { flex:1; }
+  .call { text-align:center; font-weight:900; font-size:min(16vw,12vh); line-height:1; letter-spacing:.02em; font-variant-numeric:tabular-nums; }
+  .teams { display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; }
+  .team { border:3px solid var(--line); border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px 4px; min-height:30vh; }
+  .team.serving { background:var(--acc); color:var(--accfg); border-color:var(--acc); }
+  .tname { font-size:20px; font-weight:800; letter-spacing:.1em; }
+  .num { font-size:min(34vw,32vh); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+  .srv { font-size:18px; font-weight:800; min-height:2.6em; text-align:center; white-space:pre-line; }
+  #banner { text-align:center; font-size:28px; font-weight:900; color:var(--bg); background:var(--ok); border-radius:14px; padding:10px; }
+  .ctrl { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .ctrl .big { padding:22px 6px; font-size:22px; font-weight:900; }
+  .ctrl .sm { padding:14px 6px; font-size:18px; font-weight:700; }
+  details { border:2px solid var(--line); border-radius:12px; padding:8px 10px; font-size:13px; }
+  summary { font-weight:700; cursor:pointer; }
+  #log { margin:8px 0 0; padding-left:0; list-style:none; font-family:ui-monospace,Menlo,monospace; max-height:40vh; overflow:auto; }
+  #log li { padding:2px 0; border-bottom:1px solid var(--line); word-break:break-word; }
+  #log .t { color:var(--dim); }
+  #log .s { font-weight:700; color:var(--acc); }
+  [data-theme="light"] #log .s { color:var(--fg); text-decoration:underline; }
+</style>
+</head>
+<body>
+
+<section id="start">
+  <h1>Skor Headset 🎧</h1>
+  <p class="note">Kontrol skor lewat tombol headset Bluetooth: <b>Next</b> = aksi A, <b>Prev</b> = aksi B, <b>Play/Pause</b> = Undo.</p>
+  <div class="modes" role="radiogroup">
+    <label><input type="radio" name="mode" value="simple">Simple</label>
+    <label><input type="radio" name="mode" value="pickleball" checked>Pickleball</label>
+  </div>
+  <button id="btnResume" class="bigstart" hidden>LANJUTKAN<small id="resumeInfo"></small></button>
+  <button id="btnStart" class="bigstart">MULAI</button>
+  <p class="note" id="modeHelp"></p>
+  <p class="note warn" id="secureWarn" hidden>⚠ Halaman ini bukan HTTPS (secure context). Media Session &amp; Wake Lock kemungkinan tidak jalan.</p>
+</section>
+
+<main id="game" hidden>
+  <header class="bar">
+    <button id="stAudio" class="chip bad" title="Ketuk untuk menyalakan ulang audio">Audio ✗</button>
+    <span id="stWake" class="chip bad">Wake lock ✗</span>
+    <span class="sp"></span>
+    <button id="btnTheme" class="chip" title="Ganti tema terang/gelap">◐</button>
+    <button id="btnMenu" class="chip">Mode</button>
+  </header>
+  <div id="call" class="call">0-0-2</div>
+  <section class="teams">
+    <div class="team" id="teamA"><div class="tname">TIM A</div><div class="num" id="numA">0</div><div class="srv" id="srvA"></div></div>
+    <div class="team" id="teamB"><div class="tname">TIM B</div><div class="num" id="numB">0</div><div class="srv" id="srvB"></div></div>
+  </section>
+  <div id="banner" hidden></div>
+  <nav class="ctrl">
+    <button id="bA" class="big">A</button>
+    <button id="bB" class="big">B</button>
+    <button id="bU" class="sm">⏯ Undo</button>
+    <button id="bR" class="sm">Reset</button>
+  </nav>
+  <details id="dbg">
+    <summary>Debug: 20 event terakhir</summary>
+    <ol id="log"></ol>
+  </details>
+</main>
+
+<audio id="au" loop playsinline preload="auto"></audio>
+
+<!-- Logika skor: fungsi murni (state in -> state out). test.html mengambil blok ini apa adanya. -->
+<script id="logic">
+var Logic = (function () {
+  var TARGET = 11, HISTORY_LIMIT = 100;
+
+  function newGame(mode) {
+    return mode === 'pickleball'
+      ? { mode: 'pickleball', score: [0, 0], serving: 0, server: 2, winner: null } // aturan 0-0-2
+      : { mode: 'simple', score: [0, 0] };
+  }
+
+  function isWin(a, b) { return a >= TARGET && a - b >= 2; }
+
+  function simplePoint(g, team) {
+    var s = g.score.slice(); s[team]++;
+    return { mode: 'simple', score: s };
+  }
+
+  // serverWon: true = tim servis menang rally. Return { game, event }.
+  // event: 'point' | 'win' | 'server2' | 'sideout' | 'noop' (game sudah selesai)
+  function pbRally(g, serverWon) {
+    if (g.winner != null) return { game: g, event: 'noop' };
+    var n = { mode: 'pickleball', score: g.score.slice(), serving: g.serving, server: g.server, winner: null };
+    if (serverWon) {
+      n.score[n.serving]++;
+      if (isWin(n.score[n.serving], n.score[1 - n.serving])) { n.winner = n.serving; return { game: n, event: 'win' }; }
+      return { game: n, event: 'point' };
+    }
+    if (n.server === 1) { n.server = 2; return { game: n, event: 'server2' }; }
+    n.serving = 1 - n.serving; n.server = 1;
+    return { game: n, event: 'sideout' };
+  }
+
+  // app = { game, history: [game lama...] }; action = 'A' | 'B' | 'UNDO' | 'RESET'
+  function applyAction(app, action, limit) {
+    limit = limit || HISTORY_LIMIT;
+    if (action === 'UNDO') {
+      if (!app.history.length) return { app: app, event: 'noop-undo' };
+      return { app: { game: app.history[app.history.length - 1], history: app.history.slice(0, -1) }, event: 'undo' };
+    }
+    var g = app.game, ng, ev;
+    if (action === 'RESET') { ng = newGame(g.mode); ev = 'reset'; }
+    else if (g.mode === 'simple') { ng = simplePoint(g, action === 'A' ? 0 : 1); ev = 'point'; }
+    else { var r = pbRally(g, action === 'A'); ng = r.game; ev = r.event; }
+    if (ev === 'noop') return { app: app, event: 'noop' };
+    return { app: { game: ng, history: app.history.concat([g]).slice(-limit) }, event: ev };
+  }
+
+  // Game baru dari layar awal; game lama masuk history supaya bisa di-undo.
+  function startNew(app, mode, limit) {
+    var h = app ? app.history.concat([app.game]).slice(-(limit || HISTORY_LIMIT)) : [];
+    return { game: newGame(mode), history: h };
+  }
+
+  // Format panggilan "servis-penerima-server", mis. "4-2-1"
+  function callText(g) {
+    if (g.mode !== 'pickleball') return g.score[0] + ' – ' + g.score[1];
+    return g.score[g.serving] + '-' + g.score[1 - g.serving] + '-' + g.server;
+  }
+
+  var SATUAN = ['nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh', 'sebelas'];
+  function terbilang(n) {
+    if (n < 12) return SATUAN[n];
+    if (n < 20) return SATUAN[n - 10] + ' belas';
+    if (n < 100) return SATUAN[Math.floor(n / 10)] + ' puluh' + (n % 10 ? ' ' + SATUAN[n % 10] : '');
+    return String(n);
+  }
+
+  return { TARGET: TARGET, HISTORY_LIMIT: HISTORY_LIMIT, newGame: newGame, isWin: isWin, simplePoint: simplePoint,
+           pbRally: pbRally, applyAction: applyAction, startNew: startNew, callText: callText, terbilang: terbilang };
+})();
+</script>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var au = $('au'), KEY = 'skorHeadset.v1', THEME_KEY = 'skorHeadset.theme';
+  var app = null, started = false, wantAudio = false, wakeLock = null, playFailLogged = false;
+
+  // ---------- Storage (selalu try/catch) ----------
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(app)); } catch (e) {} }
+  function load() {
+    try {
+      var s = JSON.parse(localStorage.getItem(KEY));
+      if (s && s.game && Array.isArray(s.game.score) && Array.isArray(s.history)) return s;
+    } catch (e) {}
+    return null;
+  }
+  function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  // ---------- Debug log ----------
+  var logs = [];
+  function log(src, msg) {
+    var d = new Date(), t = d.toTimeString().slice(0, 8) + '.' + String(d.getMilliseconds()).padStart(3, '0');
+    logs.unshift({ t: t, src: src, msg: msg });
+    logs.length = Math.min(logs.length, 20);
+    $('log').innerHTML = logs.map(function (l) {
+      return '<li><span class="t">' + l.t + '</span> <span class="s">' + l.src + '</span> ' + l.msg.replace(/</g, '&lt;') + '</li>';
+    }).join('');
+  }
+
+  // ---------- Audio loop hampir-senyap ----------
+  // 100 Hz, amplitudo ~20/32767 (≈ -64 dBFS): tidak terdengar, tapi bukan digital silence,
+  // supaya browser/OS/headset tidak menganggap sesi media idle. 10 dtk = 1000 siklus pas -> loop mulus.
+  function makeWavUrl() {
+    var rate = 16000, sec = 10, n = rate * sec, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+    function w(o, s) { for (var i = 0; i < s.length; i++) v.setUint8(o + i, s.charCodeAt(i)); }
+    w(0, 'RIFF'); v.setUint32(4, 36 + n * 2, true); w(8, 'WAVE'); w(12, 'fmt ');
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, rate, true); v.setUint32(28, rate * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    w(36, 'data'); v.setUint32(40, n * 2, true);
+    for (var i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.round(Math.sin(2 * Math.PI * 100 * i / rate) * 20), true);
+    return URL.createObjectURL(new Blob([buf], { type: 'audio/wav' }));
+  }
+
+  function startAudio() { // HARUS dipanggil dari user gesture
+    wantAudio = true;
+    if (!au.src) au.src = makeWavUrl();
+    var p = au.play();
+    if (p && p.catch) p.then(function () { log('audio', 'play() OK'); }).catch(function (e) { log('audio', 'play() gagal: ' + e.name); });
+    updateMeta();
+  }
+
+  function ensurePlaying() {
+    if (!wantAudio || !au.paused) return;
+    au.play().then(function () {
+      if (playFailLogged) log('audio', 'audio jalan lagi'); playFailLogged = false;
+    }).catch(function (e) {
+      if (!playFailLogged) log('audio', 'resume gagal: ' + e.name + ' (ketuk chip Audio)');
+      playFailLogged = true;
+    });
+  }
+
+  au.addEventListener('playing', function () { setPlaybackState('playing'); updateStatus(); });
+  au.addEventListener('pause', function () {
+    updateStatus();
+    if (wantAudio) { log('audio', 'audio ter-pause, mencoba resume'); setTimeout(ensurePlaying, 250); }
+  });
+  setInterval(function () { ensurePlaying(); updateStatus(); }, 3000); // watchdog
+
+  // ---------- Media Session ----------
+  var ms = navigator.mediaSession;
+  function setPlaybackState(s) { try { if (ms) ms.playbackState = s; } catch (e) {} }
+  function setupMediaSession() {
+    if (!ms) { log('sys', 'navigator.mediaSession TIDAK tersedia'); return; }
+    var handlers = {
+      nexttrack: function () { trigger('A', 'mediaSession', 'nexttrack'); },
+      previoustrack: function () { trigger('B', 'mediaSession', 'previoustrack'); },
+      play: function () { ensurePlaying(); trigger('UNDO', 'mediaSession', 'play'); },
+      pause: function () { au.play().catch(function () {}); setPlaybackState('playing'); trigger('UNDO', 'mediaSession', 'pause'); }
+    };
+    Object.keys(handlers).forEach(function (k) {
+      try { ms.setActionHandler(k, handlers[k]); } catch (e) { log('sys', 'action "' + k + '" tidak didukung'); }
+    });
+  }
+  function updateMeta() {
+    if (!ms || !app || typeof MediaMetadata === 'undefined') return;
+    var g = app.game;
+    try {
+      ms.metadata = new MediaMetadata({
+        title: (g.mode === 'pickleball' ? Logic.callText(g) : g.score[0] + ' - ' + g.score[1]) + (g.winner != null ? ' · TIM ' + 'AB'[g.winner] + ' MENANG' : ''),
+        artist: 'A ' + g.score[0] + ' – B ' + g.score[1] + (g.mode === 'pickleball' ? ' · servis Tim ' + 'AB'[g.serving] : ''),
+        album: g.mode === 'pickleball' ? 'Pickleball' : 'Skor Simple'
+      });
+    } catch (e) {}
+  }
+
+  // ---------- TTS ----------
+  var voices = [], idVoice = null, enVoice = null;
+  function loadVoices() {
+    try { voices = speechSynthesis.getVoices(); } catch (e) { voices = []; }
+    idVoice = voices.find(function (v) { return /^id([-_]|$)/i.test(v.lang); }) || null;
+    enVoice = voices.find(function (v) { return /^en[-_]US/i.test(v.lang); }) || null;
+  }
+  if ('speechSynthesis' in window) { loadVoices(); speechSynthesis.addEventListener('voiceschanged', loadVoices); }
+
+  function speak(txt) { // txt = { id, en }
+    if (!('speechSynthesis' in window)) return;
+    speechSynthesis.cancel();
+    // Daftar suara kosong (belum termuat) -> tetap coba id-ID, biar browser yang pilih.
+    var useId = !!idVoice || voices.length === 0;
+    var u = new SpeechSynthesisUtterance(useId ? txt.id : txt.en);
+    if (useId) { u.lang = 'id-ID'; if (idVoice) u.voice = idVoice; }
+    else { u.lang = 'en-US'; if (enVoice) u.voice = enVoice; }
+    u.rate = 1.05;
+    u.onend = u.onerror = function () { setTimeout(ensurePlaying, 100); };
+    speechSynthesis.speak(u);
+  }
+
+  function scoreSpeech(g) {
+    var T = Logic.terbilang;
+    if (g.mode !== 'pickleball') return { id: T(g.score[0]) + ', ' + T(g.score[1]), en: g.score[0] + ', ' + g.score[1] };
+    var s = g.score[g.serving], r = g.score[1 - g.serving];
+    return { id: T(s) + ', ' + T(r) + ', server ' + T(g.server), en: s + ', ' + r + ', server ' + g.server };
+  }
+  function speechFor(g, ev) {
+    var sc = scoreSpeech(g), T = Logic.terbilang;
+    if (ev === 'noop-undo') return { id: 'Tidak ada yang bisa dibatalkan', en: 'Nothing to undo' };
+    if (ev === 'noop') return { id: 'Game selesai. Tekan reset.', en: 'Game over. Press reset.' };
+    if (ev === 'win') {
+      var w = g.score[g.winner], l = g.score[1 - g.winner], tim = 'AB'[g.winner];
+      return { id: 'Game! Tim ' + tim + ' menang, ' + T(w) + ', ' + T(l), en: 'Game! Team ' + tim + ' wins, ' + w + ', ' + l };
+    }
+    var pre = { undo: ['Batal. ', 'Undo. '], sideout: ['Pindah servis. ', 'Side out. '], reset: ['Game baru. ', 'New game. '] }[ev];
+    return pre ? { id: pre[0] + sc.id, en: pre[1] + sc.en } : sc;
+  }
+
+  // ---------- Aksi (debounce 300 ms per aksi) ----------
+  var lastAt = {};
+  function trigger(action, src, detail) {
+    if (!started) { log(src, detail + ' → diabaikan (belum MULAI)'); return; }
+    var now = Date.now();
+    if (now - (lastAt[action] || 0) < 300) { log(src, detail + ' → ' + action + ' (debounce, diabaikan)'); return; }
+    lastAt[action] = now;
+    var r = Logic.applyAction(app, action);
+    app = r.app;
+    log(src, detail + ' → ' + action + ' [' + r.event + '] ' + Logic.callText(app.game));
+    save(); render();
+    speak(speechFor(app.game, r.event));
+  }
+
+  var KEYMAP = { MediaTrackNext: 'A', ArrowRight: 'A', MediaTrackPrevious: 'B', ArrowLeft: 'B',
+                 MediaPlayPause: 'UNDO', MediaPlay: 'UNDO', MediaPause: 'UNDO', Backspace: 'UNDO' };
+  document.addEventListener('keydown', function (e) {
+    var a = KEYMAP[e.key];
+    if (!a) { if (started) log('keydown', e.key + ' (tidak dipetakan)'); return; }
+    e.preventDefault();
+    trigger(a, 'keydown', e.key);
+  });
+
+  // ---------- Wake Lock ----------
+  function requestWake() {
+    if (!('wakeLock' in navigator)) { log('sys', 'Wake Lock API tidak tersedia'); updateStatus(); return; }
+    navigator.wakeLock.request('screen').then(function (wl) {
+      wakeLock = wl; updateStatus();
+      wl.addEventListener('release', updateStatus);
+    }).catch(function (e) { log('sys', 'wake lock ditolak: ' + e.name); updateStatus(); });
+  }
+  document.addEventListener('visibilitychange', function () {
+    log('sys', 'visibility: ' + document.visibilityState);
+    if (document.visibilityState === 'visible' && started) {
+      if (!wakeLock || wakeLock.released) requestWake();
+      ensurePlaying();
+    }
+  });
+
+  // ---------- UI ----------
+  function setChip(el, ok, label) { el.textContent = label + (ok ? ' ✓' : ' ✗'); el.className = 'chip ' + (ok ? 'ok' : 'bad'); }
+  function updateStatus() {
+    setChip($('stAudio'), !au.paused && !!au.src, 'Audio aktif');
+    setChip($('stWake'), !!wakeLock && !wakeLock.released, 'Wake lock');
+  }
+
+  function render() {
+    var g = app.game, pb = g.mode === 'pickleball', live = pb && g.winner == null;
+    $('numA').textContent = g.score[0];
+    $('numB').textContent = g.score[1];
+    $('call').textContent = Logic.callText(g);
+    [0, 1].forEach(function (t) {
+      var srv = live && g.serving === t;
+      $(t ? 'teamB' : 'teamA').classList.toggle('serving', srv);
+      $(t ? 'srvB' : 'srvA').textContent = srv ? '● SERVIS\nserver ' + g.server : '';
+    });
+    $('banner').hidden = !(pb && g.winner != null);
+    if (pb && g.winner != null) $('banner').textContent = 'TIM ' + 'AB'[g.winner] + ' MENANG ' + g.score[g.winner] + '-' + g.score[1 - g.winner];
+    $('bA').textContent = pb ? '▶▶| Servis MENANG' : '▶▶| Tim A +1';
+    $('bB').textContent = pb ? '|◀◀ Servis KALAH' : '|◀◀ Tim B +1';
+    updateMeta();
+  }
+
+  function selectedMode() { return document.querySelector('input[name=mode]:checked').value; }
+  function renderStart() {
+    var saved = app;
+    $('btnResume').hidden = !saved;
+    if (saved) $('resumeInfo').textContent = (saved.game.mode === 'pickleball' ? 'Pickleball ' : 'Simple ') + Logic.callText(saved.game);
+    $('btnStart').textContent = saved ? 'MULAI BARU' : 'MULAI';
+    $('btnStart').className = saved ? 'sec' : 'bigstart';
+    $('modeHelp').innerHTML = selectedMode() === 'pickleball'
+      ? '<b>Pickleball</b> (ganda, side-out): Next = tim servis menang rally, Prev = tim servis kalah rally. Target 11, menang selisih 2. Mulai dari 0-0-2.'
+      : '<b>Simple</b>: Next = Tim A +1, Prev = Tim B +1.';
+  }
+
+  function enterGame() { // dipanggil dari user gesture
+    startAudio();
+    requestWake();
+    started = true;
+    $('start').hidden = true; $('game').hidden = false;
+    save(); render(); updateStatus();
+    log('sys', 'mulai · mode ' + app.game.mode + ' · voice: ' + (idVoice ? idVoice.name + ' (' + idVoice.lang + ')' : voices.length ? 'id-ID tidak ada, pakai en-US' : 'belum termuat'));
+    speak(speechFor(app.game, 'start'));
+  }
+
+  $('btnStart').addEventListener('click', function () {
+    if (app && !confirm('Mulai game baru? (game lama masih bisa di-Undo)')) return;
+    app = Logic.startNew(app, selectedMode());
+    enterGame();
+  });
+  $('btnResume').addEventListener('click', enterGame);
+  document.querySelectorAll('input[name=mode]').forEach(function (r) { r.addEventListener('change', renderStart); });
+  $('btnMenu').addEventListener('click', function () {
+    started = false; // audio tetap jalan
+    $('game').hidden = true; $('start').hidden = false;
+    document.querySelector('input[name=mode][value=' + app.game.mode + ']').checked = true;
+    renderStart();
+  });
+  $('stAudio').addEventListener('click', function () { log('layar', 'chip Audio → restart audio'); startAudio(); });
+  $('bA').addEventListener('click', function () { trigger('A', 'layar', 'tombol A'); });
+  $('bB').addEventListener('click', function () { trigger('B', 'layar', 'tombol B'); });
+  $('bU').addEventListener('click', function () { trigger('UNDO', 'layar', 'tombol Undo'); });
+  $('bR').addEventListener('click', function () { if (confirm('Reset skor? (bisa di-Undo)')) trigger('RESET', 'layar', 'tombol Reset'); });
+  $('btnTheme').addEventListener('click', function () {
+    var t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    document.documentElement.dataset.theme = t; lsSet(THEME_KEY, t);
+  });
+
+  // ---------- Boot ----------
+  if (lsGet(THEME_KEY)) document.documentElement.dataset.theme = lsGet(THEME_KEY);
+  $('secureWarn').hidden = window.isSecureContext;
+  app = load();
+  if (app) document.querySelector('input[name=mode][value=' + app.game.mode + ']').checked = true;
+  setupMediaSession();
+  renderStart();
+})();
+</script>
+</body>
+</html>

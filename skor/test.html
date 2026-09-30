@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tes Logika Skor</title>
+<style>
+  body { font-family: ui-monospace, Menlo, monospace; background:#111; color:#eee; padding:16px; }
+  .pass { color:#2bd46a; } .fail { color:#ff4d4d; font-weight:700; }
+  h1 { font-family: system-ui, sans-serif; }
+</style>
+</head>
+<body>
+<h1 id="sum">Menjalankan tes…</h1>
+<ol id="out"></ol>
+<script>
+// Mengambil blok <script id="logic"> dari index.html apa adanya -> yang dites = kode yang dipakai app.
+function loadLogic() {
+  return fetch('index.html', { cache: 'no-store' }).then(function (r) { return r.text(); }).then(function (html) {
+    var m = html.match(/<script id="logic">([\s\S]*?)<\/script>/);
+    if (!m) throw new Error('blok <script id="logic"> tidak ditemukan di index.html');
+    return new Function(m[1] + '\nreturn Logic;')();
+  });
+}
+
+function runTests(L) {
+  var results = [];
+  function eq(a, b) { return JSON.stringify(a) === JSON.stringify(b); }
+  function test(name, fn) {
+    try { fn(); results.push({ name: name, ok: true }); }
+    catch (e) { results.push({ name: name, ok: false, err: e.message }); }
+  }
+  function assert(c, msg) { if (!c) throw new Error(msg || 'assert gagal'); }
+  function assertEq(a, b, msg) { if (!eq(a, b)) throw new Error((msg || '') + ' diharapkan ' + JSON.stringify(b) + ', dapat ' + JSON.stringify(a)); }
+  function pb(score, serving, server) { return { mode: 'pickleball', score: score, serving: serving, server: server, winner: null }; }
+  function play(app, actions) { actions.split('').forEach(function (a) { app = L.applyAction(app, a).app; }); return app; }
+  function fresh() { return { game: L.newGame('pickleball'), history: [] }; }
+
+  test('0-0-2: game dimulai dengan Tim A servis, server 2', function () {
+    var g = L.newGame('pickleball');
+    assertEq(L.callText(g), '0-0-2'); assertEq(g.serving, 0); assertEq(g.server, 2);
+  });
+  test('0-0-2: kesalahan pertama langsung side-out (tidak ada server 1 untuk Tim A)', function () {
+    var r = L.pbRally(L.newGame('pickleball'), false);
+    assertEq(r.event, 'sideout'); assertEq(r.game.serving, 1); assertEq(L.callText(r.game), '0-0-1');
+  });
+  test('Server 1 kalah rally → server 2, tim servis tetap, skor tetap', function () {
+    var r = L.pbRally(pb([3, 5], 1, 1), false);
+    assertEq(r.event, 'server2'); assertEq(r.game.serving, 1); assertEq(r.game.server, 2); assertEq(r.game.score, [3, 5]);
+    assertEq(L.callText(r.game), '5-3-2');
+  });
+  test('Server 2 kalah rally → side-out, lawan servis dengan server 1', function () {
+    var r = L.pbRally(pb([3, 5], 1, 2), false);
+    assertEq(r.event, 'sideout'); assertEq(r.game.serving, 0); assertEq(r.game.server, 1); assertEq(L.callText(r.game), '3-5-1');
+  });
+  test('Tim servis menang rally → +1 hanya untuk tim servis, server tidak berubah', function () {
+    var r = L.pbRally(pb([4, 2], 0, 1), true);
+    assertEq(r.event, 'point'); assertEq(r.game.score, [5, 2]); assertEq(r.game.server, 1);
+    var r2 = L.pbRally(pb([4, 2], 1, 2), true);
+    assertEq(r2.game.score, [4, 3]); assertEq(L.callText(r2.game), '3-4-2');
+  });
+  test('Tim penerima tidak pernah dapat poin (side-out scoring)', function () {
+    var app = play(fresh(), 'BBBBBB'); // hanya servis kalah
+    assertEq(app.game.score, [0, 0]);
+  });
+  test('Format panggilan "servis-penerima-server" dari sudut tim servis', function () {
+    assertEq(L.callText(pb([2, 4], 1, 1)), '4-2-1');
+  });
+  test('Skenario: A,A,B(side-out),A,B(server2),A → 2-1 lalu B servis', function () {
+    var app = play(fresh(), 'AAB');           // A: 2-0, server 2 kalah → B servis 1
+    assertEq(L.callText(app.game), '0-2-1');
+    app = play(app, 'ABA');                   // B: 1-2, server1 kalah → server2, menang 2-2
+    assertEq(L.callText(app.game), '2-2-2'); assertEq(app.game.serving, 1);
+  });
+  test('Menang di 11 dengan selisih ≥ 2 (11-9)', function () {
+    var r = L.pbRally(pb([10, 9], 0, 1), true);
+    assertEq(r.event, 'win'); assertEq(r.game.winner, 0); assertEq(r.game.score, [11, 9]);
+  });
+  test('11-10 belum menang, lanjut sampai selisih 2 (12-10)', function () {
+    var r = L.pbRally(pb([10, 10], 0, 1), true);
+    assertEq(r.event, 'point'); assertEq(r.game.winner, null);
+    var r2 = L.pbRally(r.game, true);
+    assertEq(r2.event, 'win'); assertEq(r2.game.score, [12, 10]);
+  });
+  test('Tim B juga bisa menang (winner = 1)', function () {
+    var r = L.pbRally(pb([4, 10], 1, 2), true);
+    assertEq(r.game.winner, 1);
+  });
+  test('Setelah game selesai, rally diabaikan (noop, history tidak bertambah)', function () {
+    var app = { game: L.pbRally(pb([10, 3], 0, 1), true).game, history: [] };
+    var r = L.applyAction(app, 'A'); assertEq(r.event, 'noop'); assert(r.app === app);
+    assertEq(L.applyAction(app, 'B').event, 'noop');
+  });
+  test('Undo mengembalikan state persis sebelumnya (termasuk side-out & server)', function () {
+    var app = play(fresh(), 'AAAB');           // side-out ke B
+    var before = app.game;
+    app = play(app, 'A');                      // B dapat poin
+    var r = L.applyAction(app, 'UNDO');
+    assertEq(r.event, 'undo'); assertEq(r.app.game, before);
+  });
+  test('Undo berkali-kali kembali ke 0-0-2; undo di history kosong = noop', function () {
+    var app = play(fresh(), 'AABAB');
+    for (var i = 0; i < 5; i++) app = L.applyAction(app, 'UNDO').app;
+    assertEq(app.game, L.newGame('pickleball')); assertEq(app.history.length, 0);
+    assertEq(L.applyAction(app, 'UNDO').event, 'noop-undo');
+  });
+  test('Undo membatalkan kemenangan', function () {
+    var app = { game: pb([10, 9], 0, 1), history: [] };
+    app = L.applyAction(app, 'A').app; assertEq(app.game.winner, 0);
+    app = L.applyAction(app, 'UNDO').app; assertEq(app.game.winner, null); assertEq(app.game.score, [10, 9]);
+  });
+  test('Reset bisa di-undo', function () {
+    var app = play(fresh(), 'AAA');
+    app = L.applyAction(app, 'RESET').app; assertEq(L.callText(app.game), '0-0-2');
+    app = L.applyAction(app, 'UNDO').app; assertEq(app.game.score, [3, 0]);
+  });
+  test('History menyimpan minimal 50 langkah (dan dibatasi)', function () {
+    var app = { game: L.newGame('simple'), history: [] };
+    for (var i = 0; i < 150; i++) app = L.applyAction(app, 'A').app;
+    assert(app.history.length >= 50, 'history hanya ' + app.history.length);
+    assert(app.history.length <= L.HISTORY_LIMIT, 'history tidak dibatasi');
+    for (var j = 0; j < 50; j++) app = L.applyAction(app, 'UNDO').app;
+    assertEq(app.game.score, [100, 0]);
+  });
+  test('Fungsi murni: input tidak dimutasi', function () {
+    var app = fresh(), snap = JSON.stringify(app);
+    play(app, 'AABBAA'); L.applyAction(app, 'RESET');
+    assertEq(JSON.stringify(app), snap);
+  });
+  test('Mode simple: A → Tim A +1, B → Tim B +1', function () {
+    var app = play({ game: L.newGame('simple'), history: [] }, 'AAB');
+    assertEq(app.game.score, [2, 1]);
+  });
+  test('Game baru dari layar awal menyimpan game lama di history', function () {
+    var app = play(fresh(), 'AA');
+    app = L.startNew(app, 'simple'); assertEq(app.game.mode, 'simple');
+    app = L.applyAction(app, 'UNDO').app; assertEq(app.game.mode, 'pickleball'); assertEq(app.game.score, [2, 0]);
+  });
+  test('terbilang Indonesia', function () {
+    assertEq([0, 4, 11, 12, 19, 20, 21].map(L.terbilang), ['nol', 'empat', 'sebelas', 'dua belas', 'sembilan belas', 'dua puluh', 'dua puluh satu']);
+  });
+  return results;
+}
+
+function show(results) {
+  var fail = results.filter(function (r) { return !r.ok; }).length;
+  document.getElementById('out').innerHTML = results.map(function (r) {
+    return '<li class="' + (r.ok ? 'pass' : 'fail') + '">' + (r.ok ? '✓ ' : '✗ ') + r.name + (r.err ? '<br>&nbsp;&nbsp;' + r.err : '') + '</li>';
+  }).join('');
+  var s = document.getElementById('sum');
+  s.textContent = fail ? fail + ' dari ' + results.length + ' tes GAGAL' : 'Semua ' + results.length + ' tes lulus ✓';
+  s.className = fail ? 'fail' : 'pass';
+  window.TEST_RESULT = { total: results.length, fail: fail };
+}
+
+loadLogic().then(function (L) { show(runTests(L)); }).catch(function (e) {
+  document.getElementById('sum').textContent = 'Error: ' + e.message + ' (buka lewat server, bukan file://)';
+  document.getElementById('sum').className = 'fail';
+  window.TEST_RESULT = { total: 0, fail: 1, error: e.message };
+});
+</script>
+</body>
+</html>
