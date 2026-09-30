@@ -32,86 +32,71 @@ function runTests(L) {
   }
   function assert(c, msg) { if (!c) throw new Error(msg || 'assert gagal'); }
   function assertEq(a, b, msg) { if (!eq(a, b)) throw new Error((msg || '') + ' diharapkan ' + JSON.stringify(b) + ', dapat ' + JSON.stringify(a)); }
-  function pb(score, serving, server) { return { mode: 'pickleball', score: score, serving: serving, server: server, winner: null }; }
+  function pb(score, target) { return { mode: 'pickleball', score: score, target: target || 11, winner: null }; }
   function play(app, actions) { actions.split('').forEach(function (a) { app = L.applyAction(app, a).app; }); return app; }
-  function fresh() { return { game: L.newGame('pickleball'), history: [] }; }
+  function fresh(target) { return { game: L.newGame('pickleball', target), history: [] }; }
 
-  test('0-0-2: game dimulai dengan Tim A servis, server 2', function () {
+  test('Game baru pickleball: 0-0, target default 11', function () {
     var g = L.newGame('pickleball');
-    assertEq(L.callText(g), '0-0-2'); assertEq(g.serving, 0); assertEq(g.server, 2);
+    assertEq(g.score, [0, 0]); assertEq(g.target, 11); assertEq(g.winner, null);
   });
-  test('0-0-2: kesalahan pertama langsung side-out (tidak ada server 1 untuk Tim A)', function () {
-    var r = L.pbRally(L.newGame('pickleball'), false);
-    assertEq(r.event, 'sideout'); assertEq(r.game.serving, 1); assertEq(L.callText(r.game), '0-0-1');
+  test('Target bisa 11 / 15 / 21; nilai lain jatuh ke 11', function () {
+    assertEq(L.newGame('pickleball', 15).target, 15); assertEq(L.newGame('pickleball', 21).target, 21);
+    assertEq(L.newGame('pickleball', 7).target, 11);
   });
-  test('Server 1 kalah rally → server 2, tim servis tetap, skor tetap', function () {
-    var r = L.pbRally(pb([3, 5], 1, 1), false);
-    assertEq(r.event, 'server2'); assertEq(r.game.serving, 1); assertEq(r.game.server, 2); assertEq(r.game.score, [3, 5]);
-    assertEq(L.callText(r.game), '5-3-2');
-  });
-  test('Server 2 kalah rally → side-out, lawan servis dengan server 1', function () {
-    var r = L.pbRally(pb([3, 5], 1, 2), false);
-    assertEq(r.event, 'sideout'); assertEq(r.game.serving, 0); assertEq(r.game.server, 1); assertEq(L.callText(r.game), '3-5-1');
-  });
-  test('Tim servis menang rally → +1 hanya untuk tim servis, server tidak berubah', function () {
-    var r = L.pbRally(pb([4, 2], 0, 1), true);
-    assertEq(r.event, 'point'); assertEq(r.game.score, [5, 2]); assertEq(r.game.server, 1);
-    var r2 = L.pbRally(pb([4, 2], 1, 2), true);
-    assertEq(r2.game.score, [4, 3]); assertEq(L.callText(r2.game), '3-4-2');
-  });
-  test('Tim penerima tidak pernah dapat poin (side-out scoring)', function () {
-    var app = play(fresh(), 'BBBBBB'); // hanya servis kalah
-    assertEq(app.game.score, [0, 0]);
-  });
-  test('Format panggilan "servis-penerima-server" dari sudut tim servis', function () {
-    assertEq(L.callText(pb([2, 4], 1, 1)), '4-2-1');
-  });
-  test('Skenario: A,A,B(side-out),A,B(server2),A → 2-1 lalu B servis', function () {
-    var app = play(fresh(), 'AAB');           // A: 2-0, server 2 kalah → B servis 1
-    assertEq(L.callText(app.game), '0-2-1');
-    app = play(app, 'ABA');                   // B: 1-2, server1 kalah → server2, menang 2-2
-    assertEq(L.callText(app.game), '2-2-2'); assertEq(app.game.serving, 1);
+  test('Rally scoring: A → Tim A +1, B → Tim B +1 (setiap rally = poin)', function () {
+    var app = play(fresh(), 'AABAB');
+    assertEq(app.game.score, [3, 2]);
   });
   test('Menang di 11 dengan selisih ≥ 2 (11-9)', function () {
-    var r = L.pbRally(pb([10, 9], 0, 1), true);
+    var r = L.point(pb([10, 9]), 0);
     assertEq(r.event, 'win'); assertEq(r.game.winner, 0); assertEq(r.game.score, [11, 9]);
   });
-  test('11-10 belum menang, lanjut sampai selisih 2 (12-10)', function () {
-    var r = L.pbRally(pb([10, 10], 0, 1), true);
+  test('10-10 → 11-10 belum menang, lanjut sampai selisih 2 (12-10)', function () {
+    var r = L.point(pb([10, 10]), 0);
     assertEq(r.event, 'point'); assertEq(r.game.winner, null);
-    var r2 = L.pbRally(r.game, true);
+    var r2 = L.point(r.game, 0);
     assertEq(r2.event, 'win'); assertEq(r2.game.score, [12, 10]);
   });
-  test('Tim B juga bisa menang (winner = 1)', function () {
-    var r = L.pbRally(pb([4, 10], 1, 2), true);
-    assertEq(r.game.winner, 1);
+  test('Deuce panjang: 14-14 → 15-14 → 15-15 → 16-15 → 17-15 menang', function () {
+    var app = play({ game: pb([14, 14]), history: [] }, 'ABAA');
+    assertEq(app.game.score, [17, 15]); assertEq(app.game.winner, 0);
   });
-  test('Setelah game selesai, rally diabaikan (noop, history tidak bertambah)', function () {
-    var app = { game: L.pbRally(pb([10, 3], 0, 1), true).game, history: [] };
+  test('Tim B juga bisa menang (winner = 1)', function () {
+    assertEq(L.point(pb([4, 10]), 1).game.winner, 1);
+  });
+  test('Target 15 dan 21 dihormati', function () {
+    assertEq(L.point(pb([10, 3], 15), 0).game.winner, null);
+    assertEq(L.point(pb([14, 3], 15), 0).game.winner, 0);
+    assertEq(L.point(pb([14, 3], 21), 0).game.winner, null);
+    assertEq(L.point(pb([20, 20], 21), 0).game.winner, null);
+    assertEq(L.point(pb([20, 18], 21), 0).game.winner, 0);
+  });
+  test('Setelah game selesai, poin diabaikan (noop, history tidak bertambah)', function () {
+    var app = { game: L.point(pb([10, 3]), 0).game, history: [] };
     var r = L.applyAction(app, 'A'); assertEq(r.event, 'noop'); assert(r.app === app);
     assertEq(L.applyAction(app, 'B').event, 'noop');
   });
-  test('Undo mengembalikan state persis sebelumnya (termasuk side-out & server)', function () {
-    var app = play(fresh(), 'AAAB');           // side-out ke B
-    var before = app.game;
-    app = play(app, 'A');                      // B dapat poin
+  test('Undo mengembalikan state persis sebelumnya', function () {
+    var app = play(fresh(), 'AAB'), before = app.game;
+    app = play(app, 'B');
     var r = L.applyAction(app, 'UNDO');
     assertEq(r.event, 'undo'); assertEq(r.app.game, before);
   });
-  test('Undo berkali-kali kembali ke 0-0-2; undo di history kosong = noop', function () {
+  test('Undo berkali-kali kembali ke 0-0; undo di history kosong = noop', function () {
     var app = play(fresh(), 'AABAB');
     for (var i = 0; i < 5; i++) app = L.applyAction(app, 'UNDO').app;
     assertEq(app.game, L.newGame('pickleball')); assertEq(app.history.length, 0);
     assertEq(L.applyAction(app, 'UNDO').event, 'noop-undo');
   });
   test('Undo membatalkan kemenangan', function () {
-    var app = { game: pb([10, 9], 0, 1), history: [] };
+    var app = { game: pb([10, 9]), history: [] };
     app = L.applyAction(app, 'A').app; assertEq(app.game.winner, 0);
     app = L.applyAction(app, 'UNDO').app; assertEq(app.game.winner, null); assertEq(app.game.score, [10, 9]);
   });
-  test('Reset bisa di-undo', function () {
-    var app = play(fresh(), 'AAA');
-    app = L.applyAction(app, 'RESET').app; assertEq(L.callText(app.game), '0-0-2');
+  test('Reset mempertahankan target dan bisa di-undo', function () {
+    var app = play(fresh(21), 'AAA');
+    app = L.applyAction(app, 'RESET').app; assertEq(app.game.score, [0, 0]); assertEq(app.game.target, 21);
     app = L.applyAction(app, 'UNDO').app; assertEq(app.game.score, [3, 0]);
   });
   test('History menyimpan minimal 50 langkah (dan dibatasi)', function () {
@@ -127,9 +112,10 @@ function runTests(L) {
     play(app, 'AABBAA'); L.applyAction(app, 'RESET');
     assertEq(JSON.stringify(app), snap);
   });
-  test('Mode simple: A → Tim A +1, B → Tim B +1', function () {
-    var app = play({ game: L.newGame('simple'), history: [] }, 'AAB');
-    assertEq(app.game.score, [2, 1]);
+  test('Mode simple: tanpa target, tidak pernah menang otomatis', function () {
+    var app = { game: L.newGame('simple'), history: [] };
+    for (var i = 0; i < 30; i++) app = L.applyAction(app, 'A').app;
+    assertEq(app.game.score, [30, 0]); assert(app.game.winner == null);
   });
   test('Game baru dari layar awal menyimpan game lama di history', function () {
     var app = play(fresh(), 'AA');

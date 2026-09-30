@@ -22,6 +22,7 @@
   .modes { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .modes label { border:2px solid var(--line); border-radius:14px; padding:14px; font-weight:700; font-size:20px; text-align:center; }
   .modes input { display:none; }
+  .modes.t3 { grid-template-columns:1fr 1fr 1fr; }
   .modes label:has(input:checked) { background:var(--acc); color:var(--accfg); border-color:var(--acc); }
   .bigstart { padding:28px 12px; font-size:34px; font-weight:900; background:var(--acc); color:var(--accfg); border-color:var(--acc); }
   .bigstart small { display:block; font-size:16px; font-weight:600; margin-top:6px; }
@@ -36,14 +37,13 @@
   .chip.ok { color:var(--ok); border-color:var(--ok); }
   .chip.bad { color:var(--bad); border-color:var(--bad); }
   .bar .sp { flex:1; }
-  .call { text-align:center; font-weight:900; font-size:min(16vw,12vh); line-height:1; letter-spacing:.02em; font-variant-numeric:tabular-nums; }
+  .call { text-align:center; font-weight:800; font-size:18px; color:var(--dim); letter-spacing:.05em; text-transform:uppercase; }
   .teams { display:grid; grid-template-columns:1fr 1fr; gap:10px; flex:1; }
   .team { border:3px solid var(--line); border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:8px 4px; min-height:30vh; }
-  .team.serving { background:var(--acc); color:var(--accfg); border-color:var(--acc); }
+  .team.won { background:var(--acc); color:var(--accfg); border-color:var(--acc); }
   .tname { font-size:20px; font-weight:800; letter-spacing:.1em; }
-  .num { font-size:min(34vw,32vh); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
-  .srv { font-size:18px; font-weight:800; min-height:2.6em; text-align:center; white-space:pre-line; }
-  #banner { text-align:center; font-size:28px; font-weight:900; color:var(--bg); background:var(--ok); border-radius:14px; padding:10px; }
+  .num { font-size:min(36vw,40vh); font-weight:900; line-height:1; font-variant-numeric:tabular-nums; }
+    #banner { text-align:center; font-size:28px; font-weight:900; color:var(--bg); background:var(--ok); border-radius:14px; padding:10px; }
   .ctrl { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .ctrl .big { padding:22px 6px; font-size:22px; font-weight:900; }
   .ctrl .sm { padding:14px 6px; font-size:18px; font-weight:700; }
@@ -65,6 +65,11 @@
     <label><input type="radio" name="mode" value="simple">Simple</label>
     <label><input type="radio" name="mode" value="pickleball" checked>Pickleball</label>
   </div>
+  <div class="modes t3" id="targets" role="radiogroup" aria-label="Target poin">
+    <label><input type="radio" name="target" value="11" checked>ke 11</label>
+    <label><input type="radio" name="target" value="15">ke 15</label>
+    <label><input type="radio" name="target" value="21">ke 21</label>
+  </div>
   <button id="btnResume" class="bigstart" hidden>LANJUTKAN<small id="resumeInfo"></small></button>
   <button id="btnStart" class="bigstart">MULAI</button>
   <p class="note" id="modeHelp"></p>
@@ -79,15 +84,15 @@
     <button id="btnTheme" class="chip" title="Ganti tema terang/gelap">◐</button>
     <button id="btnMenu" class="chip">Mode</button>
   </header>
-  <div id="call" class="call">0-0-2</div>
+  <div id="call" class="call"></div>
   <section class="teams">
-    <div class="team" id="teamA"><div class="tname">TIM A</div><div class="num" id="numA">0</div><div class="srv" id="srvA"></div></div>
-    <div class="team" id="teamB"><div class="tname">TIM B</div><div class="num" id="numB">0</div><div class="srv" id="srvB"></div></div>
+    <div class="team" id="teamA"><div class="tname">TIM A</div><div class="num" id="numA">0</div></div>
+    <div class="team" id="teamB"><div class="tname">TIM B</div><div class="num" id="numB">0</div></div>
   </section>
   <div id="banner" hidden></div>
   <nav class="ctrl">
-    <button id="bA" class="big">A</button>
-    <button id="bB" class="big">B</button>
+    <button id="bA" class="big">▶▶| Tim A +1</button>
+    <button id="bB" class="big">|◀◀ Tim B +1</button>
     <button id="bU" class="sm">⏯ Undo</button>
     <button id="bR" class="sm">Reset</button>
   </nav>
@@ -102,34 +107,25 @@
 <!-- Logika skor: fungsi murni (state in -> state out). test.html mengambil blok ini apa adanya. -->
 <script id="logic">
 var Logic = (function () {
-  var TARGET = 11, HISTORY_LIMIT = 100;
+  var TARGETS = [11, 15, 21], HISTORY_LIMIT = 100;
 
-  function newGame(mode) {
+  // simple = hitung bebas tanpa target; pickleball = rally scoring (tiap rally = poin, seperti badminton)
+  function newGame(mode, target) {
     return mode === 'pickleball'
-      ? { mode: 'pickleball', score: [0, 0], serving: 0, server: 2, winner: null } // aturan 0-0-2
+      ? { mode: 'pickleball', score: [0, 0], target: TARGETS.indexOf(target) >= 0 ? target : 11, winner: null }
       : { mode: 'simple', score: [0, 0] };
   }
 
-  function isWin(a, b) { return a >= TARGET && a - b >= 2; }
+  function isWin(a, b, target) { return a >= target && a - b >= 2; }
 
-  function simplePoint(g, team) {
-    var s = g.score.slice(); s[team]++;
-    return { mode: 'simple', score: s };
-  }
-
-  // serverWon: true = tim servis menang rally. Return { game, event }.
-  // event: 'point' | 'win' | 'server2' | 'sideout' | 'noop' (game sudah selesai)
-  function pbRally(g, serverWon) {
+  // team: 0 = A, 1 = B. Return { game, event }; event: 'point' | 'win' | 'noop' (game sudah selesai)
+  function point(g, team) {
     if (g.winner != null) return { game: g, event: 'noop' };
-    var n = { mode: 'pickleball', score: g.score.slice(), serving: g.serving, server: g.server, winner: null };
-    if (serverWon) {
-      n.score[n.serving]++;
-      if (isWin(n.score[n.serving], n.score[1 - n.serving])) { n.winner = n.serving; return { game: n, event: 'win' }; }
-      return { game: n, event: 'point' };
-    }
-    if (n.server === 1) { n.server = 2; return { game: n, event: 'server2' }; }
-    n.serving = 1 - n.serving; n.server = 1;
-    return { game: n, event: 'sideout' };
+    var s = g.score.slice(); s[team]++;
+    if (g.mode !== 'pickleball') return { game: { mode: 'simple', score: s }, event: 'point' };
+    var n = { mode: 'pickleball', score: s, target: g.target, winner: null };
+    if (isWin(s[team], s[1 - team], g.target)) { n.winner = team; return { game: n, event: 'win' }; }
+    return { game: n, event: 'point' };
   }
 
   // app = { game, history: [game lama...] }; action = 'A' | 'B' | 'UNDO' | 'RESET'
@@ -139,25 +135,18 @@ var Logic = (function () {
       if (!app.history.length) return { app: app, event: 'noop-undo' };
       return { app: { game: app.history[app.history.length - 1], history: app.history.slice(0, -1) }, event: 'undo' };
     }
-    var g = app.game, ng, ev;
-    if (action === 'RESET') { ng = newGame(g.mode); ev = 'reset'; }
-    else if (g.mode === 'simple') { ng = simplePoint(g, action === 'A' ? 0 : 1); ev = 'point'; }
-    else { var r = pbRally(g, action === 'A'); ng = r.game; ev = r.event; }
-    if (ev === 'noop') return { app: app, event: 'noop' };
-    return { app: { game: ng, history: app.history.concat([g]).slice(-limit) }, event: ev };
+    var g = app.game, r = action === 'RESET' ? { game: newGame(g.mode, g.target), event: 'reset' } : point(g, action === 'A' ? 0 : 1);
+    if (r.event === 'noop') return { app: app, event: 'noop' };
+    return { app: { game: r.game, history: app.history.concat([g]).slice(-limit) }, event: r.event };
   }
 
   // Game baru dari layar awal; game lama masuk history supaya bisa di-undo.
-  function startNew(app, mode, limit) {
+  function startNew(app, mode, target, limit) {
     var h = app ? app.history.concat([app.game]).slice(-(limit || HISTORY_LIMIT)) : [];
-    return { game: newGame(mode), history: h };
+    return { game: newGame(mode, target), history: h };
   }
 
-  // Format panggilan "servis-penerima-server", mis. "4-2-1"
-  function callText(g) {
-    if (g.mode !== 'pickleball') return g.score[0] + ' – ' + g.score[1];
-    return g.score[g.serving] + '-' + g.score[1 - g.serving] + '-' + g.server;
-  }
+  function callText(g) { return g.score[0] + ' – ' + g.score[1]; }
 
   var SATUAN = ['nol', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'delapan', 'sembilan', 'sepuluh', 'sebelas'];
   function terbilang(n) {
@@ -167,15 +156,15 @@ var Logic = (function () {
     return String(n);
   }
 
-  return { TARGET: TARGET, HISTORY_LIMIT: HISTORY_LIMIT, newGame: newGame, isWin: isWin, simplePoint: simplePoint,
-           pbRally: pbRally, applyAction: applyAction, startNew: startNew, callText: callText, terbilang: terbilang };
+  return { TARGETS: TARGETS, HISTORY_LIMIT: HISTORY_LIMIT, newGame: newGame, isWin: isWin, point: point,
+           applyAction: applyAction, startNew: startNew, callText: callText, terbilang: terbilang };
 })();
 </script>
 
 <script>
 (function () {
   var $ = function (id) { return document.getElementById(id); };
-  var au = $('au'), KEY = 'skorHeadset.v1', THEME_KEY = 'skorHeadset.theme';
+  var au = $('au'), KEY = 'skorHeadset.v2', THEME_KEY = 'skorHeadset.theme';
   var app = null, started = false, wantAudio = false, wakeLock = null, playFailLogged = false;
 
   // ---------- Storage (selalu try/catch) ----------
@@ -260,9 +249,9 @@ var Logic = (function () {
     var g = app.game;
     try {
       ms.metadata = new MediaMetadata({
-        title: (g.mode === 'pickleball' ? Logic.callText(g) : g.score[0] + ' - ' + g.score[1]) + (g.winner != null ? ' · TIM ' + 'AB'[g.winner] + ' MENANG' : ''),
-        artist: 'A ' + g.score[0] + ' – B ' + g.score[1] + (g.mode === 'pickleball' ? ' · servis Tim ' + 'AB'[g.serving] : ''),
-        album: g.mode === 'pickleball' ? 'Pickleball' : 'Skor Simple'
+        title: 'A ' + g.score[0] + ' – ' + g.score[1] + ' B' + (g.winner != null ? ' · TIM ' + 'AB'[g.winner] + ' MENANG' : ''),
+        artist: g.mode === 'pickleball' ? 'Pickleball · target ' + g.target : 'Skor Simple',
+        album: 'Skor Headset'
       });
     } catch (e) {}
   }
@@ -290,10 +279,8 @@ var Logic = (function () {
   }
 
   function scoreSpeech(g) {
-    var T = Logic.terbilang;
-    if (g.mode !== 'pickleball') return { id: T(g.score[0]) + ', ' + T(g.score[1]), en: g.score[0] + ', ' + g.score[1] };
-    var s = g.score[g.serving], r = g.score[1 - g.serving];
-    return { id: T(s) + ', ' + T(r) + ', server ' + T(g.server), en: s + ', ' + r + ', server ' + g.server };
+    var T = Logic.terbilang; // selalu urutan Tim A, Tim B (sama dengan layar)
+    return { id: T(g.score[0]) + ', ' + T(g.score[1]), en: g.score[0] + ', ' + g.score[1] };
   }
   function speechFor(g, ev) {
     var sc = scoreSpeech(g), T = Logic.terbilang;
@@ -303,7 +290,7 @@ var Logic = (function () {
       var w = g.score[g.winner], l = g.score[1 - g.winner], tim = 'AB'[g.winner];
       return { id: 'Game! Tim ' + tim + ' menang, ' + T(w) + ', ' + T(l), en: 'Game! Team ' + tim + ' wins, ' + w + ', ' + l };
     }
-    var pre = { undo: ['Batal. ', 'Undo. '], sideout: ['Pindah servis. ', 'Side out. '], reset: ['Game baru. ', 'New game. '] }[ev];
+    var pre = { undo: ['Batal. ', 'Undo. '], reset: ['Game baru. ', 'New game. '] }[ev];
     return pre ? { id: pre[0] + sc.id, en: pre[1] + sc.en } : sc;
   }
 
@@ -354,32 +341,29 @@ var Logic = (function () {
   }
 
   function render() {
-    var g = app.game, pb = g.mode === 'pickleball', live = pb && g.winner == null;
+    var g = app.game, pb = g.mode === 'pickleball';
     $('numA').textContent = g.score[0];
     $('numB').textContent = g.score[1];
-    $('call').textContent = Logic.callText(g);
-    [0, 1].forEach(function (t) {
-      var srv = live && g.serving === t;
-      $(t ? 'teamB' : 'teamA').classList.toggle('serving', srv);
-      $(t ? 'srvB' : 'srvA').textContent = srv ? '● SERVIS\nserver ' + g.server : '';
-    });
-    $('banner').hidden = !(pb && g.winner != null);
-    if (pb && g.winner != null) $('banner').textContent = 'TIM ' + 'AB'[g.winner] + ' MENANG ' + g.score[g.winner] + '-' + g.score[1 - g.winner];
-    $('bA').textContent = pb ? '▶▶| Servis MENANG' : '▶▶| Tim A +1';
-    $('bB').textContent = pb ? '|◀◀ Servis KALAH' : '|◀◀ Tim B +1';
+    $('call').textContent = pb ? 'Pickleball · ke ' + g.target : 'Simple';
+    [0, 1].forEach(function (t) { $(t ? 'teamB' : 'teamA').classList.toggle('won', g.winner === t); });
+    $('banner').hidden = g.winner == null;
+    if (g.winner != null) $('banner').textContent = 'TIM ' + 'AB'[g.winner] + ' MENANG ' + g.score[g.winner] + '-' + g.score[1 - g.winner];
     updateMeta();
   }
 
   function selectedMode() { return document.querySelector('input[name=mode]:checked').value; }
+  function selectedTarget() { return +document.querySelector('input[name=target]:checked').value; }
   function renderStart() {
     var saved = app;
     $('btnResume').hidden = !saved;
-    if (saved) $('resumeInfo').textContent = (saved.game.mode === 'pickleball' ? 'Pickleball ' : 'Simple ') + Logic.callText(saved.game);
+    if (saved) $('resumeInfo').textContent = (saved.game.mode === 'pickleball' ? 'Pickleball (ke ' + saved.game.target + ') ' : 'Simple ') + Logic.callText(saved.game);
     $('btnStart').textContent = saved ? 'MULAI BARU' : 'MULAI';
     $('btnStart').className = saved ? 'sec' : 'bigstart';
-    $('modeHelp').innerHTML = selectedMode() === 'pickleball'
-      ? '<b>Pickleball</b> (ganda, side-out): Next = tim servis menang rally, Prev = tim servis kalah rally. Target 11, menang selisih 2. Mulai dari 0-0-2.'
-      : '<b>Simple</b>: Next = Tim A +1, Prev = Tim B +1.';
+    var pb = selectedMode() === 'pickleball';
+    $('targets').hidden = !pb;
+    $('modeHelp').innerHTML = pb
+      ? '<b>Pickleball</b> (rally scoring, seperti badminton): setiap rally = poin. Next = Tim A +1, Prev = Tim B +1. Menang di target dengan selisih 2.'
+      : '<b>Simple</b>: hitung bebas tanpa target. Next = Tim A +1, Prev = Tim B +1.';
   }
 
   function enterGame() { // dipanggil dari user gesture
@@ -394,15 +378,19 @@ var Logic = (function () {
 
   $('btnStart').addEventListener('click', function () {
     if (app && !confirm('Mulai game baru? (game lama masih bisa di-Undo)')) return;
-    app = Logic.startNew(app, selectedMode());
+    app = Logic.startNew(app, selectedMode(), selectedTarget());
     enterGame();
   });
   $('btnResume').addEventListener('click', enterGame);
+  function syncStartInputs() {
+    document.querySelector('input[name=mode][value=' + app.game.mode + ']').checked = true;
+    if (app.game.target) document.querySelector('input[name=target][value="' + app.game.target + '"]').checked = true;
+  }
   document.querySelectorAll('input[name=mode]').forEach(function (r) { r.addEventListener('change', renderStart); });
   $('btnMenu').addEventListener('click', function () {
     started = false; // audio tetap jalan
     $('game').hidden = true; $('start').hidden = false;
-    document.querySelector('input[name=mode][value=' + app.game.mode + ']').checked = true;
+    syncStartInputs();
     renderStart();
   });
   $('stAudio').addEventListener('click', function () { log('layar', 'chip Audio → restart audio'); startAudio(); });
@@ -419,7 +407,7 @@ var Logic = (function () {
   if (lsGet(THEME_KEY)) document.documentElement.dataset.theme = lsGet(THEME_KEY);
   $('secureWarn').hidden = window.isSecureContext;
   app = load();
-  if (app) document.querySelector('input[name=mode][value=' + app.game.mode + ']').checked = true;
+  if (app) syncStartInputs();
   setupMediaSession();
   renderStart();
 })();

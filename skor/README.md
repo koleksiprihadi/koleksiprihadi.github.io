@@ -5,9 +5,13 @@ Tujuan satu-satunya: **membuktikan tombol media headset Bluetooth (Next / Prev /
 | File | Isi |
 |---|---|
 | `index.html` | App utuh (HTML + CSS + vanilla JS, tanpa build) |
-| `test.html` | Unit test logika skor. Mengambil `<script id="logic">` langsung dari `index.html` |
+| `test.html` | Unit test logika skor (rally scoring, target, deuce, undo). Mengambil `<script id="logic">` langsung dari `index.html` |
 
-Pemetaan: **Next** = aksi A · **Prev** = aksi B · **Play/Pause** = Undo.
+Pemetaan: **Next** = Tim A +1 · **Prev** = Tim B +1 · **Play/Pause** = Undo.
+
+Mode:
+- **Pickleball**: rally scoring seperti badminton (setiap rally = poin, tanpa aturan servis). Target 11 / 15 / 21, menang selisih 2.
+- **Simple**: hitung bebas tanpa target.
 Di laptop: `→` = A, `←` = B, `Backspace` = Undo (plus tombol media keyboard).
 
 ## Cara menjalankan (butuh HTTPS)
@@ -61,7 +65,7 @@ Siapkan: headset BT sudah pair, tutup Spotify/YouTube/app musik lain. Untuk tiap
 | 7 | Pindah ke app lain lalu kembali | ☐ | ☐ | ☐ | Wake lock ✓ lagi setelah kembali? |
 | 8 | Reload halaman → LANJUTKAN | ☐ | ☐ | ☐ | Skor & undo history pulih? |
 | 9 | Biarkan 5 menit tanpa sentuh | ☐ | ☐ | ☐ | Layar tetap menyala (wake lock)? Audio masih jalan? |
-| 10 | Mainkan 1 game pickleball penuh sampai 11 | ☐ | ☐ | ☐ | Side-out, server 1/2, 0-0-2 terbaca benar |
+| 10 | Mainkan 1 game pickleball penuh sampai 11 (termasuk deuce 10-10) | ☐ | ☐ | ☐ | Menang baru diumumkan saat selisih 2 |
 
 Isi juga: model HP, versi OS, browser + versi, merek/model headset. Hasilnya sangat bergantung perangkat.
 
