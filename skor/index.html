@@ -60,7 +60,7 @@
 
 <section id="start">
   <h1>Skor Headset 🎧</h1>
-  <p class="note">Kontrol skor lewat tombol headset Bluetooth: <b>Next</b> = aksi A, <b>Prev</b> = aksi B, <b>Play/Pause</b> = Undo.</p>
+  <p class="note">Kontrol skor lewat tombol headset Bluetooth: <b>Next</b> = Tim A +1, <b>Prev</b> = Tim B +1. Tombol lain diabaikan; Undo lewat tombol di layar.</p>
   <div class="modes" role="radiogroup">
     <label><input type="radio" name="mode" value="simple">Simple</label>
     <label><input type="radio" name="mode" value="pickleball" checked>Pickleball</label>
@@ -93,7 +93,7 @@
   <nav class="ctrl">
     <button id="bA" class="big">▶▶| Tim A +1</button>
     <button id="bB" class="big">|◀◀ Tim B +1</button>
-    <button id="bU" class="sm">⏯ Undo</button>
+    <button id="bU" class="sm">↶ Undo</button>
     <button id="bR" class="sm">Reset</button>
   </nav>
   <details id="dbg">
@@ -237,8 +237,10 @@ var Logic = (function () {
     var handlers = {
       nexttrack: function () { trigger('A', 'mediaSession', 'nexttrack'); },
       previoustrack: function () { trigger('B', 'mediaSession', 'previoustrack'); },
-      play: function () { ensurePlaying(); trigger('UNDO', 'mediaSession', 'play'); },
-      pause: function () { au.play().catch(function () {}); setPlaybackState('playing'); trigger('UNDO', 'mediaSession', 'pause'); }
+      // Play/Pause sengaja TIDAK melakukan aksi apa pun. Handler tetap didaftarkan supaya browser
+      // tidak mem-pause audio loop; tanpa audio jalan, Next/Prev berhenti diterima.
+      play: function () { ensurePlaying(); log('mediaSession', 'play → diabaikan'); },
+      pause: function () { au.play().catch(function () {}); setPlaybackState('playing'); log('mediaSession', 'pause → diabaikan'); }
     };
     Object.keys(handlers).forEach(function (k) {
       try { ms.setActionHandler(k, handlers[k]); } catch (e) { log('sys', 'action "' + k + '" tidak didukung'); }
@@ -308,8 +310,8 @@ var Logic = (function () {
     speak(speechFor(app.game, r.event));
   }
 
-  var KEYMAP = { MediaTrackNext: 'A', ArrowRight: 'A', MediaTrackPrevious: 'B', ArrowLeft: 'B',
-                 MediaPlayPause: 'UNDO', MediaPlay: 'UNDO', MediaPause: 'UNDO', Backspace: 'UNDO' };
+  // Hanya Next/Prev (+ panah & Backspace untuk tes di laptop). Tombol lain cuma dicatat di log.
+  var KEYMAP = { MediaTrackNext: 'A', ArrowRight: 'A', MediaTrackPrevious: 'B', ArrowLeft: 'B', Backspace: 'UNDO' };
   document.addEventListener('keydown', function (e) {
     var a = KEYMAP[e.key];
     if (!a) { if (started) log('keydown', e.key + ' (tidak dipetakan)'); return; }

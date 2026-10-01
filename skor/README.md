@@ -7,12 +7,12 @@ Tujuan satu-satunya: **membuktikan tombol media headset Bluetooth (Next / Prev /
 | `index.html` | App utuh (HTML + CSS + vanilla JS, tanpa build) |
 | `test.html` | Unit test logika skor (rally scoring, target, deuce, undo). Mengambil `<script id="logic">` langsung dari `index.html` |
 
-Pemetaan: **Next** = Tim A +1 · **Prev** = Tim B +1 · **Play/Pause** = Undo.
+Pemetaan: **Next** = Tim A +1 · **Prev** = Tim B +1. **Tombol headset lain (Play/Pause, dll.) diabaikan**, cuma dicatat di panel Debug. Undo lewat tombol di layar.
 
 Mode:
 - **Pickleball**: rally scoring seperti badminton (setiap rally = poin, tanpa aturan servis). Target 11 / 15 / 21, menang selisih 2.
 - **Simple**: hitung bebas tanpa target.
-Di laptop: `→` = A, `←` = B, `Backspace` = Undo (plus tombol media keyboard).
+Di laptop: `→` = A, `←` = B, `Backspace` = Undo (plus tombol Next/Prev di keyboard media).
 
 ## Cara menjalankan (butuh HTTPS)
 
@@ -43,7 +43,7 @@ Buka URL `https://…` itu di HP. (Di ngrok gratis ada halaman peringatan sekali
 ## Cara kerja singkat
 1. Tombol **MULAI** (user gesture) memutar `<audio loop>` berisi WAV 10 detik, 100 Hz, ≈ −64 dBFS, yang dibuat di JS. Tidak terdengar, tapi *bukan* digital silence, supaya OS/headset tidak menganggap sesi media idle.
 2. Karena halaman sedang "memutar media", OS meneruskan perintah AVRCP dari headset ke `navigator.mediaSession`.
-3. Handler `pause` langsung `play()` lagi, lalu undo. Handler `play` juga undo.
+3. Handler `play`/`pause` tetap didaftarkan tapi **tidak melakukan aksi**: cuma memastikan audio terus jalan. Kalau handler-nya dilepas, browser akan mem-pause audio saat Play/Pause ditekan, lalu Next/Prev ikut berhenti diterima.
 4. Judul `MediaMetadata` = skor saat ini, jadi skor terlihat di lock screen / notifikasi media.
 5. Setiap aksi dibacakan pakai `speechSynthesis` (id-ID, fallback en-US). Setelah TTS selesai, audio dicek dan di-`play()` ulang bila berhenti. Ada watchdog tiap 3 detik juga.
 6. State + history (100 langkah) disimpan di `localStorage` setiap perubahan. Setelah reload muncul tombol **LANJUTKAN**, karena audio butuh gesture lagi.
@@ -56,7 +56,7 @@ Siapkan: headset BT sudah pair, tutup Spotify/YouTube/app musik lain. Untuk tiap
 
 | # | Skenario | Next | Prev | Play/Pause | Catatan |
 |---|---|---|---|---|---|
-| 1 | Layar menyala, app di depan | ☐ | ☐ | ☐ | Log harus `mediaSession nexttrack → A` dst. |
+| 1 | Layar menyala, app di depan | ☐ | ☐ | ☐ | Log harus `mediaSession nexttrack → A` dst. Play/Pause: skor tidak berubah, audio tetap ✓, Next/Prev masih jalan sesudahnya |
 | 2 | Tekan cepat 2× (cek debounce) | ☐ | ☐ | ☐ | Tekanan ke-2 dalam 300 ms → `(debounce, diabaikan)` |
 | 3 | **Layar terkunci** | ☐ | ☐ | ☐ | Skor di lock screen ikut berubah? TTS bersuara? |
 | 4 | **Setelah TTS bicara** (tekan beruntun, tunggu suara selesai, tekan lagi) | ☐ | ☐ | ☐ | Chip "Audio aktif ✓" tetap hijau? |
@@ -90,5 +90,5 @@ Isi juga: model HP, versi OS, browser + versi, merek/model headset. Hasilnya san
 ### Keduanya
 - Setelah headset reconnect, OS mengirim tombol ke sesi media *terakhir yang aktif*. Kalau di sela itu ada app lain yang memutar suara, ketuk chip Audio.
 - Sebagian headset mematikan stream saat hening total. Itu sebabnya sinyalnya dibuat sangat kecil tapi tidak nol.
-- Tombol Play/Pause dipetakan ke Undo. Satu tekanan tak sengaja = satu poin dibatalkan. Suara "Batal…" jadi penanda.
+- Play/Pause diabaikan, tapi di beberapa HP tekanan itu tetap bisa mem-pause audio sesaat sebelum app me-resume. Kalau Next/Prev mati setelah menekan Play/Pause, lihat log `audio` dan laporkan model HP-nya.
 - Headset yang mengirim tombol sebagai keyboard event (bukan AVRCP) akan muncul di log sebagai `keydown <nama tombol> (tidak dipetakan)`. Tinggal tambahkan ke `KEYMAP`.
